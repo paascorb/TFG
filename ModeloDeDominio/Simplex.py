@@ -8,6 +8,16 @@ class Simplex:
         self.name = name
         self.cofaces = cofaces
 
+    # Método para devolver un string que representa a nuestro símplice cuando se llama atraves de print().
     def __str__(self):
         return "Dimensión del simplice: "+str(self.dimension)+", nombre: "+str(self.name)+", cocaras: "\
                + str(set(str(elm) for elm in self.cofaces))
+
+    # Método que devuelve la string que representa a nuestro símplice.
+    def __repr__(self):
+        return "Simplice: "+str(self.name)
+
+    # Método set para modificar el atributo index que hace referencia al índice del simplice cuando esté contenido en un
+    # complejo simplicial
+    def set_index(self, index):
+        self.index = index;
