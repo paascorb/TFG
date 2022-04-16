@@ -17,6 +17,7 @@ class SimplicialComplex:
         else:
             self.facets = facets
 
+
 # Método para pasar del conjunto de simplices a los facets, necesitamos la matriz de cocaras para hacer más eficiente
 # este cambio
 def simplex_to_facets(simplex, matrix):
@@ -31,6 +32,7 @@ def simplex_to_facets(simplex, matrix):
         if es_facet:
             facets.add(elm)
     return sorted(facets, key=lambda x: x.dimension)
+
 
 # Método que calcula la matriz de cocaras de un complejos simplicial dados sus simplices
 def simplicial_matrix(simplex):
