@@ -11,10 +11,15 @@ vw = Simplex(1, 'bc', {v, w})
 sr = Simplex(1, 'ae', {s, r})
 svw = Simplex(2, 'abc', {sv, sw, vw})
 
-simplices = {s,v,w,r,sv,sw,vw,sr,svw}
+simplices = {s, v, w, r, sv, sw, vw, sr, svw}
+facets = {sr, svw}
 sc = SimplicialComplex(simplices)
+sc_fac = SimplicialComplex(None, facets)
 
+print(sc_fac.simplex)
 print(sc.facets)
-#print(sc.matrix)
-
-
+print(sc.matrix)
+print(sc.c_vector)
+print(sc.euler_char)
+print(sc)
+print(sc_fac)

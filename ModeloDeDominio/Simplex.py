@@ -7,6 +7,7 @@ class Simplex:
         self.dimension = dimension
         self.name = name
         self.cofaces = cofaces
+        self.index = None
 
     # Método para devolver un string que representa a nuestro símplice cuando se llama atraves de print().
     def __str__(self):
@@ -20,4 +21,4 @@ class Simplex:
     # Método set para modificar el atributo index que hace referencia al índice del simplice cuando esté contenido en un
     # complejo simplicial
     def set_index(self, index):
-        self.index = index;
+        self.index = index
