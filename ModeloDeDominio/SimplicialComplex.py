@@ -13,14 +13,20 @@ class SimplicialComplex:
         simplex = sorted(simplex, key=lambda x: (x.dimension, x.name))
         for elm, i in zip(simplex, range(0, len(simplex))):
             elm.set_index(i)
+        if not is_simplicial_complex(simplex):
+            raise Exception("La lista de simplices no puede generar un complejo simplicial.")
         self.simplex = simplex
         resultado = simplicial_matrix(simplex)
         self.dimension = simplex[len(simplex) - 1].dimension
         self.matrix = resultado[0]
         self.c_vector = resultado[1]
-        if facets is None:
-            self.facets = set(simplex_to_facets(self.simplex, self.matrix))
         self.euler_char = euler_characteristic(self.c_vector)
+        facets_aux = set(simplex_to_facets(self.simplex, self.matrix))
+        if facets is None:
+            self.facets = facets_aux
+        else:
+            if not facets_aux == self.facets:
+                raise Exception("La lista de facets proporcionada es erronea.")
 
     # Método para devolver una string que representa nuestro complejo simplicial al llamar a print()
     def __str__(self):
@@ -79,3 +85,14 @@ def euler_characteristic(c_vector):
     dimension_par = c_vector[0::2]
     dimension_impar = c_vector[1::2]
     return np.sum(dimension_par) - np.sum(dimension_impar)
+
+
+def is_simplicial_complex(simplex):
+    simplicial_complex = True
+    for elm in simplex:
+        if elm.dimension > 0:
+            for cocara in elm.cofaces:
+                if cocara not in simplex or (elm.dimension - cocara.dimension) != 1:
+                    simplicial_complex = False
+                    break
+    return simplicial_complex
