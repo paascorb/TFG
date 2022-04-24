@@ -6,7 +6,7 @@ class Simplex:
         self.dimension = dimension
         self.name = name
         self.index = None
-        self.cofaces = None
+        self.faces = None
 
     # Método para devolver un string que representa a nuestro símplice cuando se llama atraves de print().
     def __str__(self):
@@ -21,7 +21,7 @@ class Simplex:
     def set_index(self, index):
         self.index = index
 
-    # Método para modificar el atributo cofaces del simplica añadiendo las relaciones que tiene dentro del complejo
+    # Método para modificar el atributo faces del simplica añadiendo las relaciones que tiene dentro del complejo
     # Simplicial
-    def set_cofaces(self, cofaces):
-        self.cofaces = cofaces
+    def set_faces(self, faces):
+        self.faces = faces

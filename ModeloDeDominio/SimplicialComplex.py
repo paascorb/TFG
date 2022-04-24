@@ -6,18 +6,20 @@ class SimplicialComplex:
 
     # Contructor de la clase SimplicialComplex, recibe el conjunto de simplices y calcula el resto de atributos de la
     # clase, como los facests del mismo y la matriz de cocaras.
-    def __init__(self, simplex=None, facets=None):
+    def __init__(self, omega=0, simplex=None, facets=None):
+        self.omega = omega
+        self.dimension = 0
         if facets:
             self.facets = facets
             simplex = facets_to_simplex(facets, set())
-        simplex = sorted(simplex, key=lambda x: (x.dimension, x.name))
-        for elm, i in zip(simplex, range(0, len(simplex))):
-            elm.set_index(i)
+        self.simplex = simplex
+        self.order_and_index()
         if not is_simplicial_complex(simplex):
             raise Exception("La lista de simplices no puede generar un complejo simplicial.")
-        self.simplex = simplex
-        resultado = simplicial_matrix(simplex)
-        self.dimension = simplex[len(simplex) - 1].dimension
+        self.get_dimension()
+        if self.omega < self.dimension:
+            raise Exception("Los simplices no están definidos dentro de omega.")
+        resultado = simplicial_matrix(self.simplex)
         self.matrix = resultado[0]
         self.c_vector = resultado[1]
         self.euler_char = euler_characteristic(self.c_vector)
@@ -38,6 +40,44 @@ class SimplicialComplex:
         return "Dimension: " + str(self.dimension) + ", Caracteristica de Euler: " + str(self.euler_char) \
                + ", facets: " + str(self.facets)
 
+    # Método que comprueba si nuestro complejo simplicial puede colapsar con el par de simplices
+    # sigma y tau proporcionado
+    def can_collapse(self, sigma, tau):
+        if tau and sigma not in self.simplex or tau not in self.facets or sigma not in tau.faces:
+            return False
+        sigma_index = list(self.simplex).index(sigma)
+        tau_index = list(self.simplex).index(tau)
+        sigma_row = self.matrix[sigma_index]
+        for elm, i in zip(sigma_row[sigma_index+1::], range(sigma_index + 1, len(self.simplex))):
+            if i != tau_index and elm == 1:
+                return False
+        return True
+
+    # Método que comprueba si el complejo simplicial puede colapsar y de ser así lo colapsa con el par de sigma y tau
+    # dados.
+    def collapse(self, sigma, tau):
+        if not self.can_collapse(sigma, tau):
+            raise Exception("El complejo simplicial no puede colapsar con el par de simplices dado.")
+        self.simplex.remove(sigma)
+        self.simplex.remove(tau)
+        self.order_and_index()
+        resultado = simplicial_matrix(self.simplex)
+        self.matrix = resultado[0]
+        self.c_vector = resultado[1]
+        self.facets = simplex_to_facets(self.simplex, self.matrix)
+        self.get_dimension()
+        return self
+
+    # Método que ordena e indexa los simplices del complejos simplicial
+    def order_and_index(self):
+        self.simplex = sorted(self.simplex, key=lambda x: (x.dimension, x.name))
+        for elm, i in zip(self.simplex, range(0, len(self.simplex))):
+            elm.set_index(i)
+
+    # Método que calcula la dimension del complejo simplicial y se la asigna a su atributo.
+    def get_dimension(self):
+        self.dimension = self.simplex[len(self.simplex) - 1].dimension
+
 
 # Método para pasar del conjunto de simplices a los facets, necesitamos la matriz de cocaras para hacer más eficiente
 # este cambio
@@ -54,10 +94,11 @@ def simplex_to_facets(simplex, matrix):
     return sorted(facets, key=lambda x: x.dimension)
 
 
+# Método para calcular el conjunto de simplices de un complejo simplicial dado su conjunto de facets.
 def facets_to_simplex(facets, simplex):
     simplex = set.union(simplex, facets)
     for elm in facets:
-        simplex = facets_to_simplex(elm.cofaces, simplex)
+        simplex = facets_to_simplex(elm.faces, simplex)
     return simplex
 
 
@@ -72,8 +113,8 @@ def simplicial_matrix(simplex):
         c_vector[dimension] += 1
         row = [0] * len(simplex)
         row[elm.index] = 1
-        for cocaras in elm.cofaces:
-            row[cocaras.index] = 1
+        for caras in elm.faces:
+            row[caras.index] = 1
         matrix.append(row)
     matrix_traspuesta = np.transpose(matrix)
     matrix = matrix + matrix_traspuesta - np.identity(len(simplex))
@@ -87,12 +128,14 @@ def euler_characteristic(c_vector):
     return np.sum(dimension_par) - np.sum(dimension_impar)
 
 
+# Método para calcular si un conjunto de simplices pueden conformar o no un complejo simplicial
 def is_simplicial_complex(simplex):
-    simplicial_complex = True
     for elm in simplex:
         if elm.dimension > 0:
-            for cocara in elm.cofaces:
-                if cocara not in simplex or (elm.dimension - cocara.dimension) != 1:
-                    simplicial_complex = False
-                    break
-    return simplicial_complex
+            for cara in elm.faces:
+                if cara not in simplex or (elm.dimension - cara.dimension) != 1:
+                    return False
+        else:
+            if not len(elm.faces) == 0:
+                return False
+    return True
