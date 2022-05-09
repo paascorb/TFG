@@ -60,12 +60,27 @@ class SimplicialComplex:
             raise Exception("El complejo simplicial no puede colapsar con el par de simplices dado.")
         self.simplex.remove(sigma)
         self.simplex.remove(tau)
-        self.order_and_index()
-        resultado = simplicial_matrix(self.simplex)
-        self.matrix = resultado[0]
-        self.c_vector = resultado[1]
-        self.facets = simplex_to_facets(self.simplex, self.matrix)
-        self.get_dimension()
+        self.recalculate()
+        return self
+
+    # Método que comprueba si nuestro complejo simplicial puede expandires con el par libre de simplices dado
+    def can_expand(self, sigma, tau):
+        aux = tau.faces.copy()
+        aux.remove(sigma)
+        if tau and sigma in self.simplex or sigma not in tau.faces or not set(sigma.faces).issubset(set(self.simplex)) \
+                or not aux.issubset(set(self.simplex)):
+            return False
+        else:
+            return True
+
+    # Método que comprueba si el complejo simplicial puede expandirse y de ser así lo expande con el par de sigma y tau
+    # dados.
+    def expand(self, sigma, tau):
+        if not self.can_expand(sigma, tau):
+            raise Exception("El complejo simplicial no puede expandirse con el par de simplices dado.")
+        self.simplex.append(sigma)
+        self.simplex.append(tau)
+        self.recalculate()
         return self
 
     # Método que ordena e indexa los simplices del complejos simplicial
@@ -77,6 +92,16 @@ class SimplicialComplex:
     # Método que calcula la dimension del complejo simplicial y se la asigna a su atributo.
     def get_dimension(self):
         self.dimension = self.simplex[len(self.simplex) - 1].dimension
+
+    # Método auxiliar que recalcula los parámetros del complejo simplicial, reordenando e indexando sus simplices,
+    # volviendo a calcular su matriz de caras y su c-vector además de sus facests y dimensión
+    def recalculate(self):
+        self.order_and_index()
+        resultado = simplicial_matrix(self.simplex)
+        self.matrix = resultado[0]
+        self.c_vector = resultado[1]
+        self.facets = simplex_to_facets(self.simplex, self.matrix)
+        self.get_dimension()
 
 
 # Método para pasar del conjunto de simplices a los facets, necesitamos la matriz de cocaras para hacer más eficiente
@@ -131,7 +156,9 @@ def euler_characteristic(c_vector):
 # Método para calcular si un conjunto de simplices pueden conformar o no un complejo simplicial
 def is_simplicial_complex(simplex):
     for elm in simplex:
-        if elm.dimension > 0:
+        if elm.faces is None:
+            return False
+        elif elm.dimension > 0:
             for cara in elm.faces:
                 if cara not in simplex or (elm.dimension - cara.dimension) != 1:
                     return False
