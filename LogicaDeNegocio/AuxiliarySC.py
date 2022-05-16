@@ -117,10 +117,11 @@ def facets_to_simplex(facets, simplex):
     return simplex
 
 
-def simplicial_matrix(simplex, dimension):
+def fmatrix_and_cvector(simplex, dimension):
     """
-    Método que calcula la matriz de caras, cocaras y el c-vector de un conjunto de símplices. Cada símplice ocupa una
-    posición en el conjunto proporcionado. Por ello, esa posición será la misma en la matriz creada.
+    Método que calcula la matriz de caras, cocaras (fmatrix) y el c-vector (cvector) de un conjunto de símplices.
+    Cada símplice ocupa una posición en el conjunto proporcionado.
+    Por ello, esa posición será la misma en la matriz creada.
 
     Siendo, por ejemplo, la fila 3 la que corresponda al símplice que ocupe la posición 3 en el conjunto.
     La matriz resultado tendrá unos o ceros a la izquierda de la diagonal representando sus caras y a la derecha
@@ -180,5 +181,31 @@ def order_and_index(simplex):
 
 
 def dimension_from_simplex(simplex):
+    """
+    Método que saca la dimensión del último símplice de la lista. Es por ello, que para sacar la dimensión de la lista
+    de símplices es necesario que esté ordenada por dimensión.
+
+    Parameters
+    ----------
+    simplex : set
+        Lista de símplices que como precondición se espera que esté ordenada por dimensión.
+
+    Returns
+    -------
+    int
+        Entero que representa la dimensión del último símplice de la lista proporcionada.
+    """
     return list(simplex)[len(simplex) - 1].dimension
+
+
+"""
+Métodos auxiliares para la clase BooleanFunction
+"""
+
+
+def is_monotone(output):
+    """"
+    TODO: Documentar el método
+    """
+
 

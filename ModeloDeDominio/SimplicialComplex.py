@@ -8,7 +8,6 @@ class SimplicialComplex:
     # clase, como los facests del mismo y la matriz de cocaras.
     def __init__(self, omega=0, simplex=None, facets=None):
         self.omega = omega
-        self.dimension = 0
         if facets:
             self.facets = facets
             simplex = Aux.facets_to_simplex(facets, set())
@@ -19,7 +18,7 @@ class SimplicialComplex:
         self.dimension = Aux.dimension_from_simplex(self.simplex)
         if self.omega < self.dimension:
             raise Exception("Los simplices no están definidos dentro de omega.")
-        resultado = Aux.simplicial_matrix(self.simplex, self.dimension)
+        resultado = Aux.fmatrix_and_cvector(self.simplex, self.dimension)
         self.matrix = resultado[0]
         self.c_vector = resultado[1]
         self.euler_char = Aux.euler_characteristic(self.c_vector)
@@ -89,7 +88,7 @@ class SimplicialComplex:
     # volviendo a calcular su matriz de caras y su c-vector además de sus facests y dimensión
     def recalculate(self):
         self.simplex = Aux.order_and_index(self.simplex)
-        resultado = Aux.simplicial_matrix(self.simplex, self.dimension)
+        resultado = Aux.fmatrix_and_cvector(self.simplex, self.dimension)
         self.matrix = resultado[0]
         self.c_vector = resultado[1]
         self.facets = Aux.simplex_to_facets(self.simplex, self.matrix)
