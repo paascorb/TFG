@@ -1,6 +1,8 @@
 from ModeloDeDominio.Simplex import *
 from ModeloDeDominio.SimplicialComplex import *
+from LogicaDeNegocio.AuxiliarySC import *
 
+"""
 s = Simplex(0, 'a')
 v = Simplex(0, 'b')
 w = Simplex(0, 'c')
@@ -48,4 +50,14 @@ except Exception as ex:
 print(sc.collapse(t, rt))
 print(sc.can_expand(n, rn))
 print(sc.expand(n, rn))
+"""
 
+"""print(check_output(7))
+print(check_output(15))
+print(check_output(23123))
+print(list(range(1, 31)))"""
+
+outputs = [1, 1, 1, 1, 1, 1, 1, 1]
+print(outputs_thread(outputs, 7, True))
+print(is_monotone_threads([1, 1, 1, 1, 1, 1, 1, 1]))
+print(is_monotone_threads([0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0]))

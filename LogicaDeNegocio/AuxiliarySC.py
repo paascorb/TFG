@@ -1,5 +1,6 @@
 # Fichero con clases auxiliares desarrollado por Pablo Ascorbe Fernández 12/05/2022
 import numpy as np
+from threading import Thread
 
 """
 Métodos auxiliares para la clase SimplicialComplex:
@@ -203,9 +204,80 @@ Métodos auxiliares para la clase BooleanFunction
 """
 
 
-def is_monotone(output):
+def is_monotone_threads(outputs):
     """"
     TODO: Documentar el método
     """
 
+    cond_parada = True
 
+    for i in reversed(range(0, len(outputs))):
+        if outputs[i] == 1:
+            res = outputs_thread(outputs, i, cond_parada)
+            outputs = res[0]
+            cond_parada = res[1]
+            # Thread(target=outputs_thread, args=(outputs[i:], cond_parada)).start() Pensarlo con hilos...
+        if not cond_parada:
+            return False
+    return True
+
+
+def outputs_thread(outputs, num, cond_parada):
+    childs = check_output(num)
+    for elem in childs:
+        if outputs[elem] == 0:
+            cond_parada = False
+            return (outputs, cond_parada)
+        else:
+            outputs[elem] = -1
+    return (outputs, cond_parada)
+
+
+def check_output(num, result=None):
+    """
+    Este método calcula los hijos del número pasado por parámetros. Esto en el contexto de las funciones booleanas
+    monótonas tiene que ver con el número de 1s y 0s que encontramos.
+
+    Un ejemplo que se ve muy fácil es el siguiente:
+
+    El 7 en binario es el 111, si por cada uno, sustituimos de derecha a izquierda un uno por un cero tenemos 3 hijos:
+    El 6 110, el 5 101 y el 3 011. Si seguimos con esta idea los hijos de 3 serían el 2 y el 1.
+    Por tanto, todos los hijos de 7 son el conjunto: 6, 5, 4, 3, 2, 1.
+
+    Parameters
+    ----------
+    num : int
+        Número en decimal positivo sobre el que calcularemos sus "hijos"
+    result : list
+         Parámetro opcional, es una lista que sirve como referencia para el cálculo de los hijos del número pasado por
+         parámetros de forma recursiva. De esa manera se puede llevar la cuenta de los hijos ya calculados.
+
+    Returns
+    -------
+    list
+        Lista que contiene todos los hijos de cualquier dimensión del número pasado por parámetros.
+
+    """
+    if result is None:
+        result = list()
+    bin_num = bin(num)[2:]
+    num_ones = bin_num.count('1')
+    if len(bin_num) == num_ones:
+        return list(range(1, (2**num_ones)-1))
+    nums_lt_num = list()
+    pos_num = 0
+    for i in range(1, num_ones + 1):
+        aux_copy = bin_num
+        for elem in aux_copy[pos_num:]:
+            if elem == '1':
+                aux_copy = aux_copy[:pos_num] + '0' + aux_copy[pos_num + 1:]
+                pos_num += 1
+                break
+            pos_num += 1
+        nums_lt_num.append(int(aux_copy, 2))
+    for elem in nums_lt_num:
+        if elem not in result:
+            if num_ones > 2:
+                result = check_output(elem, result)
+            result.append(elem)
+    return result
