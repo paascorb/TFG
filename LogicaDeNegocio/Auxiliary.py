@@ -1,6 +1,5 @@
 # Fichero con clases auxiliares desarrollado por Pablo Ascorbe Fernández 12/05/2022
 import numpy as np
-from threading import Thread
 
 """
 Métodos auxiliares para la clase SimplicialComplex:
@@ -204,33 +203,22 @@ Métodos auxiliares para la clase BooleanFunction
 """
 
 
-def is_monotone_threads(outputs):
-    """"
-    TODO: Documentar el método
+def is_monotone(outputs):
+    """
+    TODO: Documentarlo
+    :param outputs:
+    :return:
     """
 
-    cond_parada = True
-
+    aux_outputs = outputs.copy()
     for i in reversed(range(0, len(outputs))):
-        if outputs[i] == 1:
-            res = outputs_thread(outputs, i, cond_parada)
-            outputs = res[0]
-            cond_parada = res[1]
-            # Thread(target=outputs_thread, args=(outputs[i:], cond_parada)).start() Pensarlo con hilos...
-        if not cond_parada:
-            return False
+        if aux_outputs[i] == 1:
+            for elem in check_output(i):
+                if outputs[elem] == 0:
+                    return False
+                else:
+                    aux_outputs[elem] = -1
     return True
-
-
-def outputs_thread(outputs, num, cond_parada):
-    childs = check_output(num)
-    for elem in childs:
-        if outputs[elem] == 0:
-            cond_parada = False
-            return (outputs, cond_parada)
-        else:
-            outputs[elem] = -1
-    return (outputs, cond_parada)
 
 
 def check_output(num, result=None):
@@ -263,8 +251,7 @@ def check_output(num, result=None):
     bin_num = bin(num)[2:]
     num_ones = bin_num.count('1')
     if len(bin_num) == num_ones:
-        return list(range(1, (2**num_ones)-1))
-    nums_lt_num = list()
+        return list(range(1, (2 ** num_ones) - 1))
     pos_num = 0
     for i in range(1, num_ones + 1):
         aux_copy = bin_num
@@ -274,10 +261,9 @@ def check_output(num, result=None):
                 pos_num += 1
                 break
             pos_num += 1
-        nums_lt_num.append(int(aux_copy, 2))
-    for elem in nums_lt_num:
-        if elem not in result:
+        child = int(aux_copy, 2)
+        if child not in result:
             if num_ones > 2:
-                result = check_output(elem, result)
-            result.append(elem)
+                result = check_output(child, result)
+            result.append(child)
     return result

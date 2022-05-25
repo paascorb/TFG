@@ -11,9 +11,31 @@ class BooleanFunction:
 
     """
     # Contructor de la clase BooleanFunction.
-    def __init__(self, num_variables, outputs):
-        if 2**num_variables == outputs:
+    def __init__(self, name, num_variables, outputs):
+        self.name = name
+        if 2**num_variables == len(outputs):
             self.num_variables = num_variables
             self.outputs = outputs
         else:
-            raise Exception("El outputs debería corresponder con 2 elevado al número de variables.")
+            raise Exception("Los outputs deberían corresponder con 2 elevado al número de variables.")
+
+    def __str__(self):
+        return "Función booleana con " + str(self.num_variables) + " variables y con " \
+               + str(self.outputs) + " como salidas."
+
+    def __repr__(self):
+        return "Función booleana con " + str(self.num_variables) + " variables y con " \
+               + str(self.outputs) + " como salidas."
+
+    def json_encode(self):
+        """
+        Método que codifica el objeto a un diccionario para su correcta serialización a JSON.
+
+        Returns
+        -------
+        dict
+            Diccionario que representa a la función booleana.
+        """
+        return {'id': self.name,
+                'num_variables': self.num_variables,
+                'outputs': self.outputs}

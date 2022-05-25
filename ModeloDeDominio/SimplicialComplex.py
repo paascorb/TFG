@@ -1,12 +1,13 @@
 # Clase SimplicialComplex.py desarrollada por Pablo Ascorbe Fernández 20/04/2022
-import LogicaDeNegocio.AuxiliarySC as Aux
+import LogicaDeNegocio.Auxiliary as Aux
 
 
 class SimplicialComplex:
 
     # Contructor de la clase SimplicialComplex, recibe el conjunto de simplices y calcula el resto de atributos de la
     # clase, como los facests del mismo y la matriz de cocaras.
-    def __init__(self, omega=0, simplex=None, facets=None):
+    def __init__(self, name, omega=0, simplex=None, facets=None):
+        self.name = name
         self.omega = omega
         if facets:
             self.facets = facets
@@ -27,16 +28,16 @@ class SimplicialComplex:
             self.facets = facets_aux
         else:
             if not facets_aux == self.facets:
-                raise Exception("La lista de facets proporcionada es erronea.")
+                raise Exception("La lista de facets proporcionada es errónea.")
 
     # Método para devolver una string que representa nuestro complejo simplicial al llamar a print()
     def __str__(self):
-        return "Dimension: "+str(self.dimension)+", Caracteristica de Euler: "+str(self.euler_char)+", facets: "\
+        return "Dimension: "+str(self.dimension)+", Característica de Euler: "+str(self.euler_char)+", facets: "\
                + str(self.facets)
 
     # Método que devuelve una string que representa a nuestro complejo simplicial
     def __repr__(self):
-        return "Dimension: " + str(self.dimension) + ", Caracteristica de Euler: " + str(self.euler_char) \
+        return "Dimension: " + str(self.dimension) + ", Característica de Euler: " + str(self.euler_char) \
                + ", facets: " + str(self.facets)
 
     # Método que comprueba si nuestro complejo simplicial puede colapsar con el par de simplices
@@ -93,3 +94,19 @@ class SimplicialComplex:
         self.c_vector = resultado[1]
         self.facets = Aux.simplex_to_facets(self.simplex, self.matrix)
         self.dimension = Aux.dimension_from_simplex(self.simplex)
+
+    def json_encode(self):
+        """
+        Método que codifica el objeto a un diccionario para su correcta serialización a JSON.
+
+        Returns
+        -------
+        dict
+            Diccionario que representa al complejo simplicial.
+        """
+        return {'id': self.name,
+                'omega': str(self.omega),
+                'simplices': list(self.simplex),
+                'facet': list(self.facets),
+                'dimension': str(self.dimension),
+                'eulerChar': str(self.euler_char)}

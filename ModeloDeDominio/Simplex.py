@@ -43,20 +43,20 @@ class Simplex:
 
     De esta manera le hemos asignado a nuestro simplice de dimensión 1 sus dos caras: los dos simplices 'a' y 'b'.
     """
-    def __init__(self, dimension, name):
+    def __init__(self, name, dimension ):
         """
         Constructor de la clase Simplex.
 
         Parameters
         ----
-        dimension : int
-            Dimensión del símplice, es un número natural con el 0 incluido.
         name : string
             Nombre del símplice, es una cadena de caracteres que funciona como un identificador.
+        dimension : int
+            Dimensión del símplice, es un número natural con el 0 incluido.
         """
 
-        self.dimension = dimension
         self.name = name
+        self.dimension = dimension
         self.index = None
         self.faces = None
 
@@ -92,7 +92,7 @@ class Simplex:
         """
         self.index = index
 
-    def set_faces(self, faces):
+    def set_faces(self, faces=None):
         """Método para modificar el atributo faces del símplice añadiendo las relaciones que tiene
         dentro del complejo simplicial.
 
@@ -125,9 +125,26 @@ class Simplex:
         y así sucesivamente hasta dimensiones superiores.
 
         """
-        if self.dimension == 0 and len(faces) != self.dimension:
-            raise Exception("El número de caras es incorrecto para la dimensión del símplice")
-        elif self.dimension != 0 and (self.dimension + 1) != len(faces):
-            raise Exception("El número de caras es incorrecto para la dimensión del símplice")
+        if faces is None and self.dimension == 0:
+            self.faces = set()
         else:
-            self.faces = faces
+            if self.dimension == 0 and len(faces) != self.dimension:
+                raise Exception("El número de caras es incorrecto para la dimensión del símplice")
+            elif self.dimension != 0 and (self.dimension + 1) != len(faces):
+                raise Exception("El número de caras es incorrecto para la dimensión del símplice")
+            else:
+                self.faces = faces
+
+    def json_encode(self):
+        """
+        Método que codifica el objeto a un diccionario para su correcta serialización a JSON.
+
+        Returns
+        -------
+        dict
+            Diccionario que representa al símplice.
+        """
+        return {'id': self.name,
+                'dimension': self.dimension,
+                'index': self.index,
+                'faces': list(self.faces)}
