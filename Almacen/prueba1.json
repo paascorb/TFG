@@ -1,0 +1,19 @@
+{
+    "id": "bc",
+    "dimension": 1,
+    "index": 8,
+    "faces": [
+        {
+            "id": "c",
+            "dimension": 0,
+            "index": 2,
+            "faces": []
+        },
+        {
+            "id": "b",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        }
+    ]
+}

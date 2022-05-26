@@ -107,6 +107,4 @@ class SimplicialComplex:
         return {'id': self.name,
                 'omega': str(self.omega),
                 'simplices': list(self.simplex),
-                'facet': list(self.facets),
-                'dimension': str(self.dimension),
-                'eulerChar': str(self.euler_char)}
+                'facet': list(self.facets)}

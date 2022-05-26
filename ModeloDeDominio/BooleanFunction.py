@@ -16,6 +16,7 @@ class BooleanFunction:
         if 2**num_variables == len(outputs):
             self.num_variables = num_variables
             self.outputs = outputs
+            self.monotone_flag = None
         else:
             raise Exception("Los outputs deberían corresponder con 2 elevado al número de variables.")
 
@@ -26,6 +27,31 @@ class BooleanFunction:
     def __repr__(self):
         return "Función booleana con " + str(self.num_variables) + " variables y con " \
                + str(self.outputs) + " como salidas."
+
+    def __eq__(self, other):
+        """
+        Método para la comparación entre objetos de la misma clase.
+
+        Returns
+        ------
+        boolean
+            Boleano que representa si dos objetos de la misma clase son iguales.
+        """
+        if not hasattr(other, 'name') and hasattr(other, 'num_variables') and hasattr(other, 'outputs'):
+            return NotImplemented
+        return (self.name, self.num_variables, self.outputs) == (other.name, other.num_variables, other.outputs)
+
+    def set_monotone_flag(self, flag):
+        """Método setter para modificar el flag de monotonía que indica si la función booleana es o no monótona. Este
+        flag es opcional y por defecto estará puesto en None, pero se le puede dar valor para ahorrar tiempo
+        computacional.
+
+        Parameters
+        ---------
+        flag : bool
+            Flag que indica si la función es o no monótona.
+        """
+        self.monotone_flag = flag
 
     def json_encode(self):
         """
@@ -38,4 +64,5 @@ class BooleanFunction:
         """
         return {'id': self.name,
                 'num_variables': self.num_variables,
-                'outputs': self.outputs}
+                'outputs': self.outputs,
+                'm_flag': self.monotone_flag}

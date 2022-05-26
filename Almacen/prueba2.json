@@ -1,0 +1,301 @@
+{
+    "id": "sc_prueba",
+    "omega": "10",
+    "simplices": [
+        {
+            "id": "a",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        },
+        {
+            "id": "b",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        },
+        {
+            "id": "c",
+            "dimension": 0,
+            "index": 2,
+            "faces": []
+        },
+        {
+            "id": "e",
+            "dimension": 0,
+            "index": 3,
+            "faces": []
+        },
+        {
+            "id": "f",
+            "dimension": 0,
+            "index": 4,
+            "faces": []
+        },
+        {
+            "id": "ab",
+            "dimension": 1,
+            "index": 5,
+            "faces": [
+                {
+                    "id": "a",
+                    "dimension": 0,
+                    "index": 0,
+                    "faces": []
+                },
+                {
+                    "id": "b",
+                    "dimension": 0,
+                    "index": 1,
+                    "faces": []
+                }
+            ]
+        },
+        {
+            "id": "ac",
+            "dimension": 1,
+            "index": 6,
+            "faces": [
+                {
+                    "id": "a",
+                    "dimension": 0,
+                    "index": 0,
+                    "faces": []
+                },
+                {
+                    "id": "c",
+                    "dimension": 0,
+                    "index": 2,
+                    "faces": []
+                }
+            ]
+        },
+        {
+            "id": "ae",
+            "dimension": 1,
+            "index": 7,
+            "faces": [
+                {
+                    "id": "a",
+                    "dimension": 0,
+                    "index": 0,
+                    "faces": []
+                },
+                {
+                    "id": "e",
+                    "dimension": 0,
+                    "index": 3,
+                    "faces": []
+                }
+            ]
+        },
+        {
+            "id": "bc",
+            "dimension": 1,
+            "index": 8,
+            "faces": [
+                {
+                    "id": "b",
+                    "dimension": 0,
+                    "index": 1,
+                    "faces": []
+                },
+                {
+                    "id": "c",
+                    "dimension": 0,
+                    "index": 2,
+                    "faces": []
+                }
+            ]
+        },
+        {
+            "id": "ef",
+            "dimension": 1,
+            "index": 9,
+            "faces": [
+                {
+                    "id": "f",
+                    "dimension": 0,
+                    "index": 4,
+                    "faces": []
+                },
+                {
+                    "id": "e",
+                    "dimension": 0,
+                    "index": 3,
+                    "faces": []
+                }
+            ]
+        },
+        {
+            "id": "abc",
+            "dimension": 2,
+            "index": 10,
+            "faces": [
+                {
+                    "id": "ac",
+                    "dimension": 1,
+                    "index": 6,
+                    "faces": [
+                        {
+                            "id": "a",
+                            "dimension": 0,
+                            "index": 0,
+                            "faces": []
+                        },
+                        {
+                            "id": "c",
+                            "dimension": 0,
+                            "index": 2,
+                            "faces": []
+                        }
+                    ]
+                },
+                {
+                    "id": "bc",
+                    "dimension": 1,
+                    "index": 8,
+                    "faces": [
+                        {
+                            "id": "b",
+                            "dimension": 0,
+                            "index": 1,
+                            "faces": []
+                        },
+                        {
+                            "id": "c",
+                            "dimension": 0,
+                            "index": 2,
+                            "faces": []
+                        }
+                    ]
+                },
+                {
+                    "id": "ab",
+                    "dimension": 1,
+                    "index": 5,
+                    "faces": [
+                        {
+                            "id": "a",
+                            "dimension": 0,
+                            "index": 0,
+                            "faces": []
+                        },
+                        {
+                            "id": "b",
+                            "dimension": 0,
+                            "index": 1,
+                            "faces": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "facet": [
+        {
+            "id": "ae",
+            "dimension": 1,
+            "index": 7,
+            "faces": [
+                {
+                    "id": "a",
+                    "dimension": 0,
+                    "index": 0,
+                    "faces": []
+                },
+                {
+                    "id": "e",
+                    "dimension": 0,
+                    "index": 3,
+                    "faces": []
+                }
+            ]
+        },
+        {
+            "id": "abc",
+            "dimension": 2,
+            "index": 10,
+            "faces": [
+                {
+                    "id": "ac",
+                    "dimension": 1,
+                    "index": 6,
+                    "faces": [
+                        {
+                            "id": "a",
+                            "dimension": 0,
+                            "index": 0,
+                            "faces": []
+                        },
+                        {
+                            "id": "c",
+                            "dimension": 0,
+                            "index": 2,
+                            "faces": []
+                        }
+                    ]
+                },
+                {
+                    "id": "bc",
+                    "dimension": 1,
+                    "index": 8,
+                    "faces": [
+                        {
+                            "id": "b",
+                            "dimension": 0,
+                            "index": 1,
+                            "faces": []
+                        },
+                        {
+                            "id": "c",
+                            "dimension": 0,
+                            "index": 2,
+                            "faces": []
+                        }
+                    ]
+                },
+                {
+                    "id": "ab",
+                    "dimension": 1,
+                    "index": 5,
+                    "faces": [
+                        {
+                            "id": "a",
+                            "dimension": 0,
+                            "index": 0,
+                            "faces": []
+                        },
+                        {
+                            "id": "b",
+                            "dimension": 0,
+                            "index": 1,
+                            "faces": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ef",
+            "dimension": 1,
+            "index": 9,
+            "faces": [
+                {
+                    "id": "f",
+                    "dimension": 0,
+                    "index": 4,
+                    "faces": []
+                },
+                {
+                    "id": "e",
+                    "dimension": 0,
+                    "index": 3,
+                    "faces": []
+                }
+            ]
+        }
+    ],
+    "dimension": "2",
+    "eulerChar": "1"
+}

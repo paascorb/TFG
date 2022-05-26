@@ -29,12 +29,12 @@ class Simplex:
 
     Examples
     --------
-    >>> simplice_a  = Simplex(0, 'a')
+    >>> simplice_a  = Simplex('a', 0)
 
     Crearía un símplice de dimensión 0 y nombre o identificador 'a'.
 
-    >>> simplice_b = Simplex(0, 'b')
-    >>> simplice_ab = Simplex(1, 'ab')
+    >>> simplice_b = Simplex('b', 0)
+    >>> simplice_ab = Simplex('ab', 1)
 
     Ahora tendríamos 3 símplices: 2 de dimensión 0, es decir dos puntos; 1 de dimensión 1. Pero ahora queremos definir
     que el 1-símplice está compuesto por nuestros dos puntos 'a' y 'b', para ello:
@@ -43,7 +43,8 @@ class Simplex:
 
     De esta manera le hemos asignado a nuestro simplice de dimensión 1 sus dos caras: los dos simplices 'a' y 'b'.
     """
-    def __init__(self, name, dimension ):
+
+    def __init__(self, name, dimension):
         """
         Constructor de la clase Simplex.
 
@@ -69,7 +70,7 @@ class Simplex:
             Cadena que representa a nuestro símplice en la llamada a print(),
             dando información sobre su dimensión y nombre.
         """
-        return "Dimensión del simplice: "+str(self.dimension)+", nombre: "+str(self.name)
+        return "Dimensión del simplice: " + str(self.dimension) + ", nombre: " + str(self.name)
 
     def __repr__(self):
         """Método que devuelve la string que representa a nuestro símplice.
@@ -79,7 +80,20 @@ class Simplex:
         basestring
             Cadena que representa a nuestro símplice.
         """
-        return "Simplice: "+str(self.name)
+        return "Simplice: " + str(self.name)
+
+    def __eq__(self, other):
+        """
+        Método para la comparación entre objetos de la misma clase.
+
+        Returns
+        ------
+        boolean
+            Boleano que representa si dos objetos de la misma clase son iguales.
+        """
+        if not hasattr(other, 'name') and hasattr(other, 'dimension'):
+            return NotImplemented
+        return (self.name, self.dimension) == (other.name, other.dimension)
 
     def set_index(self, index):
         """Método setter para modificar el atributo index que hace referencia al índice del símplice cuando
@@ -110,17 +124,17 @@ class Simplex:
         Examples
         -------
 
-        Si la dimensión del símplice es 0 no debería tener caras, por ello simplemente crearíamos un set vacío
+        Si la dimensión del símplice es 0 no debería tener caras, por ello simplemente crearíamos un set vacío:
 
-        >>> 0_simplice.set_faces(set())
+        >> 0_simplice.set_faces(set())
 
         Si la dimensión es 1 debería tener 1 + 1 caras
 
-        >>> 1_simplice.set_faces({0_simplice_a, 0_simplice_b})
+        >> 1_simplice.set_faces({0_simplice_a, 0_simplice_b})
 
         Y si es 2 debería tener 3 (2 + 1)
 
-        >>> 2_simplice.set_faces({1_simplice_a, 1_simplice_b, 1_simplice_c})
+        >> 2_simplice.set_faces({1_simplice_a, 1_simplice_b, 1_simplice_c})
 
         y así sucesivamente hasta dimensiones superiores.
 
@@ -144,7 +158,8 @@ class Simplex:
         dict
             Diccionario que representa al símplice.
         """
+        aux = None if self.faces is None else list(self.faces)
         return {'id': self.name,
                 'dimension': self.dimension,
                 'index': self.index,
-                'faces': list(self.faces)}
+                'faces': aux}

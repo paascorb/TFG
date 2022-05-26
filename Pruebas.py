@@ -1,3 +1,5 @@
+import os
+
 from ModeloDeDominio.Simplex import *
 from ModeloDeDominio.SimplicialComplex import *
 from ModeloDeDominio.BooleanFunction import *
@@ -6,37 +8,37 @@ import json
 from Persistencia import Persistence
 from Persistencia import AuxiliaryParsing
 
-s = Simplex('a', 0)
-v = Simplex('b', 0)
-w = Simplex('c', 0)
-r = Simplex('e', 0)
-t = Simplex('f', 0)
-n = Simplex('g', 0)
-sv = Simplex('ab', 1)
-sw = Simplex('ac', 1)
-vw = Simplex('bc', 1)
-sr = Simplex('ae', 1)
-rt = Simplex('ef', 1)
-rn = Simplex('eg', 1)
-svw = Simplex('abc', 2)
-
-s.set_faces()
-v.set_faces()
-w.set_faces()
-r.set_faces()
-t.set_faces()
-n.set_faces()
-sv.set_faces({s, v})
-sw.set_faces({s, w})
-vw.set_faces({v, w})
-sr.set_faces({s, r})
-rt.set_faces({r, t})
-rn.set_faces({r, n})
-svw.set_faces({sv, sw, vw})
-
-simplices = {s, v, w, r, t, sv, sw, vw, sr, rt, svw}
-facets = {sr, svw}
-sc = SimplicialComplex('sc_prueba', 10, simplices)
+# s = Simplex('a', 0)
+# v = Simplex('b', 0)
+# w = Simplex('c', 0)
+# r = Simplex('e', 0)
+# t = Simplex('f', 0)
+# n = Simplex('g', 0)
+# sv = Simplex('ab', 1)
+# sw = Simplex('ac', 1)
+# vw = Simplex('bc', 1)
+# sr = Simplex('ae', 1)
+# rt = Simplex('ef', 1)
+# rn = Simplex('eg', 1)
+# svw = Simplex('abc', 2)
+#
+# s.set_faces()
+# v.set_faces()
+# w.set_faces()
+# r.set_faces()
+# t.set_faces()
+# n.set_faces()
+# sv.set_faces({s, v})
+# sw.set_faces({s, w})
+# vw.set_faces({v, w})
+# sr.set_faces({s, r})
+# rt.set_faces({r, t})
+# rn.set_faces({r, n})
+# svw.set_faces({sv, sw, vw})
+#
+# simplices = {s, v, w, r, t, sv, sw, vw, sr, rt, svw}
+# facets = {sr, svw}
+# sc = SimplicialComplex('sc_prueba', 10, simplices)
 # sc_fac = SimplicialComplex(10, None, facets)
 #
 # print(sc.facets)
@@ -73,12 +75,17 @@ sc = SimplicialComplex('sc_prueba', 10, simplices)
 # with open('Almacen/prueba2.json', 'w') as f:
 #     print(json.dump(sc, f, default=lambda o: o.json_encode(), indent=4))
 
-# prueba_fb = BooleanFunction('fb_prueba', 3, [1, 1, 1, 1, 1, 1, 1, 1])
+prueba_fb = BooleanFunction('fb_prueba', 3, [1, 1, 1, 1, 1, 1, 1, 1])
 # print(json.dumps(prueba_fb, default=lambda o: o.json_encode(), indent=4))
 
-# Persistencia.Persistence.serialize_sc(sc, 'pepito')
-# Persistencia.Persistence.remove_sc('pepito')
+Persistence.serialize(prueba_fb, 'pepito')
+# Persistence.remove('pepito')
 
-data = open('Almacen/prueba1.json')
-print(AuxiliaryParsing.simplex_decode(json.load(data)))
+# data = open('Almacen/prueba1.json')
+# print(AuxiliaryParsing.simplex_decode(json.load(data)))
 
+# print(AuxiliaryParsing.simplex_decode(Persistence.deserialize('prueba1')))
+# print(AuxiliaryParsing.bf_decode(Persistence.deserialize('pepito')))
+
+# project_root = os.path.dirname(os.path.dirname(__file__))
+# output_path = os.path.join(project_root, 'TFG')
