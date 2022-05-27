@@ -38,6 +38,7 @@ from Persistencia import AuxiliaryParsing
 #
 # simplices = {s, v, w, r, t, sv, sw, vw, sr, rt, svw}
 # facets = {sr, svw}
+
 # sc = SimplicialComplex('sc_prueba', 10, simplices)
 # sc_fac = SimplicialComplex(10, None, facets)
 #

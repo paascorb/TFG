@@ -35,11 +35,11 @@ class BooleanFunction:
         Returns
         ------
         boolean
-            Boleano que representa si dos objetos de la misma clase son iguales.
+            Booleano que representa si dos objetos de la misma clase son iguales.
         """
-        if not hasattr(other, 'name') and hasattr(other, 'num_variables') and hasattr(other, 'outputs'):
+        if not isinstance(other, BooleanFunction):
             return NotImplemented
-        return (self.name, self.num_variables, self.outputs) == (other.name, other.num_variables, other.outputs)
+        return self.name == other.name
 
     def set_monotone_flag(self, flag):
         """Método setter para modificar el flag de monotonía que indica si la función booleana es o no monótona. Este

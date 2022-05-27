@@ -89,11 +89,17 @@ class Simplex:
         Returns
         ------
         boolean
-            Boleano que representa si dos objetos de la misma clase son iguales.
+            Booleano que representa si dos objetos de la misma clase son iguales.
         """
-        if not hasattr(other, 'name') and hasattr(other, 'dimension'):
+        if not isinstance(other, Simplex):
             return NotImplemented
-        return (self.name, self.dimension) == (other.name, other.dimension)
+        return self.name == other.name
+
+    def __hash__(self):
+        """
+        Método necesario que hashea la clave de nuestra clase necesaria para trabajar con la misma dentro de sets.
+        """
+        return hash(self.name)
 
     def set_index(self, index):
         """Método setter para modificar el atributo index que hace referencia al índice del símplice cuando

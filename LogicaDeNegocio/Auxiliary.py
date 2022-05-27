@@ -91,7 +91,7 @@ def simplex_to_facets(simplex, matrix):
     return sorted(facets, key=lambda x: (x.dimension, x.name))
 
 
-def facets_to_simplex(facets, simplex):
+def facets_to_simplex(facets, simplex=None):
     """
     Método para calcular el conjunto de símplices de un complejo simplicial dado su conjunto de facets.
     Este es un método recursivo, la intención es ir, para cada facet, calculando sus caras y añadiéndolas a la lista de
@@ -111,6 +111,8 @@ def facets_to_simplex(facets, simplex):
         Conjunto de todos los símplices "recolectados" de los facets proporcionados por parámetros. No están ordenados
         por dimensión ni identificador, por lo tanto, será necesario ordenarlos posteriormente.
     """
+    if simplex is None:
+        simplex = set()
     simplex = set.union(simplex, facets)
     for elm in facets:
         simplex = facets_to_simplex(elm.faces, simplex)

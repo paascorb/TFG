@@ -11,7 +11,7 @@ class SimplicialComplex:
         self.omega = omega
         if facets:
             self.facets = facets
-            simplex = Aux.facets_to_simplex(facets, set())
+            simplex = Aux.facets_to_simplex(facets)
         self.simplex = simplex
         self.simplex = Aux.order_and_index(self.simplex)
         if not Aux.is_simplicial_complex(simplex):
@@ -39,6 +39,19 @@ class SimplicialComplex:
     def __repr__(self):
         return "Dimension: " + str(self.dimension) + ", Característica de Euler: " + str(self.euler_char) \
                + ", facets: " + str(self.facets)
+
+    def __eq__(self, other):
+        """
+        Método para la comparación entre objetos de la misma clase.
+
+        Returns
+        ------
+        boolean
+            Booleano que representa si dos objetos de la misma clase son iguales.
+        """
+        if not isinstance(other, SimplicialComplex):
+            return NotImplemented
+        return self.name == other.name
 
     # Método que comprueba si nuestro complejo simplicial puede colapsar con el par de simplices
     # sigma y tau proporcionado
@@ -104,7 +117,10 @@ class SimplicialComplex:
         dict
             Diccionario que representa al complejo simplicial.
         """
+        simplex = list()
+        for elem in self.simplex:
+            elem.faces = [o.name for o in elem.faces]
+            simplex.append(elem)
         return {'id': self.name,
                 'omega': str(self.omega),
-                'simplices': list(self.simplex),
-                'facet': list(self.facets)}
+                'simplex': simplex}

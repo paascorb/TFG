@@ -1,0 +1,91 @@
+{
+    "id": "sc",
+    "omega": "10",
+    "simplex": [
+        {
+            "id": "a",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        },
+        {
+            "id": "b",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        },
+        {
+            "id": "c",
+            "dimension": 0,
+            "index": 2,
+            "faces": []
+        },
+        {
+            "id": "e",
+            "dimension": 0,
+            "index": 3,
+            "faces": []
+        },
+        {
+            "id": "f",
+            "dimension": 0,
+            "index": 4,
+            "faces": []
+        },
+        {
+            "id": "ab",
+            "dimension": 1,
+            "index": 5,
+            "faces": [
+                "a",
+                "b"
+            ]
+        },
+        {
+            "id": "ac",
+            "dimension": 1,
+            "index": 6,
+            "faces": [
+                "a",
+                "c"
+            ]
+        },
+        {
+            "id": "ae",
+            "dimension": 1,
+            "index": 7,
+            "faces": [
+                "a",
+                "e"
+            ]
+        },
+        {
+            "id": "bc",
+            "dimension": 1,
+            "index": 8,
+            "faces": [
+                "b",
+                "c"
+            ]
+        },
+        {
+            "id": "ef",
+            "dimension": 1,
+            "index": 9,
+            "faces": [
+                "e",
+                "f"
+            ]
+        },
+        {
+            "id": "abc",
+            "dimension": 2,
+            "index": 10,
+            "faces": [
+                "ac",
+                "bc",
+                "ab"
+            ]
+        }
+    ]
+}
