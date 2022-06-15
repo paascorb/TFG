@@ -213,13 +213,16 @@ def is_monotone(outputs):
     """
 
     aux_outputs = outputs.copy()
+    outputs_checked = list()
     for i in reversed(range(0, len(outputs))):
         if aux_outputs[i] == 1:
-            for elem in check_output(i):
+            outputs_checked = check_output(i, outputs_checked)
+            for elem in outputs_checked:
                 if outputs[elem] == 0:
                     return False
                 else:
                     aux_outputs[elem] = -1
+            aux_outputs[i] = -1
     return True
 
 
@@ -269,3 +272,12 @@ def check_output(num, result=None):
                 result = check_output(child, result)
             result.append(child)
     return result
+
+
+def num_1(num):
+    """
+    TODO: documentarlo
+    :param num:
+    :return:
+    """
+    return bin(num)[2:].count('1')
