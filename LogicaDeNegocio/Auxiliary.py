@@ -1,6 +1,9 @@
 # Fichero con clases auxiliares desarrollado por Pablo Ascorbe Fernández 12/05/2022
 import numpy as np
 
+from ModeloDeDominio.Simplex import Simplex
+from ModeloDeDominio.SimplicialComplex import SimplicialComplex
+
 """
 Métodos auxiliares para la clase SimplicialComplex:
 """
@@ -198,6 +201,36 @@ def dimension_from_simplex(simplex):
         Entero que representa la dimensión del último símplice de la lista proporcionada.
     """
     return list(simplex)[len(simplex) - 1].dimension
+
+
+def crear_sc_prueba():
+    """
+    TODO
+    :return:
+    """
+    s = Simplex('a', 0)
+    v = Simplex('b', 0)
+    w = Simplex('c', 0)
+    r = Simplex('e', 0)
+    sv = Simplex('ab', 1)
+    sw = Simplex('ac', 1)
+    vw = Simplex('bc', 1)
+    sr = Simplex('ae', 1)
+    svw = Simplex('abc', 2)
+
+    s.set_faces()
+    v.set_faces()
+    w.set_faces()
+    r.set_faces()
+    sv.set_faces({s, v})
+    sw.set_faces({s, w})
+    vw.set_faces({v, w})
+    sr.set_faces({s, r})
+    svw.set_faces({sv, sw, vw})
+
+    simplices = {s, v, w, r, sv, sw, vw, sr, svw}
+
+    return SimplicialComplex('sc_prueba', 10, simplices)
 
 
 """
