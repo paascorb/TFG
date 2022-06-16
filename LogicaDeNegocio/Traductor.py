@@ -1,4 +1,4 @@
-# Fichero con clases auxiliares desarrollado por Pablo Ascorbe Fernández 15/06/2022
+# Fichero de traducción entre sc y fb desarrollado por Pablo Ascorbe Fernández 15/06/2022
 from functools import reduce
 import LogicaDeNegocio.Auxiliary as Aux
 from ModeloDeDominio.Simplex import Simplex
@@ -81,7 +81,7 @@ def simplicial_complex_to_boolean_function(sc):
     for sim in sc.simplex:
         pos = 2**sim.index if sim.dimension == 0 else position_in_ouput(sim, sim_pos)
         outputs[pos] = 1
-        sim_pos[sim] = pos
+        sim_pos[sim.name] = pos
     return BooleanFunction(sc.name, num_variables, outputs)
 
 
@@ -94,5 +94,5 @@ def position_in_ouput(simplex, sim_pos):
     """
     faces_pos = list()
     for face in simplex.faces:
-        faces_pos.append(sim_pos[face])
+        faces_pos.append(sim_pos[face.name])
     return reduce(lambda x, y: x | y, faces_pos)

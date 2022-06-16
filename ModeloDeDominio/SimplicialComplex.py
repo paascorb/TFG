@@ -76,7 +76,7 @@ class SimplicialComplex:
         self.recalculate()
         return self
 
-    # Método que comprueba si nuestro complejo simplicial puede expandires con el par libre de simplices dado
+    # Método que comprueba si nuestro complejo simplicial puede expandirse con el par libre de símplices dado
     def can_expand(self, sigma, tau):
         aux = tau.faces.copy()
         aux.remove(sigma)

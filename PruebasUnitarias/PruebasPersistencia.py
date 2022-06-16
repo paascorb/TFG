@@ -59,3 +59,5 @@ class TestPersistence(unittest.TestCase):
         sc_deserializado = AuxiliaryParsing.sc_decode(Persistence.deserialize('prueba_persistencia_sc'))
         self.assertTrue(sc == sc_deserializado)
 
+    if __name__ == '__main__':
+        unittest.main()
