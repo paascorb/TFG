@@ -288,7 +288,7 @@ Métodos auxiliares para la clase VectorField
 """
 
 
-def trocear_fmatrix(fmatrix, c_vector):
+def slice_fmatrix(fmatrix, c_vector):
     """
     TODO
     :param fmatrix:
@@ -302,6 +302,28 @@ def trocear_fmatrix(fmatrix, c_vector):
         fblock = aux_matrix[:c_vector[i], :c_vector[i+1]]
         aux_matrix = aux_matrix[c_vector[i]:, :]
         fblocks.append(fblock)
-    return  fblocks
+    return fblocks
 
 
+def cross_out_pos(pos, block, frow):
+    """
+    TODO
+    :param pos:
+    :param block:
+    :param frow:
+    :return:
+    """
+    if frow:
+        block[pos][0] = -1
+    else:
+        block[0][pos] = -1
+
+
+def get_sim_pos(c_vector, sim):
+    """
+    TODO
+    :param c_vector:
+    :param sim:
+    :return:
+    """
+    return sim.index - sum(c_vector[:sim.dimension])

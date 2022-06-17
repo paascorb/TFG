@@ -3,12 +3,12 @@
 
 class BooleanFunction:
     """
+    TODO
     Clase BooleanFunction que modela una función booleana. En nuestro caso, que trabajamos en un contexto de complejos
     simpliciales, nos interesarán aquellas que sean monótonas.
 
     Attributes
     ----------
-
     """
     # Contructor de la clase BooleanFunction.
     def __init__(self, name, num_variables, outputs):
