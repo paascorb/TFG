@@ -46,8 +46,8 @@
             "dimension": 1,
             "index": 6,
             "faces": [
-                "a",
-                "c"
+                "c",
+                "a"
             ]
         },
         {
@@ -55,8 +55,8 @@
             "dimension": 1,
             "index": 7,
             "faces": [
-                "a",
-                "e"
+                "e",
+                "a"
             ]
         },
         {
@@ -83,9 +83,10 @@
             "index": 10,
             "faces": [
                 "ab",
-                "ac",
-                "bc"
+                "bc",
+                "ac"
             ]
         }
-    ]
+    ],
+    "vector_fields": []
 }

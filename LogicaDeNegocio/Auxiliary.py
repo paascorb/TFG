@@ -305,20 +305,6 @@ def slice_fmatrix(fmatrix, c_vector):
     return fblocks
 
 
-def cross_out_pos(pos, block, frow):
-    """
-    TODO
-    :param pos:
-    :param block:
-    :param frow:
-    :return:
-    """
-    if frow:
-        block[pos][0] = -1
-    else:
-        block[0][pos] = -1
-
-
 def get_sim_pos(c_vector, sim):
     """
     TODO

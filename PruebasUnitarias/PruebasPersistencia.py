@@ -1,9 +1,11 @@
 # Fichero de pruebas unitarias para la persistencia desarrollado por Pablo Ascorbe Fernández 26/05/2022
 import unittest
-
+import PruebasUnitarias.Auxiliar as Puaux
+import LogicaDeNegocio.Auxiliary as Aux
 from ModeloDeDominio.BooleanFunction import BooleanFunction
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
+from ModeloDeDominio.VectorField import VectorField
 from Persistencia import AuxiliaryParsing, Persistence
 
 
@@ -57,6 +59,16 @@ class TestPersistence(unittest.TestCase):
         Persistence.serialize(sc, 'prueba_persistencia_sc')
         # Y para comprobar que funciona lo vamos a deserializar y compara con el original
         sc_deserializado = AuxiliaryParsing.sc_decode(Persistence.deserialize('prueba_persistencia_sc'))
+        self.assertTrue(sc == sc_deserializado)
+
+    def test_vector_fields(self):
+        sc = Puaux.crear_sc_prueba()
+        vf = VectorField("vf", Aux.slice_fmatrix(sc.matrix, sc.c_vector), sc.c_vector)
+        vf.add_route((sc.simplex[0], sc.simplex[4]))
+        vf.add_route((sc.simplex[1], sc.simplex[7]))
+        sc.add_vector_field(vf)
+        Persistence.serialize(sc, 'pruebas_persistencia_vf')
+        sc_deserializado = AuxiliaryParsing.sc_decode(Persistence.deserialize('pruebas_persistencia_vf'))
         self.assertTrue(sc == sc_deserializado)
 
     if __name__ == '__main__':

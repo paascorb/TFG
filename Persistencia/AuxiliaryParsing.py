@@ -2,6 +2,8 @@
 from ModeloDeDominio.BooleanFunction import BooleanFunction
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
+from ModeloDeDominio.VectorField import VectorField
+import numpy as np
 
 """
 Métodos para el parseo entre diccionarios y objetos de nuestro modelo de dominio
@@ -94,8 +96,35 @@ def sc_decode(json_dict):
         simplex.append(aux[0])
         faces.append(aux[1])
     for s, f in zip(simplex, faces):
-        faces = set()
+        faces_set = set()
         for cara in f:
-            faces.add(next((x for x in simplex if x.name == cara), None))
-        s.faces = faces
-    return SimplicialComplex(json_dict.get('id'), int(json_dict.get('omega')), simplex)
+            faces_set.add(next((x for x in simplex if x.name == cara), None))
+        s.set_faces(faces_set)
+    sc = SimplicialComplex(json_dict.get('id'), int(json_dict.get('omega')), simplex)
+    for elem in json_dict.get('vector_fields'):
+        sc.add_vector_field(vf_decode(elem))
+    return sc
+
+
+def vf_decode(json_dict):
+    """
+    Método que decodifica de un diccionario recibido por JSON al objeto deseado.
+
+    Parameters
+    ----------
+    json_dict : dict
+        Diccionario que representa a nuestro campo de vectores
+
+    Returns
+    -------
+    VectorField
+        Campo de vectores traducido del diccionario proporcionado.
+    """
+    fblocks = list()
+    for elem in json_dict.get('fblocks'):
+        fblocks.append(np.array(elem))
+    vf = VectorField(json_dict.get('id'), fblocks, json_dict.get('c_vector'))
+    vf.routes = json_dict.get('routes')
+    vf.targets = json_dict.get('targets')
+    vf.sources = json_dict.get('sources')
+    return vf

@@ -1,3 +1,4 @@
+from ModeloDeDominio.BooleanFunction import BooleanFunction
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
 
@@ -36,12 +37,34 @@ def crear_sc_prueba():
     return SimplicialComplex('sc_prueba', 10, simplices)
 
 
+def crear_bf_prueba():
+    """
+    Método para las pruebas unitarias que crea una función booleana de prueba para poder trabajar con ella.
+
+    Returns
+    -------
+    BooleanFunction
+        Función booleana de prueba para trabajar en las pruebas unitarias.
+    """
+    return BooleanFunction("fb_prueba", 4, [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0])
+
+
 def comparar_matrices(m1, m2):
     """
-    TODO
-    :param m1:
-    :param m2:
-    :return:
+    Método para comparar matrices, en este caso lista de listas. Compara primero sus tamaños y si son iguales entonces
+    elemento a elemento. Si encuentra alguna diferencia devuelve False. True si son iguales.
+
+    Parameters
+    ----------
+    m1 : list
+        Lista de listas que representa la primera matriz.
+    m2 : list
+        Lista de litas que representa la segunda matriz.
+
+    Returns
+    -------
+    boolean
+        Booleano que será False si las matrices son distintas y True en caso contrario.
     """
     filas1 = len(m1)
     columnas1 = len(m1[0])

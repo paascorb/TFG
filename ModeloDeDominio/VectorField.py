@@ -7,7 +7,7 @@ class VectorField:
     TODO
     """
 
-    def __init__(self, name, fmatrix, c_vector):
+    def __init__(self, name, fblocks, c_vector):
         """
         TODO
         :param name:
@@ -16,8 +16,10 @@ class VectorField:
         """
         self.name = name
         self.c_vector = c_vector
-        self.fblocks = Aux.slice_fmatrix(fmatrix, self.c_vector)
+        self.fblocks = fblocks
         self.routes = dict()
+        self.sources = list()
+        self.targets = list()
 
     def add_route(self, pair):
         """
@@ -27,8 +29,8 @@ class VectorField:
         """
         pos = self.check_pair(pair)
         if all(self.check_source(x) and self.check_target(x) for x in pair) and pos is not None:
-            self.cross_out_pair(pair, pos)
-            route = self.check_route(pair)
+            self.cross_out_pair(pair)
+            route = self.generate_route(pair)
             if route is not None:
                 self.routes[pair[0].name] = route
                 for elem in [key for key, value in self.routes.items() if pair[0].name in value]:
@@ -46,8 +48,9 @@ class VectorField:
         :param sim:
         :return:
         """
-        pos_source = Aux.get_sim_pos(self.c_vector, sim)
-        return True if self.fblocks[sim.dimension][pos_source][0] != -1 else False
+        if sim.dimension == len(self.fblocks):
+            return True
+        return True if sim.name not in self.sources else False
 
     def check_target(self, sim):
         """
@@ -57,8 +60,7 @@ class VectorField:
         """
         if sim.dimension == 0:
             return True
-        pos_target = Aux.get_sim_pos(self.c_vector, sim)
-        return True if self.fblocks[sim.dimension-1][0][pos_target] != -1 else False
+        return True if sim.name not in self.targets else False
 
     def check_pair(self, pair):
         """
@@ -70,24 +72,20 @@ class VectorField:
         columna = Aux.get_sim_pos(self.c_vector, pair[1])
         return (fila, columna) if self.fblocks[pair[0].dimension][fila][columna] == 1 else None
 
-    def cross_out_pair(self, pair, pos):
+    def cross_out_pair(self, pair):
         """
         TODO
         :param pair:
-        :param pos:
         :return:
         """
         if pair[0].dimension > 0:
-            fblock_ant = self.fblocks[pair[0].dimension - 1]
-            Aux.cross_out_pos(pos[0], fblock_ant, False)
-        if pair[1].dimension + 1 != len(self.fblocks):
-            fblock_sig = self.fblocks[pair[1].dimension + 1]
-            Aux.cross_out_pos(pos[1], fblock_sig, True)
-        fblock = self.fblocks[pair[0].dimension]
-        Aux.cross_out_pos(pos[0], fblock, True)
-        Aux.cross_out_pos(pos[1], fblock, False)
+            self.targets.append(pair[0].name)
+        if pair[1].dimension + 1 == len(self.fblocks):
+            self.sources.append(pair[1].name)
+        self.sources.append(pair[0].name)
+        self.targets.append(pair[1].name)
 
-    def check_route(self, pair):
+    def generate_route(self, pair):
         """
         TODO
         :param pair:
@@ -95,6 +93,46 @@ class VectorField:
         """
         accesible_routes = list()
         for sim in pair[1].faces:
-            accesible_routes.extend(self.routes.get(sim.name, sim.name))
+            value = self.routes.get(sim.name, sim.name)
+            if isinstance(value, str):
+                accesible_routes.extend([value])
+            else:
+                accesible_routes.extend(value)
         accesible_routes.remove(pair[0].name)
         return accesible_routes if pair[0].name not in accesible_routes else None
+
+    def __str__(self):
+        """
+        TODO
+        :return:
+        """
+        return "Campo de vectores: " + self.name + " Rutas: "+str(self.routes)
+
+    def __repr__(self):
+        """
+        TODO
+        :return:
+        """
+        return "Campo de vectores: " + self.name + " Rutas: "+str(self.routes)
+
+    def json_encode(self):
+        """
+        Método que codifica el objeto a un diccionario para su correcta serialización a JSON.
+
+        Returns
+        -------
+        dict
+            Diccionario que representa al campo de vectores.
+        """
+        routes = None if self.routes is None else self.routes
+        targets = None if self.routes is None else self.targets
+        sources = None if self.routes is None else self.sources
+        fblocks = list()
+        for elem in self.fblocks:
+            fblocks.append(elem.tolist())
+        return {'id': self.name,
+                'fblocks': fblocks,
+                'c_vector': self.c_vector,
+                'routes': routes,
+                'targets': targets,
+                'sources': sources}

@@ -1,5 +1,7 @@
 # Clase SimplicialComplex.py desarrollada por Pablo Ascorbe Fernández 20/04/2022
 import LogicaDeNegocio.Auxiliary as Aux
+from ModeloDeDominio.Simplex import Simplex
+from ModeloDeDominio.VectorField import VectorField
 
 
 class SimplicialComplex:
@@ -23,6 +25,7 @@ class SimplicialComplex:
         self.matrix = resultado[0]
         self.c_vector = resultado[1]
         self.euler_char = Aux.euler_characteristic(self.c_vector)
+        self.vector_fields = list()
         facets_aux = set(Aux.simplex_to_facets(self.simplex, self.matrix))
         if facets is None:
             self.facets = facets_aux
@@ -96,6 +99,22 @@ class SimplicialComplex:
         self.recalculate()
         return self
 
+    def add_vector_field(self, vf):
+        """
+        TODO
+        :param vf:
+        :return:
+        """
+        self.vector_fields.append(vf)
+
+    def create_vector_field(self, name):
+        """
+        TODO
+        :param name:
+        :return:
+        """
+        self.vector_fields.append(VectorField(name, Aux.slice_fmatrix(self.matrix, self.c_vector), self.c_vector))
+
     # TODO: Funciones Link, Star, Join y Cono
 
     # Método auxiliar que recalcula los parámetros del complejo simplicial, reordenando e indexando sus simplices,
@@ -119,8 +138,11 @@ class SimplicialComplex:
         """
         simplex = list()
         for elem in self.simplex:
-            elem.faces = [o.name for o in elem.faces]
-            simplex.append(elem)
+            aux = Simplex(elem.name, elem.dimension)
+            aux.faces = [o.name for o in elem.faces]
+            aux.index = elem.index
+            simplex.append(aux)
         return {'id': self.name,
                 'omega': str(self.omega),
-                'simplex': simplex}
+                'simplex': simplex,
+                'vector_fields': self.vector_fields}

@@ -16,13 +16,14 @@ class TestVectorField(unittest.TestCase):
 
     def test_add_route(self):
         sc = Puaux.crear_sc_prueba()
-        # for elem in sc.simplex:
-        #     print(elem.name + " caras: " + str(elem.faces))
-        vf = VectorField("vf", sc.matrix, sc.c_vector)
+        vf = VectorField("vf", Aux.slice_fmatrix(sc.matrix, sc.c_vector), sc.c_vector)
         vf.add_route((sc.simplex[0], sc.simplex[4]))
         vf.add_route((sc.simplex[1], sc.simplex[7]))
-        #vf.add_route((sc.simplex[2], sc.simplex[5]))
-        print(vf.routes)
+        # vf.add_route((sc.simplex[2], sc.simplex[5]))
+        vf.add_route((sc.simplex[5], sc.simplex[8]))
+        vf.add_route((sc.simplex[3], sc.simplex[6]))
+        routes_esperadas = {'a': ['c'], 'b': ['c'], 'ac': ['bc', 'ab'], 'd': ['c']}
+        self.assertTrue(vf.routes == routes_esperadas, "Error: en el test add_route")
 
     if __name__ == '__main__':
         unittest.main()
