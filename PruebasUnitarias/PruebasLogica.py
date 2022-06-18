@@ -1,6 +1,6 @@
 # Fichero de pruebas unitarias para la lógica de negocio desarrollado por Pablo Ascorbe Fernández 17/06/2022
 import unittest
-import PruebasUnitarias.Auxiliar as Puaux
+import PruebasUnitarias.PruebasAuxiliar as Puaux
 from LogicaDeNegocio import SimplicialComplexManager, BooleanFunctionManager
 
 

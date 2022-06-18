@@ -1,6 +1,6 @@
 # Fichero de pruebas unitarias para VectorFieldResolver por Pablo Ascorbe Fernández 18/06/2022
 import unittest
-import PruebasUnitarias.Auxiliar as Puaux
+import PruebasUnitarias.PruebasAuxiliar as Puaux
 from LogicaDeNegocio.VectorFieldResolver import *
 
 

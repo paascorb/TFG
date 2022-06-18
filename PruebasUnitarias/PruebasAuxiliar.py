@@ -32,7 +32,7 @@ def crear_sc_prueba():
     sr.set_faces({s, r})
     svw.set_faces({sv, sw, vw})
 
-    simplices = {s, v, w, r, sv, sw, vw, sr, svw}
+    simplices = [s, v, w, r, sv, sw, vw, sr, svw]
 
     return SimplicialComplex('sc_prueba', 10, simplices)
 

@@ -5,7 +5,7 @@ import LogicaDeNegocio.Traductor as Tra
 import LogicaDeNegocio.Auxiliary as Aux
 from ModeloDeDominio.BooleanFunction import BooleanFunction
 from ModeloDeDominio.Simplex import Simplex
-import PruebasUnitarias.Auxiliar as Puaux
+import PruebasUnitarias.PruebasAuxiliar as Puaux
 
 
 class TestTraductor(unittest.TestCase):

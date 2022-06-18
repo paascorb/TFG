@@ -68,7 +68,7 @@ def simplex_to_facets(simplex, matrix):
     Parameters
     ----------
 
-    simplex : set
+    simplex : list
         Conjunto de símplices del que deseamos calcular sus facets.
     matrix : list
         Es una lista de listas, lo que representa una matriz de relaciones entre los símplices proporcionados.
@@ -102,12 +102,12 @@ def facets_to_simplex(facets, simplex=None):
 
     facets : set
         Conjunto de facets necesario para calcular la lista entera de símplices asociados.
-    simplex : set
+    simplex : list
         Conjunto de símplices "recolectados" por el momento.
 
     Returns
     -------
-    set
+    list
         Conjunto de todos los símplices "recolectados" de los facets proporcionados por parámetros. No están ordenados
         por dimensión ni identificador, por lo tanto, será necesario ordenarlos posteriormente.
     """
@@ -116,7 +116,7 @@ def facets_to_simplex(facets, simplex=None):
     simplex = set.union(simplex, facets)
     for elm in facets:
         simplex = facets_to_simplex(elm.faces, simplex)
-    return simplex
+    return [simplex]
 
 
 def fmatrix_and_cvector(simplex, dimension):
@@ -131,7 +131,7 @@ def fmatrix_and_cvector(simplex, dimension):
 
     Parameters
     ----------
-    simplex : set
+    simplex : list
         Conjunto de símplices. Como precondición se espera que estén ordenados por dimensión e indexados para facilitar
         la tarea de generar la matriz.
     dimension: int
@@ -160,6 +160,23 @@ def fmatrix_and_cvector(simplex, dimension):
     return matrix, c_vector
 
 
+def order_simplicial_list(simplex):
+    """
+    Método que recibe una lista de símplices y la ordena primero por dimension y como segundo criterio nombre.
+
+    Parameters
+    ----------
+    simplex : list
+        Lista con los símplices a ordenar.
+
+    Returns
+    -------
+    list
+        Lista con los símplices ordenados por dimensión y nombre.
+    """
+    return sorted(simplex, key=lambda x: (x.dimension, x.name))
+
+
 def order_and_index(simplex):
     """
     Método que ordena por dimensión y por segundo criterio nombre e indexa poniendo como índice la posición que ocupa,
@@ -168,15 +185,15 @@ def order_and_index(simplex):
     Parameters
     ----------
 
-    simplex : set
+    simplex : list
         Conjunto de símplices que necesitamos ordenar por dimensión y nombre e indexar.
 
     Returns
     -------
-    set
+    list
         Conjunto que contiene los mismos símplices que el conjunto proporcionado pero ordenados e indexados.
     """
-    simplex = sorted(simplex, key=lambda x: (x.dimension, x.name))
+    simplex = order_simplicial_list(simplex)
     for elm, i in zip(simplex, range(0, len(simplex))):
         elm.set_index(i)
     return simplex
@@ -189,7 +206,7 @@ def dimension_from_simplex(simplex):
 
     Parameters
     ----------
-    simplex : set
+    simplex : list
         Lista de símplices que como precondición se espera que esté ordenada por dimensión.
 
     Returns

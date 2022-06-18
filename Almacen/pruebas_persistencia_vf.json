@@ -31,8 +31,8 @@
             "dimension": 1,
             "index": 4,
             "faces": [
-                "b",
-                "a"
+                "a",
+                "b"
             ]
         },
         {
@@ -49,8 +49,8 @@
             "dimension": 1,
             "index": 6,
             "faces": [
-                "d",
-                "a"
+                "a",
+                "d"
             ]
         },
         {
@@ -68,8 +68,8 @@
             "index": 8,
             "faces": [
                 "bc",
-                "ab",
-                "ac"
+                "ac",
+                "ab"
             ]
         }
     ],

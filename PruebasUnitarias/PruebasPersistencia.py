@@ -1,6 +1,6 @@
 # Fichero de pruebas unitarias para la persistencia desarrollado por Pablo Ascorbe Fernández 26/05/2022
 import unittest
-import PruebasUnitarias.Auxiliar as Puaux
+import PruebasUnitarias.PruebasAuxiliar as Puaux
 import LogicaDeNegocio.Auxiliary as Aux
 from ModeloDeDominio.BooleanFunction import BooleanFunction
 from ModeloDeDominio.Simplex import Simplex

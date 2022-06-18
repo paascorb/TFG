@@ -56,6 +56,29 @@ class SimplicialComplex:
             return NotImplemented
         return self.name == other.name
 
+    def get_sim_by_name(self, name):
+        """
+        TODO
+        :param name:
+        :return:
+        """
+        return next((sim for sim in self.simplex if sim.name == name), None)
+
+    def get_sim_cofaces(self, sim):
+        """
+        TODO
+        :param sim:
+        :return:
+        """
+        init = sum(self.c_vector[:sim.dimension + 1])
+        end = init + self.c_vector[(sim.dimension + 1)]
+        row = self.matrix[sim.index]
+        cofaces = list()
+        for pos in range(init, end):
+            if row[pos] == 1:
+                cofaces.append(self.simplex[pos])
+        return cofaces
+
     # Método que comprueba si nuestro complejo simplicial puede colapsar con el par de simplices
     # sigma y tau proporcionado
     def can_collapse(self, sigma, tau):
@@ -115,7 +138,35 @@ class SimplicialComplex:
         """
         self.vector_fields.append(VectorField(name, Aux.slice_fmatrix(self.matrix, self.c_vector), self.c_vector))
 
-    # TODO: Funciones Link, Star, Join y Cono
+    # TODO: Funciones Join y Cono
+
+    def closure(self, sim):
+        """
+        TODO
+        :param sim:
+        :return:
+        """
+        if sim.dimension == 0:
+            return [sim]
+        closure_list = list()
+        closure_list.append(sim)
+        for face in sim.faces:
+            closure_list.extend(self.closure(face))
+        return list(set(closure_list))
+
+    def star(self, sim):
+        """
+        TODO
+        :param sim:
+        :return:
+        """
+        if sim.dimension == self.dimension:
+            return [sim]
+        star_list = list()
+        star_list.append(sim)
+        for coface in self.get_sim_cofaces(sim):
+            star_list.extend(self.star(coface))
+        return list(set(star_list))
 
     def link(self, sim):
         """
@@ -123,7 +174,17 @@ class SimplicialComplex:
         :param sim:
         :return:
         """
-        return self.simplex
+        star = self.star(sim)
+        closure_star = list()
+        closure = self.closure(sim)
+        star_closure = list()
+        for elem in star:
+            closure_star.extend(self.closure(elem))
+        for elem in closure:
+            star_closure.extend(self.star(elem))
+        closure_star = list(set(closure_star))
+        star_closure = list(set(star_closure))
+        return list(filter(lambda x: x not in star_closure, closure_star))
 
     # Método auxiliar que recalcula los parámetros del complejo simplicial, reordenando e indexando sus simplices,
     # volviendo a calcular su matriz de caras y su c-vector además de sus facests y dimensión

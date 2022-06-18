@@ -1,7 +1,8 @@
 # Fichero de pruebas unitarias para VectorField por Pablo Ascorbe Fernández 16/06/2022
+import operator
 import unittest
 import LogicaDeNegocio.Auxiliary as Aux
-import PruebasUnitarias.Auxiliar as Puaux
+import PruebasUnitarias.PruebasAuxiliar as Puaux
 from ModeloDeDominio.VectorField import VectorField
 
 
@@ -23,7 +24,8 @@ class TestVectorField(unittest.TestCase):
         vf.add_route((sc.simplex[5], sc.simplex[8]))
         vf.add_route((sc.simplex[3], sc.simplex[6]))
         routes_esperadas = {'a': ['c'], 'b': ['c'], 'ac': ['bc', 'ab'], 'd': ['c']}
-        self.assertTrue(vf.routes == routes_esperadas, "Error: en el test add_route")
+        self.assertTrue(sorted(vf.routes, key=operator.itemgetter(0)) ==
+                        sorted(routes_esperadas, key=operator.itemgetter(0)), "Error: en el test add_route")
 
     if __name__ == '__main__':
         unittest.main()
