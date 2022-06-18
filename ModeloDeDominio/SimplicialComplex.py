@@ -141,8 +141,6 @@ class SimplicialComplex:
         """
         self.vector_fields.append(VectorField(name, Aux.slice_fmatrix(self.matrix, self.c_vector), self.c_vector))
 
-    # TODO: Funciones Join y Cono
-
     def closure(self, sim):
         """
         TODO
