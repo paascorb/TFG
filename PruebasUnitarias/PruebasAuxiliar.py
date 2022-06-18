@@ -48,6 +48,17 @@ def crear_bf_prueba():
     """
     return BooleanFunction("fb_prueba", 4, [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0])
 
+def crear_sim_prueba():
+    """
+    Método para las pruebas unitarias que crea un símplice de prueba para poder trabajar con él.
+
+    Returns
+    -------
+    Simplex
+        Símplice de prueba para trabajar en las pruebas unitarias.
+    """
+    return Simplex("u", 0)
+
 
 def comparar_matrices(m1, m2):
     """

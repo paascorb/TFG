@@ -1,5 +1,6 @@
 # Clase SimplicialComplex.py desarrollada por Pablo Ascorbe Fernández 20/04/2022
 import LogicaDeNegocio.Auxiliary as Aux
+from LogicaDeNegocio.Join import join
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.VectorField import VectorField
 
@@ -19,11 +20,13 @@ class SimplicialComplex:
         if not Aux.is_simplicial_complex(simplex):
             raise Exception("La lista de simplices no puede generar un complejo simplicial.")
         self.dimension = Aux.dimension_from_simplex(self.simplex)
-        if self.omega < self.dimension:
-            raise Exception("Los simplices no están definidos dentro de omega.")
         resultado = Aux.fmatrix_and_cvector(self.simplex, self.dimension)
         self.matrix = resultado[0]
         self.c_vector = resultado[1]
+        # Omega es el alfabeto, es decir, el número de vertices (0-símplices) que hay disponibles para hacer
+        # combinaciones. Por tanto, define un conjunto finito de 0-símplices.
+        if self.omega < self.c_vector[0]:
+            raise Exception("Los simplices no están definidos dentro de omega.")
         self.euler_char = Aux.euler_characteristic(self.c_vector)
         self.vector_fields = list()
         facets_aux = set(Aux.simplex_to_facets(self.simplex, self.matrix))
@@ -154,6 +157,16 @@ class SimplicialComplex:
             closure_list.extend(self.closure(face))
         return list(set(closure_list))
 
+    def borde(self, sim):
+        """
+        TODO
+        :param sim:
+        :return:
+        """
+        borde = self.closure(sim)
+        borde.remove(sim)
+        return borde
+
     def star(self, sim):
         """
         TODO
@@ -185,6 +198,14 @@ class SimplicialComplex:
         closure_star = list(set(closure_star))
         star_closure = list(set(star_closure))
         return list(filter(lambda x: x not in star_closure, closure_star))
+
+    def cono(self, point):
+        """
+        TODO
+        :param point:
+        :return:
+        """
+        return join(self, point)
 
     # Método auxiliar que recalcula los parámetros del complejo simplicial, reordenando e indexando sus simplices,
     # volviendo a calcular su matriz de caras y su c-vector además de sus facests y dimensión
