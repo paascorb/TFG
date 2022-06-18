@@ -1,5 +1,6 @@
 # Clase VectorField.py desarrollada por Pablo Ascorbe Fernández 16/06/2022
 import LogicaDeNegocio.Auxiliary as Aux
+from LogicaDeNegocio.Exceptions import *
 
 
 class VectorField:
@@ -11,7 +12,7 @@ class VectorField:
         """
         TODO
         :param name:
-        :param fmatrix:
+        :param fblocks:
         :param c_vector:
         """
         self.name = name
@@ -29,18 +30,18 @@ class VectorField:
         """
         pos = self.check_pair(pair)
         if all(self.check_source(x) and self.check_target(x) for x in pair) and pos is not None:
-            self.cross_out_pair(pair)
             route = self.generate_route(pair)
             if route is not None:
+                self.cross_out_pair(pair)
                 self.routes[pair[0].name] = route
                 for elem in [key for key, value in self.routes.items() if pair[0].name in value]:
                     value = self.routes[elem]
                     value.extend(route)
                     value.remove(pair[0].name)
             else:
-                raise Exception("Error: se ha formado un ciclo.")
+                raise CycleException("Error: se ha formado un ciclo.")
         else:
-            raise Exception("Error: esa pareja no es válida para generar una ruta")
+            raise InvalidPairException("Error: esa pareja no es válida para generar una ruta")
 
     def check_source(self, sim):
         """
@@ -127,11 +128,8 @@ class VectorField:
         routes = None if self.routes is None else self.routes
         targets = None if self.routes is None else self.targets
         sources = None if self.routes is None else self.sources
-        fblocks = list()
-        for elem in self.fblocks:
-            fblocks.append(elem.tolist())
         return {'id': self.name,
-                'fblocks': fblocks,
+                'fblocks': self.fblocks,
                 'c_vector': self.c_vector,
                 'routes': routes,
                 'targets': targets,

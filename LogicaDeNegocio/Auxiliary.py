@@ -301,7 +301,7 @@ def slice_fmatrix(fmatrix, c_vector):
         aux_matrix = aux_matrix[:, c_vector[i]:]
         fblock = aux_matrix[:c_vector[i], :c_vector[i+1]]
         aux_matrix = aux_matrix[c_vector[i]:, :]
-        fblocks.append(fblock)
+        fblocks.append(fblock.tolist())
     return fblocks
 
 
@@ -313,3 +313,14 @@ def get_sim_pos(c_vector, sim):
     :return:
     """
     return sim.index - sum(c_vector[:sim.dimension])
+
+
+def get_sim_index(block_pos, block_index, c_vector):
+    """
+    TODO
+    :param block_pos:
+    :param block_index:
+    :param c_vector:
+    :return:
+    """
+    return block_pos + sum(c_vector[:block_index])

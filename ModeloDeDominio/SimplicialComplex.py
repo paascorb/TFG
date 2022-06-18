@@ -117,6 +117,14 @@ class SimplicialComplex:
 
     # TODO: Funciones Link, Star, Join y Cono
 
+    def link(self, sim):
+        """
+        TODO
+        :param sim:
+        :return:
+        """
+        return self.simplex
+
     # Método auxiliar que recalcula los parámetros del complejo simplicial, reordenando e indexando sus simplices,
     # volviendo a calcular su matriz de caras y su c-vector además de sus facests y dimensión
     def recalculate(self):

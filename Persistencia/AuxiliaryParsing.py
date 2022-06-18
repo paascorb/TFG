@@ -3,7 +3,6 @@ from ModeloDeDominio.BooleanFunction import BooleanFunction
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
 from ModeloDeDominio.VectorField import VectorField
-import numpy as np
 
 """
 Métodos para el parseo entre diccionarios y objetos de nuestro modelo de dominio
@@ -120,10 +119,7 @@ def vf_decode(json_dict):
     VectorField
         Campo de vectores traducido del diccionario proporcionado.
     """
-    fblocks = list()
-    for elem in json_dict.get('fblocks'):
-        fblocks.append(np.array(elem))
-    vf = VectorField(json_dict.get('id'), fblocks, json_dict.get('c_vector'))
+    vf = VectorField(json_dict.get('id'), json_dict.get('fblocks'), json_dict.get('c_vector'))
     vf.routes = json_dict.get('routes')
     vf.targets = json_dict.get('targets')
     vf.sources = json_dict.get('sources')
