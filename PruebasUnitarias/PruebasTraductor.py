@@ -2,7 +2,7 @@
 import unittest
 from timeit import default_timer as timer
 import LogicaDeNegocio.Traductor as Tra
-import LogicaDeNegocio.Auxiliary as Aux
+import ModeloDeDominio.Auxiliary as Aux
 from ModeloDeDominio.BooleanFunction import BooleanFunction
 from ModeloDeDominio.Simplex import Simplex
 import PruebasUnitarias.PruebasAuxiliar as Puaux

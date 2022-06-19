@@ -1,6 +1,5 @@
 # Clase SimplicialComplex.py desarrollada por Pablo Ascorbe Fernández 20/04/2022
-import LogicaDeNegocio.Auxiliary as Aux
-from LogicaDeNegocio.Join import join
+import ModeloDeDominio.Auxiliary as Aux
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.VectorField import VectorField
 
@@ -196,14 +195,6 @@ class SimplicialComplex:
         closure_star = list(set(closure_star))
         star_closure = list(set(star_closure))
         return list(filter(lambda x: x not in star_closure, closure_star))
-
-    def cono(self, point):
-        """
-        TODO
-        :param point:
-        :return:
-        """
-        return join(self, point)
 
     # Método auxiliar que recalcula los parámetros del complejo simplicial, reordenando e indexando sus simplices,
     # volviendo a calcular su matriz de caras y su c-vector además de sus facests y dimensión

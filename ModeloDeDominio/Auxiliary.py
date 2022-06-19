@@ -1,4 +1,5 @@
-# Fichero con clases auxiliares desarrollado por Pablo Ascorbe Fernández 12/05/2022
+# Fichero con métodos auxiliares para los objetos del modelo de dominio desarrollado por
+# Pablo Ascorbe Fernández 12/05/2022
 import numpy as np
 
 """
@@ -214,11 +215,12 @@ def dimension_from_simplex(simplex):
     int
         Entero que representa la dimensión del último símplice de la lista proporcionada.
     """
-    return list(simplex)[len(simplex) - 1].dimension
+    num_simplex = len(simplex)
+    return simplex[num_simplex - 1].dimension if num_simplex != 0 else 0
 
 
 """
-Métodos auxiliares para la clase BooleanFunction
+Métodos auxiliares para la clase BooleanFunctions
 """
 
 
@@ -320,16 +322,6 @@ def slice_fmatrix(fmatrix, c_vector):
         aux_matrix = aux_matrix[c_vector[i]:, :]
         fblocks.append(fblock.tolist())
     return fblocks
-
-
-def get_sim_pos(c_vector, sim):
-    """
-    TODO
-    :param c_vector:
-    :param sim:
-    :return:
-    """
-    return sim.index - sum(c_vector[:sim.dimension])
 
 
 def get_sim_index(block_pos, block_index, c_vector):

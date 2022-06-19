@@ -4,16 +4,16 @@
 class BooleanFunction:
     """
     TODO
-    Clase BooleanFunction que modela una función booleana. En nuestro caso, que trabajamos en un contexto de complejos
+    Clase BooleanFunctions que modela una función booleana. En nuestro caso, que trabajamos en un contexto de complejos
     simpliciales, nos interesarán aquellas que sean monótonas.
 
     Attributes
     ----------
     """
-    # Contructor de la clase BooleanFunction.
+    # Contructor de la clase BooleanFunctions.
     def __init__(self, name, num_variables, outputs):
         self.name = name
-        if 2**num_variables == len(outputs):
+        if 2**num_variables == len(outputs) or (num_variables == 0 and not outputs):
             self.num_variables = num_variables
             self.outputs = outputs
             self.monotone_flag = None

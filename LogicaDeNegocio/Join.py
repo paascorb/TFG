@@ -1,26 +1,38 @@
-#Fichero de python que contiene la función Join para dos complejos simpliciales por Pablo Ascorbe 19/06/2022
+# Métodos de lógica de negocio que calculan el join y cono por Pablo Ascorbe 18/06/2022
 from functools import reduce
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
 
 
-def join(K, L):
+def join(k_sc, l_sc):
     """
-
-    :param K:
-    :param L:
+    TODO
+    :param k_sc:
+    :param l_sc:
     :return:
     """
-    all_simplex = K.simplex + L.simplex
-    for K_simplex in K.simplex:
+    all_simplex = k_sc.simplex + l_sc.simplex
+    for K_simplex in k_sc.simplex:
         k_sim_faces = list(K_simplex.faces) if K_simplex.dimension > 0 else [K_simplex]
-        for L_simplex in L.simplex:
+        for L_simplex in l_sc.simplex:
             faces_aux = k_sim_faces.copy()
             faces_aux.extend(L_simplex.faces if L_simplex.dimension > 0 else [L_simplex])
             simplex = Simplex(generate_sim_name(faces_aux), len(faces_aux) - 1)
-            simplex.set_faces(all_simplex_by_names(all_simplex, generate_faces_names(simplex.name)))
+            simplex.set_faces(set(all_simplex_by_names(all_simplex, generate_faces_names(simplex.name))))
             all_simplex.append(simplex)
-    return SimplicialComplex("L*K", K.omega + L.omega, all_simplex)
+    return SimplicialComplex("L*K", k_sc.omega + l_sc.omega, all_simplex)
+
+
+def cono(k):
+    """
+    TODO
+    :param k:
+    :return:
+    """
+    point = Simplex("Point", 0)
+    point.set_faces()
+    sc_point = SimplicialComplex("sc_point", 1, [point])
+    return join(k, sc_point)
 
 
 def generate_sim_name(faces):

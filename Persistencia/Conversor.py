@@ -1,4 +1,4 @@
-# Métodos auxiliares para la persistencia hecho por Pablo Ascorbe 25/05/2022
+# Métodos de conversión de JSON a objetos para la persistencia, hecho por Pablo Ascorbe 25/05/2022
 from ModeloDeDominio.BooleanFunction import BooleanFunction
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex

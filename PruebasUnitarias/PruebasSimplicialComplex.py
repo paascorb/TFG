@@ -1,7 +1,7 @@
 # Fichero de pruebas unitarias para la clase SimplicialComplex desarrollado por Pablo Ascorbe Fernández 18/06/2022
 import unittest
 import PruebasUnitarias.PruebasAuxiliar as Puaux
-import LogicaDeNegocio.Auxiliary as Aux
+import ModeloDeDominio.Auxiliary as Aux
 
 
 class TestSimplicialComplex(unittest.TestCase):

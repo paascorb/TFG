@@ -1,7 +1,7 @@
 # Fichero de pruebas unitarias para la funcion join desarrollado por Pablo Ascorbe Fernández 19/06/2022
 import unittest
 import PruebasUnitarias.PruebasAuxiliar as Puaux
-import LogicaDeNegocio.Join as join
+import LogicaDeNegocio.Join as Join
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
 
@@ -11,7 +11,7 @@ class TestJoin(unittest.TestCase):
     def test_generate_sim_name(self):
         sc = Puaux.crear_sc_prueba()
         expected_name = "ab"
-        name = join.generate_sim_name([sc.get_sim_by_name("b"), sc.get_sim_by_name("a")])
+        name = Join.generate_sim_name([sc.get_sim_by_name("b"), sc.get_sim_by_name("a")])
         self.assertTrue(name == expected_name)
 
     def test_join_1(self):
@@ -19,7 +19,7 @@ class TestJoin(unittest.TestCase):
         u = Puaux.crear_sim_prueba()
         u.set_faces()
         L = SimplicialComplex("L", 1, [u])
-        self.assertTrue(join.join(K, L).dimension == 3, "Error en el test join_1")
+        self.assertTrue(Join.join(K, L).dimension == 3, "Error en el test join_1")
 
     def test_join_2(self):
         # Complejo simplicial K
@@ -43,7 +43,7 @@ class TestJoin(unittest.TestCase):
         uv.set_faces({u, v})
         L = SimplicialComplex("L", 2, [u, v, uv])
         expected_c_vector = [5, 9, 7, 2]
-        self.assertTrue(join.join(K, L).c_vector == expected_c_vector, "Error en el test join_2")
+        self.assertTrue(Join.join(K, L).c_vector == expected_c_vector, "Error en el test join_2")
 
     if __name__ == '__main__':
         unittest.main()

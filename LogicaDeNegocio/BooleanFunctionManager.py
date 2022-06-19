@@ -1,41 +1,46 @@
 # Fichero logica de negocio para BF desarrollado por Pablo Ascorbe Fernández 17/06/2022
-from Persistencia import Persistence, AuxiliaryParsing
+from Persistencia.PersistenceBooleanFunction import *
 
 
-def add_boolean_function(bf, fichero):
+def add_boolean_function(bf):
     """
     TODO
     :param bf:
-    :param fichero:
     :return:
     """
-    Persistence.serialize(bf, fichero)
+    create_boolean_function(bf)
 
 
-def get_boolean_function(fichero):
+def get_boolean_function(bf_name):
     """
     TODO
-    :param fichero:
+    :param bf_name:
     :return:
     """
-    return AuxiliaryParsing.bf_decode(Persistence.deserialize(fichero))
+    return read_boolean_function(BooleanFunction(bf_name, 0, []))
 
 
-def remove_boolean_function(fichero):
+def remove_boolean_function(bf_name):
     """
     TODO
-    :param fichero:
+    :param bf_name:
     :return:
     """
-    Persistence.remove(fichero)
+    delete_boolean_function(BooleanFunction(bf_name, 0, []))
 
 
-def update_boolean_function(bf, fichero):
+def edit_boolean_function(bf):
     """
     TODO
     :param bf:
-    :param fichero:
     :return:
     """
-    Persistence.remove(fichero)
-    Persistence.serialize(bf, fichero)
+    update_boolean_function(bf)
+
+
+def list_boolean_functions():
+    """
+    TODO
+    :return:
+    """
+    return list_boolean_function()

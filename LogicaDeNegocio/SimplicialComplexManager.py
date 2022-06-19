@@ -1,41 +1,46 @@
 # Fichero logica de negocio para CS desarrollado por Pablo Ascorbe Fernández 25/05/2022
-from Persistencia import AuxiliaryParsing, Persistence
+from Persistencia.PersistenceSimplicialComplex import *
 
 
-def add_simplicial_complex(sc, fichero):
+def add_simplicial_complex(sc):
     """
 
     :param sc:
-    :param fichero:
     :return:
     """
-    Persistence.serialize(sc, fichero)
+    create_simplicial_complex(sc)
 
 
-def get_simplicial_complex(fichero):
+def get_simplicial_complex(sc_name):
     """
     TODO
-    :param fichero:
+    :param sc_name:
     :return:
     """
-    return AuxiliaryParsing.sc_decode(Persistence.deserialize(fichero))
+    return read_simplicial_complex(SimplicialComplex(sc_name, 0, []))
 
 
-def remove_simplicial_complex(fichero):
+def remove_simplicial_complex(sc_name):
     """
     TODO
-    :param fichero:
+    :param sc_name:
     :return:
     """
-    Persistence.remove(fichero)
+    delete_simplicial_complex(SimplicialComplex(sc_name, 0, []))
 
 
-def update_simplicial_complex(sc, fichero):
+def edit_simplicial_complex(sc):
     """
     TODO
     :param sc:
-    :param fichero:
     :return:
     """
-    Persistence.remove(fichero)
-    Persistence.serialize(sc, fichero)
+    update_simplicial_complex(sc)
+
+
+def list_simplicial_complexes():
+    """
+    TODO
+    :return:
+    """
+    return list_simplicial_complex()

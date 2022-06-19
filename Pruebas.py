@@ -1,12 +1,5 @@
-import os
-
-from ModeloDeDominio.Simplex import *
-from ModeloDeDominio.SimplicialComplex import *
 from ModeloDeDominio.BooleanFunction import *
-from LogicaDeNegocio.Auxiliary import *
-import json
 from Persistencia import Persistence
-from Persistencia import AuxiliaryParsing
 
 # s = Simplex('a', 0)
 # v = Simplex('b', 0)
@@ -57,7 +50,7 @@ from Persistencia import AuxiliaryParsing
 # print(sc.can_expand(n, rn))
 # print(sc.expand(n, rn))
 
-# prueba_fb = BooleanFunction(3, [1, 1, 1, 1, 1, 1, 1, 1])
+# prueba_fb = BooleanFunctions(3, [1, 1, 1, 1, 1, 1, 1, 1])
 # print(prueba_fb)
 
 # print(check_output(7))

@@ -1,6 +1,6 @@
 # Fichero de pruebas unitarias para la lógica de las fb desarrollado por Pablo Ascorbe Fernández 23/05/2022
 import unittest
-import LogicaDeNegocio.Auxiliary as Aux
+import ModeloDeDominio.Auxiliary as Aux
 
 
 class TestBooleanFunction(unittest.TestCase):

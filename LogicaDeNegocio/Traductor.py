@@ -1,6 +1,6 @@
 # Fichero de traducción entre sc y fb desarrollado por Pablo Ascorbe Fernández 15/06/2022
 from functools import reduce
-import LogicaDeNegocio.Auxiliary as Aux
+import ModeloDeDominio.Auxiliary as Aux
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
 from ModeloDeDominio.BooleanFunction import BooleanFunction

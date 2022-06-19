@@ -1,5 +1,5 @@
 # Lógica de negocio para crear un campo de vectores completo desarrollada por Pablo Ascorbe Fernández 17/06/2022
-import LogicaDeNegocio.Auxiliary as Aux
+import ModeloDeDominio.Auxiliary as Aux
 from LogicaDeNegocio.Exceptions import *
 
 

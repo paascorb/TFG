@@ -1,7 +1,7 @@
 # Fichero de pruebas unitarias para VectorField por Pablo Ascorbe Fernández 16/06/2022
 import operator
 import unittest
-import LogicaDeNegocio.Auxiliary as Aux
+import ModeloDeDominio.Auxiliary as Aux
 import PruebasUnitarias.PruebasAuxiliar as Puaux
 from ModeloDeDominio.VectorField import VectorField
 

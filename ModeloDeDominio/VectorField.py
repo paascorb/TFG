@@ -1,5 +1,4 @@
 # Clase VectorField.py desarrollada por Pablo Ascorbe Fernández 16/06/2022
-import LogicaDeNegocio.Auxiliary as Aux
 from LogicaDeNegocio.Exceptions import *
 
 
@@ -21,6 +20,20 @@ class VectorField:
         self.routes = dict()
         self.sources = list()
         self.targets = list()
+
+    def __str__(self):
+        """
+        TODO
+        :return:
+        """
+        return "Campo de vectores: " + self.name + " Rutas: "+str(self.routes)
+
+    def __repr__(self):
+        """
+        TODO
+        :return:
+        """
+        return "Campo de vectores: " + self.name + " Rutas: "+str(self.routes)
 
     def add_route(self, pair):
         """
@@ -69,8 +82,8 @@ class VectorField:
         :param pair:
         :return:
         """
-        fila = Aux.get_sim_pos(self.c_vector, pair[0])
-        columna = Aux.get_sim_pos(self.c_vector, pair[1])
+        fila = self.get_sim_pos(pair[0])
+        columna = self.get_sim_pos(pair[1])
         return (fila, columna) if self.fblocks[pair[0].dimension][fila][columna] == 1 else None
 
     def cross_out_pair(self, pair):
@@ -102,19 +115,13 @@ class VectorField:
         accesible_routes.remove(pair[0].name)
         return accesible_routes if pair[0].name not in accesible_routes else None
 
-    def __str__(self):
+    def get_sim_pos(self, sim):
         """
         TODO
+        :param sim:
         :return:
         """
-        return "Campo de vectores: " + self.name + " Rutas: "+str(self.routes)
-
-    def __repr__(self):
-        """
-        TODO
-        :return:
-        """
-        return "Campo de vectores: " + self.name + " Rutas: "+str(self.routes)
+        return sim.index - sum(self.c_vector[:sim.dimension])
 
     def json_encode(self):
         """
