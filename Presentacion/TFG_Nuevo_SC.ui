@@ -145,8 +145,65 @@ QPushButton:hover{
         <string>Símplices</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QListWidget" name="listWidget">
+        <item row="1" column="1" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+         <widget class="QPushButton" name="pushButton_QuitarSim">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>340</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>340</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{
+color: rgb(255, 255, 255);
+background-color: rgb(71, 71, 71);
+border: 1px solid;
+border-radius: 10px;}
+
+QPushButton:hover{
+	background-color: rgb(100, 100, 100);
+}</string>
+          </property>
+          <property name="text">
+           <string>Quitar</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QListWidget" name="list_simplex">
           <property name="minimumSize">
            <size>
             <width>350</width>
@@ -222,32 +279,8 @@ background-color: rgb(177, 177, 177);</string>
         <string>Añadir Símplice</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Caras</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Dimensión:</string>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="1">
-         <widget class="QLineEdit" name="lineEdit_3">
+         <widget class="QLineEdit" name="text_dim_sim">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
@@ -259,26 +292,8 @@ background-color: rgb(177, 177, 177);</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Nombre del Símplice:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QLineEdit" name="lineEdit_2">
+        <item row="4" column="1">
+         <widget class="QComboBox" name="posible_faces">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
@@ -290,8 +305,8 @@ background-color: rgb(177, 177, 177);</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0" colspan="2">
-         <widget class="QListWidget" name="listWidget_2">
+        <item row="7" column="0" colspan="2">
+         <widget class="QListWidget" name="list_faces">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -312,8 +327,8 @@ background-color: rgb(177, 177, 177);</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
-         <widget class="QComboBox" name="comboBox">
+        <item row="2" column="0" colspan="2">
+         <widget class="QLineEdit" name="text_nombre_sim">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
@@ -325,7 +340,7 @@ background-color: rgb(177, 177, 177);</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0" colspan="2">
+        <item row="8" column="0" colspan="2">
          <widget class="QPushButton" name="pushButton_Anadir">
           <property name="minimumSize">
            <size>
@@ -354,11 +369,111 @@ QPushButton:hover{
           </property>
          </widget>
         </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Caras</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButton_mas">
+            <property name="styleSheet">
+             <string notr="true">QToolButton{
+color: rgb(255, 255, 255);
+background-color: rgb(71, 71, 71);;}
+
+QToolButton:hover{
+	background-color: rgb(100, 100, 100);
+}</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../Recursos/resources.qrc">
+              <normaloff>:/images/mas.ico</normaloff>:/images/mas.ico</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButton_menos">
+            <property name="styleSheet">
+             <string notr="true">QToolButton{
+color: rgb(255, 255, 255);
+background-color: rgb(71, 71, 71);
+}
+
+QToolButton:hover{
+	background-color: rgb(100, 100, 100);
+}</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../Recursos/resources.qrc">
+              <normaloff>:/images/menos.ico</normaloff>:/images/menos.ico</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Nombre del Símplice:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Dimensión:</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="text_sc_name">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -380,6 +495,8 @@ background-color: rgb(177, 177, 177);</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Recursos/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

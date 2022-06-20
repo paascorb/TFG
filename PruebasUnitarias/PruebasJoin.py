@@ -1,6 +1,8 @@
 # Fichero de pruebas unitarias para la funcion join desarrollado por Pablo Ascorbe Fernández 19/06/2022
 import unittest
 import PruebasUnitarias.PruebasAuxiliar as Puaux
+
+import ModeloDeDominio.Auxiliary as Aux
 import LogicaDeNegocio.Join as Join
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
@@ -11,7 +13,7 @@ class TestJoin(unittest.TestCase):
     def test_generate_sim_name(self):
         sc = Puaux.crear_sc_prueba()
         expected_name = "ab"
-        name = Join.generate_sim_name([sc.get_sim_by_name("b"), sc.get_sim_by_name("a")])
+        name = Join.generate_sim_name([Aux.get_sim_by_name(sc.simplex, "b"), Aux.get_sim_by_name(sc.simplex, "a")])
         self.assertTrue(name == expected_name)
 
     def test_join_1(self):

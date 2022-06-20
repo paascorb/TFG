@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="images">
+    <file>mas.ico</file>
+    <file>menos.ico</file>
     <file>logo.png</file>
     <file>fondo.png</file>
   </qresource>

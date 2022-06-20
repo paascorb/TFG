@@ -219,6 +219,35 @@ def dimension_from_simplex(simplex):
     return simplex[num_simplex - 1].dimension if num_simplex != 0 else 0
 
 
+def get_num_simplex_by_dim(simplex, dim):
+    """
+    TODO
+    :param simplex:
+    :param dim:
+    :return:
+    """
+    return sum(sim.dimension == dim for sim in simplex)
+
+
+def list_simplex_by_dim(simplex, dim):
+    """
+    TODO
+    :param simplex:
+    :param dim:
+    :return:
+    """
+    return [sim for sim in simplex if sim.dimension == dim]
+
+
+def get_sim_by_name(simplex, s_name):
+    """
+    TODO
+    :param name:
+    :return:
+    """
+    return next((sim for sim in simplex if sim.name == s_name), None)
+
+
 """
 Métodos auxiliares para la clase BooleanFunctions
 """
@@ -316,9 +345,9 @@ def slice_fmatrix(fmatrix, c_vector):
     """
     fblocks = list()
     aux_matrix = np.array(fmatrix)
-    for i in range(0, len(c_vector)-1):
+    for i in range(0, len(c_vector) - 1):
         aux_matrix = aux_matrix[:, c_vector[i]:]
-        fblock = aux_matrix[:c_vector[i], :c_vector[i+1]]
+        fblock = aux_matrix[:c_vector[i], :c_vector[i + 1]]
         aux_matrix = aux_matrix[c_vector[i]:, :]
         fblocks.append(fblock.tolist())
     return fblocks

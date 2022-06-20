@@ -76,7 +76,7 @@ class TestPersistence(unittest.TestCase):
         create_simplicial_complex(sc)
         sc_deserializado = read_simplicial_complex(sc)
         self.assertTrue(sc == sc_deserializado, "Error en el test persistencia_sc")
-        sc.collapse(sc.get_sim_by_name("d"), sc.get_sim_by_name("ad"))
+        sc.collapse(Aux.get_sim_by_name(sc.simplex, "d"), Aux.get_sim_by_name(sc.simplex, "ad"))
         update_simplicial_complex(sc)
         up_sc_deserializado = read_simplicial_complex(sc)
         self.assertTrue(sc == up_sc_deserializado, "Error en el test persistencia_sc")

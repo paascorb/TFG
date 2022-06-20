@@ -58,14 +58,6 @@ class SimplicialComplex:
             return NotImplemented
         return self.name == other.name
 
-    def get_sim_by_name(self, name):
-        """
-        TODO
-        :param name:
-        :return:
-        """
-        return next((sim for sim in self.simplex if sim.name == name), None)
-
     def get_sim_cofaces(self, sim):
         """
         TODO
