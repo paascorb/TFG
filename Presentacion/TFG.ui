@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TFG</class>
+ <widget class="QMainWindow" name="TFG">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="font">
+   <font>
+    <family>Arial</family>
+    <pointsize>20</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>TFG Pablo Ascorbe</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Recursos/icono.ico</normaloff>../Recursos/icono.ico</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+background-image: url(:/images/fondo.png);
+background-color: rgb(27, 27, 27);
+color: rgb(255, 255, 255);
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetDefaultConstraint</enum>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::DefaultContextMenu</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>:/images/logo.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+      <property name="wordWrap">
+       <bool>false</bool>
+      </property>
+      <property name="openExternalLinks">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <widget class="QMenu" name="menuComplejo_Simplicial">
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="title">
+     <string>Complejo Simplicial</string>
+    </property>
+    <addaction name="actionNuevo_sc"/>
+    <addaction name="actionCargar_sc"/>
+    <addaction name="actionGuardar_sc"/>
+    <addaction name="actionListar_sc"/>
+   </widget>
+   <widget class="QMenu" name="menuFunci_n_Booleana">
+    <property name="title">
+     <string>Función Booleana</string>
+    </property>
+    <addaction name="actionNuevo_bf"/>
+    <addaction name="actionCargar_bf"/>
+    <addaction name="actionGuardar_bf"/>
+    <addaction name="actionListar_bf"/>
+   </widget>
+   <widget class="QMenu" name="menuAyuda">
+    <property name="title">
+     <string>Ayuda</string>
+    </property>
+    <addaction name="actionAyuda"/>
+    <addaction name="separator"/>
+    <addaction name="actionAcerca"/>
+   </widget>
+   <addaction name="menuComplejo_Simplicial"/>
+   <addaction name="menuFunci_n_Booleana"/>
+   <addaction name="menuAyuda"/>
+  </widget>
+  <action name="actionNuevo_sc">
+   <property name="text">
+    <string>Nuevo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionCargar_sc">
+   <property name="text">
+    <string>Cargar</string>
+   </property>
+  </action>
+  <action name="actionGuardar_sc">
+   <property name="text">
+    <string>Guardar</string>
+   </property>
+  </action>
+  <action name="actionListar_sc">
+   <property name="text">
+    <string>Listar</string>
+   </property>
+  </action>
+  <action name="actionNuevo_bf">
+   <property name="text">
+    <string>Nuevo</string>
+   </property>
+  </action>
+  <action name="actionCargar_bf">
+   <property name="text">
+    <string>Cargar</string>
+   </property>
+  </action>
+  <action name="actionGuardar_bf">
+   <property name="text">
+    <string>Guardar</string>
+   </property>
+  </action>
+  <action name="actionListar_bf">
+   <property name="text">
+    <string>Listar</string>
+   </property>
+  </action>
+  <action name="actionAyuda">
+   <property name="text">
+    <string>Ayuda de TFG Pablo Ascorbe</string>
+   </property>
+  </action>
+  <action name="actionAcerca">
+   <property name="text">
+    <string>Acerca de la aplicación</string>
+   </property>
+  </action>
+  <action name="actionCulo">
+   <property name="text">
+    <string>Culo</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../Recursos/resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
