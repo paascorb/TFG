@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QItemDelegate
+from PyQt5.QtWidgets import QWidget, QItemDelegate, QTextEdit
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from LogicaDeNegocio.SimplicialComplexManager import *
@@ -37,6 +37,14 @@ class ListarSC(QWidget):
         self.toolButton_load.setIconSize(QtCore.QSize(32, 32))
         self.toolButton_load.setObjectName("toolButton_load")
         self.gridLayout.addWidget(self.toolButton_load, 0, 0, 1, 1)
+        self.lineEdit = QtWidgets.QLineEdit(self)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.lineEdit.setFont(font)
+        self.lineEdit.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                    "background-color: rgb(177, 177, 177);")
+        self.lineEdit.setObjectName("lineEdit")
+        self.gridLayout.addWidget(self.lineEdit, 0, 4, 1, 1)
         self.toolButton_remove = QtWidgets.QToolButton(self)
         self.toolButton_remove.setMinimumSize(QtCore.QSize(40, 40))
         self.toolButton_remove.setStyleSheet("QToolButton{\n"
@@ -68,7 +76,7 @@ class ListarSC(QWidget):
         self.toolButton_Return.setIcon(icon2)
         self.toolButton_Return.setIconSize(QtCore.QSize(32, 32))
         self.toolButton_Return.setObjectName("toolButton")
-        self.gridLayout.addWidget(self.toolButton_Return, 0, 3, 1, 1)
+        self.gridLayout.addWidget(self.toolButton_Return, 0, 5, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 0, 2, 1, 1)
         self.tableSC = QtWidgets.QTableWidget(self)
@@ -117,7 +125,15 @@ class ListarSC(QWidget):
         self.tableSC.horizontalHeader().setCascadingSectionResizes(False)
         self.tableSC.horizontalHeader().setDefaultSectionSize(100)
         self.tableSC.verticalHeader().setCascadingSectionResizes(False)
-        self.gridLayout.addWidget(self.tableSC, 1, 0, 1, 4)
+        self.gridLayout.addWidget(self.tableSC, 1, 0, 1, 6)
+        self.label = QtWidgets.QLabel(self)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 0, 3, 1, 1)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem, 0, 2, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
 
         header = self.tableSC.horizontalHeader()
@@ -138,6 +154,8 @@ class ListarSC(QWidget):
         self.tableSC.horizontalHeader().sectionClicked.connect(self.sort_by_column)
         self.tableSC.horizontalHeader().sectionDoubleClicked.connect(self.invert_sort_by_column)
         self.toolButton_Return.clicked.connect(self.close)
+        self.lineEdit.textChanged.connect(self.create_table_by_search)
+        # self.tableSC.itemDoubleClicked.connect(self)
 
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -145,6 +163,8 @@ class ListarSC(QWidget):
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Form", "Lista de Complejos Simpliciales"))
+        self.lineEdit.setPlaceholderText(_translate("Form", "Buscar"))
+        self.label.setText(_translate("Form", "Selecciona el complejo simplicial que deseas cargar:"))
         self.toolButton_load.setText(_translate("Form", "..."))
         self.toolButton_remove.setText(_translate("Form", "..."))
         self.toolButton_Return.setText(_translate("Form", "..."))
@@ -189,6 +209,34 @@ class ListarSC(QWidget):
             self.tableSC.setItem(i, 4, QtWidgets.QTableWidgetItem(c_vector_str))
             self.tableSC.setItem(i, 5, QtWidgets.QTableWidgetItem(str(len(sc.simplex))))
         self.tableSC.setItemDelegate(AligDelegate())
+
+    def create_table_by_search(self):
+        self.tableSC.setRowCount(0)
+        crit = self.lineEdit.text()
+        if crit:
+            scomplexes = list_simplicial_complexes()
+            sc_crit = [x for x in scomplexes if x.name.lower().startswith(crit.lower())]
+            if sc_crit:
+                for i, sc in enumerate(sc_crit):
+                    numRows = self.tableSC.rowCount()
+                    self.tableSC.insertRow(numRows)
+                    self.tableSC.setItem(i, 0, QtWidgets.QTableWidgetItem(sc.name))
+                    self.tableSC.setItem(i, 1, QtWidgets.QTableWidgetItem(str(sc.omega)))
+                    self.tableSC.setItem(i, 2, QtWidgets.QTableWidgetItem(str(sc.dimension)))
+                    self.tableSC.setItem(i, 3, QtWidgets.QTableWidgetItem(str(int(sc.euler_char))))
+                    c_vector_str = "("
+                    for j, elem in enumerate(sc.c_vector):
+                        c_vector_str = c_vector_str + str(elem)
+                        if j != len(sc.c_vector) - 1:
+                            c_vector_str = c_vector_str + ","
+                    c_vector_str = c_vector_str + ")"
+                    self.tableSC.setItem(i, 4, QtWidgets.QTableWidgetItem(c_vector_str))
+                    self.tableSC.setItem(i, 5, QtWidgets.QTableWidgetItem(str(len(sc.simplex))))
+                self.tableSC.setItemDelegate(AligDelegate())
+            else:
+                self.tableSC.setRowCount(0)
+        else:
+            self.add_scs_to_table(list_simplicial_complexes())
 
     def sort_by_column(self):
         column = self.tableSC.currentColumn()
