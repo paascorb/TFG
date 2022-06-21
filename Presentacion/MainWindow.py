@@ -1,5 +1,6 @@
 import sys
 
+from Presentacion.Listar_BF import ListarBF
 from Presentacion.Listar_SC import ListarSC
 from Presentacion.Nuevo_BF import NuevoBF
 from Presentacion.Nuevo_SC import NuevoSC
@@ -12,6 +13,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.window_listar_bf = None
         self.window_nuevo_bf = None
         self.window_listar_sc = None
         self.window_nuevo_sc = None
@@ -110,6 +112,7 @@ class MainWindow(QMainWindow):
         self.actionNuevo_sc.triggered.connect(self.open_nuevo_sc)
         self.actionListar_sc.triggered.connect(self.open_listar_sc)
         self.actionNuevo_bf.triggered.connect(self.open_nuevo_bf)
+        self.actionListar_bf.triggered.connect(self.open_listar_bf)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -128,6 +131,7 @@ class MainWindow(QMainWindow):
         self.actionCargar_bf.setText(_translate("TFG", "Cargar"))
         self.actionGuardar_bf.setText(_translate("TFG", "Guardar"))
         self.actionListar_bf.setText(_translate("TFG", "Listar"))
+        self.actionListar_bf.setShortcut(_translate("TFG", "Ctrl+K"))
         self.actionAyuda.setText(_translate("TFG", "Ayuda de TFG Pablo Ascorbe"))
         self.actionAcerca.setText(_translate("TFG", "Acerca de la aplicación"))
 
@@ -144,6 +148,11 @@ class MainWindow(QMainWindow):
     def open_nuevo_bf(self):
         self.window_nuevo_bf = NuevoBF(self)
         self.window_nuevo_bf.show()
+        self.hide()
+
+    def open_listar_bf(self):
+        self.window_listar_bf = ListarBF(self)
+        self.window_listar_bf.show()
         self.hide()
 
 

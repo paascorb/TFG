@@ -1,6 +1,11 @@
 from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+import ModeloDeDominio.Auxiliary as Aux
+from LogicaDeNegocio.BooleanFunctionManager import *
+from ModeloDeDominio.BooleanFunction import BooleanFunction
+from Presentacion.PresentacionAuxiliar import *
+
 
 class NuevoBF(QWidget):
     def __init__(self, parent):
@@ -68,6 +73,8 @@ class NuevoBF(QWidget):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.spin_n_variables.setFont(font)
+        self.spin_n_variables.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                        "background-color: rgb(177, 177, 177);")
         self.spin_n_variables.setObjectName("spin_n_variables")
         self.gridLayout.addWidget(self.spin_n_variables, 2, 1, 1, 2)
         self.label_3 = QtWidgets.QLabel(self)
@@ -178,6 +185,7 @@ class NuevoBF(QWidget):
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        self.table_ouputs.setAlternatingRowColors(True)
         self.table_ouputs.verticalHeader().setVisible(False)
         delegate_one_column = ReadOnlyDelegate(self.table_ouputs)
         self.table_ouputs.setItemDelegate(delegate_one_column)
@@ -193,6 +201,9 @@ class NuevoBF(QWidget):
 
         self.spin_n_variables.textChanged.connect(self.rellenar_tabla)
         self.pushButton_Cancelar.clicked.connect(self.close)
+        self.pushButton_Aceptar.clicked.connect(self.acept_and_save_form)
+        self.toolButton_0.clicked.connect(self.put_0_on_focus)
+        self.toolButton_1.clicked.connect(self.put_1_on_focus)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -209,6 +220,49 @@ class NuevoBF(QWidget):
         self.pushButton_Aceptar.setText(_translate("Form_Nuevo_FB", "Aceptar"))
         self.pushButton_Cancelar.setText(_translate("Form_Nuevo_FB", "Cancelar"))
 
+    def acept_and_save_form(self):
+        nombre_bf = self.text_fb_name.text()
+        if not nombre_bf:
+            crear_mensaje_error('Introduzca el nombre de la función booleana', "Función Booleana")
+        elif '"' in nombre_bf:
+            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+            self.text_sc_name.clear()
+        else:
+            all_bf = list_boolean_functions()
+            edit = False
+            if any(x for x in all_bf if x.name == nombre_bf):
+                box = QtWidgets.QMessageBox()
+                box.setIcon(QtWidgets.QMessageBox.Question)
+                box.setWindowTitle('GUARDAR')
+                box.setText('Ya existe una Función Booleana con ese nombre \r\n ¿Deseas sobreescribirla?')
+                box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                buttonY = box.button(QtWidgets.QMessageBox.Yes)
+                buttonY.setText('Sí')
+                buttonN = box.button(QtWidgets.QMessageBox.No)
+                buttonN.setText('No')
+                icon = QtGui.QIcon()
+                icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
+                box.setWindowIcon(icon)
+                box.setStyleSheet("background-color: rgb(27, 27, 27);\n"
+                                  "color: rgb(255, 255, 255);")
+                buttonN.setStyleSheet("background-color: rgb(71, 71, 71)")
+                buttonY.setStyleSheet("background-color: rgb(71, 71, 71)")
+                box.exec_()
+
+                if box.clickedButton() == buttonY:
+                    edit = True
+                else:
+                    return
+            outputs = self.get_outputs_from_table()
+            bf = BooleanFunction(nombre_bf, int(self.spin_n_variables.text()), outputs)
+            bf.set_monotone_flag(Aux.is_monotone(bf.outputs))
+            if edit:
+                edit_boolean_function(bf)
+            else:
+                add_boolean_function(bf)
+            self.close_accepted = True
+            self.close()
+
     def rellenar_tabla(self):
         self.table_ouputs.setRowCount(0)
         num = int(self.spin_n_variables.text())
@@ -217,6 +271,31 @@ class NuevoBF(QWidget):
             self.table_ouputs.insertRow(numRows)
             self.table_ouputs.setItem(i, 0, QtWidgets.QTableWidgetItem(str(i)))
             self.table_ouputs.setItem(i, 1, QtWidgets.QTableWidgetItem('0'))
+
+    def get_outputs_from_table(self):
+        outputs = list()
+        for row in range(self.table_ouputs.rowCount()):
+            item = self.table_ouputs.item(row, 1)
+            outputs.append(int(item.text()))
+        return outputs
+
+    def put_0_on_focus(self):
+        row = self.table_ouputs.currentRow()
+        self.table_ouputs.setItem(row, 1, QtWidgets.QTableWidgetItem('0'))
+        current = self.table_ouputs.currentIndex()
+        next_index = current.sibling(row + 1, current.column())
+        if next_index.isValid():
+            self.table_ouputs.setCurrentIndex(next_index)
+            self.table_ouputs.edit(next_index)
+
+    def put_1_on_focus(self):
+        row = self.table_ouputs.currentRow()
+        self.table_ouputs.setItem(row, 1, QtWidgets.QTableWidgetItem('1'))
+        current = self.table_ouputs.currentIndex()
+        next_index = current.sibling(row + 1, current.column())
+        if next_index.isValid():
+            self.table_ouputs.setCurrentIndex(next_index)
+            self.table_ouputs.edit(next_index)
 
     def closeEvent(self, event):
         if self.close_accepted:

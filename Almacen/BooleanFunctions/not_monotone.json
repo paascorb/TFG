@@ -1,0 +1,11 @@
+{
+    "id": "not_monotone",
+    "num_variables": 2,
+    "outputs": [
+        0,
+        0,
+        1,
+        0
+    ],
+    "m_flag": false
+}

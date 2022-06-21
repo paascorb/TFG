@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from LogicaDeNegocio.SimplicialComplexManager import *
 import ModeloDeDominio.Auxiliary as Aux
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
+from Presentacion.PresentacionAuxiliar import *
 
 
 class NuevoSC(QWidget):
@@ -269,6 +270,7 @@ class NuevoSC(QWidget):
         self.text_sc_name.setObjectName("text_sc_name")
         self.gridLayout.addWidget(self.text_sc_name, 2, 0, 1, 1)
         self.gridLayout_4.addLayout(self.gridLayout, 0, 0, 1, 1)
+        self.text_dim_sim.setText("0")
 
         # Aquí definiremos el orden:
         self.setTabOrder(self.text_sc_name, self.text_nombre_sim)
@@ -324,7 +326,7 @@ class NuevoSC(QWidget):
         repetido = self.list_faces.findItems(face, QtCore.Qt.MatchExactly)
         dim = int(self.text_dim_sim.text()) if self.text_dim_sim.text() else 0
         if self.list_faces.count() == dim + 1:
-            self.crear_mensaje_error("El símplice ha alcanzado el máximo de caras posible", "Caras Símplice")
+            crear_mensaje_error("El símplice ha alcanzado el máximo de caras posible", "Caras Símplice")
         elif not repetido:
             sim = Aux.get_sim_by_name(self.simplex, face)
             self.faces.append(sim)
@@ -344,10 +346,7 @@ class NuevoSC(QWidget):
         self.list_faces.clear()
         self.faces.clear()
         dim = self.text_dim_sim.text()
-        if not dim:
-            dim = 0
-        elif not dim.isdigit() or int(dim) < 0:
-            self.crear_mensaje_error("La dimensión debe ser un entero no negativo", "Dimensión")
+        if not dim.isdigit() or int(dim) < 0:
             self.text_dim_sim.setText("")
         else:
             dim = int(dim)
@@ -360,25 +359,20 @@ class NuevoSC(QWidget):
         nombre_sim = self.text_nombre_sim.text()
         repetido = Aux.get_sim_by_name(self.simplex, nombre_sim)
         if not nombre_sim:
-            self.crear_mensaje_error('Introduzca el nombre del símplice',
-                                     "Nombre Símplice")
+            crear_mensaje_error('Introduzca el nombre del símplice', "Nombre Símplice")
         elif repetido is not None:
-            self.crear_mensaje_error('Ya existe un símplice con ese nombre',
-                                     "Nombre Símplice")
+            crear_mensaje_error('Ya existe un símplice con ese nombre', "Nombre Símplice")
         else:
             dim = int(self.text_dim_sim.text()) if self.text_dim_sim.text() else -1
             if dim != len(self.faces) - 1 and dim != 0:
-                self.crear_mensaje_error("Las caras del símplice no son válidas para su dimensión",
-                                         "Caras Símplice")
+                crear_mensaje_error("Las caras del símplice no son válidas para su dimensión",  "Caras Símplice")
             elif dim == -1:
-                self.crear_mensaje_error("Introduzca una dimensión",
-                                         "Dimensión Símplice")
+                crear_mensaje_error("Introduzca una dimensión", "Dimensión Símplice")
             else:
                 sim = Simplex(nombre_sim, dim)
                 sim_faces = set([x for x in self.faces if x is not None])
                 if sim_faces and any(elem.faces == sim_faces for elem in self.simplex):
-                    self.crear_mensaje_error("Ya existe un símplice con esas caras",
-                                             "Caras Símplice")
+                    crear_mensaje_error("Ya existe un símplice con esas caras", "Caras Símplice")
                 else:
                     sim.set_faces(sim_faces)
                     self.simplex.append(sim)
@@ -411,16 +405,43 @@ class NuevoSC(QWidget):
     def acept_and_save_form(self):
         nombre_sc = self.text_sc_name.text()
         if not nombre_sc:
-            self.crear_mensaje_error('Introduzca el nombre del complejo simplicial',
-                                     "Complejo Simplicial")
+            crear_mensaje_error('Introduzca el nombre del complejo simplicial', "Complejo Simplicial")
         elif '"' in nombre_sc:
-            self.crear_mensaje_error('No intentes romperme el programa',
-                                     "Un saludo")
+            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
             self.text_sc_name.clear()
         else:
+            all_sc = list_simplicial_complexes()
+            edit = False
+            if any(x for x in all_sc if x.name == nombre_sc):
+                box = QtWidgets.QMessageBox()
+                box.setIcon(QtWidgets.QMessageBox.Question)
+                box.setWindowTitle('GUARDAR')
+                box.setText('Ya existe un Complejo simplicial con ese nombre \r\n ¿Deseas sobreescribirlo?')
+                box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                buttonY = box.button(QtWidgets.QMessageBox.Yes)
+                buttonY.setText('Sí')
+                buttonN = box.button(QtWidgets.QMessageBox.No)
+                buttonN.setText('No')
+                icon = QtGui.QIcon()
+                icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
+                box.setWindowIcon(icon)
+                box.setStyleSheet("background-image: url(:/images/fondo.png);\n"
+                                  "background-color: rgb(27, 27, 27);\n"
+                                  "color: rgb(255, 255, 255);")
+                buttonN.setStyleSheet("background-color: rgb(71, 71, 71)")
+                buttonY.setStyleSheet("background-color: rgb(71, 71, 71)")
+                box.exec_()
+
+                if box.clickedButton() == buttonY:
+                    edit = True
+                else:
+                    return
             puntos = Aux.get_num_simplex_by_dim(self.simplex, 0)
             sc = SimplicialComplex(nombre_sc, puntos, self.simplex)
-            add_simplicial_complex(sc)
+            if edit:
+                edit_simplicial_complex(sc)
+            else:
+                add_simplicial_complex(sc)
             self.close_accepted = True
             self.close()
 
@@ -442,21 +463,3 @@ class NuevoSC(QWidget):
         self.toolButton_menos.setText(_translate("Form_Nuevo_SC", "..."))
         self.label_2.setText(_translate("Form_Nuevo_SC", "Nombre del Símplice:"))
         self.label_3.setText(_translate("Form_Nuevo_SC", "Dimensión:"))
-
-    def crear_mensaje_error(self, mensaje, titulo):
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Critical)
-        msg.setText("Error")
-        msg.setInformativeText(mensaje)
-        msg.setWindowTitle(titulo)
-        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
-        msg.setWindowIcon(icon)
-        msg.setStyleSheet("background-color: rgb(27, 27, 27);\n"
-                          "color: rgb(255, 255, 255);")
-        ok_button = msg.button(QtWidgets.QMessageBox.Ok)
-        ok_button.setText('Aceptar')
-        ok_button.setStyleSheet("background-color: rgb(71, 71, 71)")
-        msg.exec_()
-

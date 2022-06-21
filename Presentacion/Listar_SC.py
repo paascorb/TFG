@@ -53,6 +53,22 @@ class ListarSC(QWidget):
         self.toolButton_remove.setIconSize(QtCore.QSize(32, 32))
         self.toolButton_remove.setObjectName("toolButton_remove")
         self.gridLayout.addWidget(self.toolButton_remove, 0, 1, 1, 1)
+        self.toolButton_Return = QtWidgets.QToolButton(self)
+        self.toolButton_Return.setMinimumSize(QtCore.QSize(40, 40))
+        self.toolButton_Return.setStyleSheet("QToolButton{\n"
+                                             "color: rgb(255, 255, 255);\n"
+                                             "background-color: rgb(71, 71, 71);\n"
+                                             "}\n"
+                                             "\n"
+                                             "QToolButton:hover{\n"
+                                             "    background-color: rgb(100, 100, 100);\n"
+                                             "}")
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/images/return.ico"))
+        self.toolButton_Return.setIcon(icon2)
+        self.toolButton_Return.setIconSize(QtCore.QSize(32, 32))
+        self.toolButton_Return.setObjectName("toolButton")
+        self.gridLayout.addWidget(self.toolButton_Return, 0, 3, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 0, 2, 1, 1)
         self.tableSC = QtWidgets.QTableWidget(self)
@@ -101,7 +117,7 @@ class ListarSC(QWidget):
         self.tableSC.horizontalHeader().setCascadingSectionResizes(False)
         self.tableSC.horizontalHeader().setDefaultSectionSize(100)
         self.tableSC.verticalHeader().setCascadingSectionResizes(False)
-        self.gridLayout.addWidget(self.tableSC, 1, 0, 1, 3)
+        self.gridLayout.addWidget(self.tableSC, 1, 0, 1, 4)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
 
         header = self.tableSC.horizontalHeader()
@@ -121,6 +137,7 @@ class ListarSC(QWidget):
         self.toolButton_remove.clicked.connect(self.remove_row)
         self.tableSC.horizontalHeader().sectionClicked.connect(self.sort_by_column)
         self.tableSC.horizontalHeader().sectionDoubleClicked.connect(self.invert_sort_by_column)
+        self.toolButton_Return.clicked.connect(self.close)
 
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -130,6 +147,7 @@ class ListarSC(QWidget):
         self.setWindowTitle(_translate("Form", "Lista de Complejos Simpliciales"))
         self.toolButton_load.setText(_translate("Form", "..."))
         self.toolButton_remove.setText(_translate("Form", "..."))
+        self.toolButton_Return.setText(_translate("Form", "..."))
         item = self.tableSC.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Nombre"))
         item = self.tableSC.horizontalHeaderItem(1)
