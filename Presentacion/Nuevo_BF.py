@@ -187,7 +187,7 @@ class NuevoBF(QWidget):
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         self.table_ouputs.setAlternatingRowColors(True)
         self.table_ouputs.verticalHeader().setVisible(False)
-        delegate_one_column = ReadOnlyDelegate(self.table_ouputs)
+        delegate_one_column = DelegateTableOutputs(self.table_ouputs)
         self.table_ouputs.setItemDelegate(delegate_one_column)
 
         self.retranslateUi()
@@ -325,9 +325,3 @@ class NuevoBF(QWidget):
                 event.accept()
             else:
                 event.ignore()
-
-
-class ReadOnlyDelegate(QtWidgets.QStyledItemDelegate):
-    def createEditor(self, parent, option, index):
-        if index.column() == (index.model().columnCount() - 1):
-            return super().createEditor(parent, option, index)

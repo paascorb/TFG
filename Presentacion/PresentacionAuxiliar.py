@@ -18,3 +18,13 @@ def crear_mensaje_error(mensaje, titulo):
     ok_button.setText('Aceptar')
     ok_button.setStyleSheet("background-color: rgb(71, 71, 71)")
     msg.exec_()
+
+
+class DelegateTableOutputs(QtWidgets.QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        editor = super().createEditor(parent, option, index)
+        if index.column() == (index.model().columnCount() - 1):
+            if isinstance(editor, QtWidgets.QLineEdit):
+                validator = QtGui.QIntValidator(0, 1, editor)
+                editor.setValidator(validator)
+            return editor
