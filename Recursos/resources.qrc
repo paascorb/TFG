@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="images">
+    <file>edit.ico</file>
+    <file>translation_bf_to_sc.ico</file>
+    <file>translation_sc_to_bf.ico</file>
     <file>return.ico</file>
     <file>load.ico</file>
     <file>remove.ico</file>

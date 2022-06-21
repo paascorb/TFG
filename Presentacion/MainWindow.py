@@ -2,6 +2,7 @@ import sys
 
 from Presentacion.Listar_BF import ListarBF
 from Presentacion.Listar_SC import ListarSC
+from Presentacion.Main_BF import MenuBF
 from Presentacion.Nuevo_BF import NuevoBF
 from Presentacion.Nuevo_SC import NuevoSC
 from Recursos import resources
@@ -28,6 +29,28 @@ class MainWindow(QMainWindow):
                            "background-image: url(:/images/fondo.png);\n"
                            "background-color: rgb(27, 27, 27);\n"
                            "color: rgb(255, 255, 255);\n"
+                           "}\n"
+                           "\n"
+                           "QToolBar QToolButton{\n"
+                           "color: rgb(255, 255, 255);\n"
+                           "background-color:transparent;}\n"
+                           "\n"
+                           "QToolBar QToolButton:hover{\n"
+                           "    background-color: rgb(100, 100, 100);\n"
+                           "}\n"
+                           "\n"
+                           "QToolBar::separator{\n"
+                           "    background-color: rgb(208, 208, 208);\n"
+                           "    width: 2px;\n"
+                           "}\n"
+                           "\n"
+                           "\n"
+                           "QMenuBar::item:selected{\n"
+                           "    background-color: rgb(100, 100, 100);\n"
+                           "}\n"
+                           "\n"
+                           "QMenu::item:selected{\n"
+                           "    background-color: rgb(100, 100, 100);\n"
                            "}\n"
                            "")
         self.centralwidget = QtWidgets.QWidget(self)
@@ -75,16 +98,12 @@ class MainWindow(QMainWindow):
         self.actionNuevo_sc.setObjectName("actionNuevo_sc")
         self.actionCargar_sc = QtWidgets.QAction(self)
         self.actionCargar_sc.setObjectName("actionCargar_sc")
-        self.actionGuardar_sc = QtWidgets.QAction(self)
-        self.actionGuardar_sc.setObjectName("actionGuardar_sc")
         self.actionListar_sc = QtWidgets.QAction(self)
         self.actionListar_sc.setObjectName("actionListar_sc")
         self.actionNuevo_bf = QtWidgets.QAction(self)
         self.actionNuevo_bf.setObjectName("actionNuevo_bf")
         self.actionCargar_bf = QtWidgets.QAction(self)
         self.actionCargar_bf.setObjectName("actionCargar_bf")
-        self.actionGuardar_bf = QtWidgets.QAction(self)
-        self.actionGuardar_bf.setObjectName("actionGuardar_bf")
         self.actionListar_bf = QtWidgets.QAction(self)
         self.actionListar_bf.setObjectName("actionListar_bf")
         self.actionAyuda = QtWidgets.QAction(self)
@@ -93,11 +112,9 @@ class MainWindow(QMainWindow):
         self.actionAcerca.setObjectName("actionAcerca")
         self.menuComplejo_Simplicial.addAction(self.actionNuevo_sc)
         self.menuComplejo_Simplicial.addAction(self.actionCargar_sc)
-        self.menuComplejo_Simplicial.addAction(self.actionGuardar_sc)
         self.menuComplejo_Simplicial.addAction(self.actionListar_sc)
         self.menuFunci_n_Booleana.addAction(self.actionNuevo_bf)
         self.menuFunci_n_Booleana.addAction(self.actionCargar_bf)
-        self.menuFunci_n_Booleana.addAction(self.actionGuardar_bf)
         self.menuFunci_n_Booleana.addAction(self.actionListar_bf)
         self.menuAyuda.addAction(self.actionAyuda)
         self.menuAyuda.addSeparator()
@@ -123,13 +140,11 @@ class MainWindow(QMainWindow):
         self.actionNuevo_sc.setText(_translate("TFG", "Nuevo"))
         self.actionNuevo_sc.setShortcut(_translate("TFG", "Ctrl+N"))
         self.actionCargar_sc.setText(_translate("TFG", "Cargar"))
-        self.actionGuardar_sc.setText(_translate("TFG", "Guardar"))
         self.actionListar_sc.setText(_translate("TFG", "Listar"))
         self.actionListar_sc.setShortcut(_translate("TFG", "Ctrl+L"))
         self.actionNuevo_bf.setText(_translate("TFG", "Nuevo"))
         self.actionNuevo_bf.setShortcut(_translate("TFG", "Ctrl+M"))
         self.actionCargar_bf.setText(_translate("TFG", "Cargar"))
-        self.actionGuardar_bf.setText(_translate("TFG", "Guardar"))
         self.actionListar_bf.setText(_translate("TFG", "Listar"))
         self.actionListar_bf.setShortcut(_translate("TFG", "Ctrl+K"))
         self.actionAyuda.setText(_translate("TFG", "Ayuda de TFG Pablo Ascorbe"))
@@ -144,16 +159,20 @@ class MainWindow(QMainWindow):
         self.window_listar_sc = ListarSC(self)
         self.window_listar_sc.show()
         self.hide()
-        
+
     def open_nuevo_bf(self):
         self.window_nuevo_bf = NuevoBF(self)
         self.window_nuevo_bf.show()
         self.hide()
 
     def open_listar_bf(self):
-        self.window_listar_bf = ListarBF(self)
+        menu_bf = MenuBF()
+        self.window_listar_bf = ListarBF(self, menu_bf)
         self.window_listar_bf.show()
         self.hide()
+
+    def open_cargar_bf(self):
+        return self
 
 
 app = QApplication(sys.argv)

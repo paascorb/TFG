@@ -5,9 +5,12 @@ from LogicaDeNegocio.BooleanFunctionManager import *
 
 
 class ListarBF(QWidget):
-    def __init__(self, parent):
+    def __init__(self, parent, menu_bf):
         self.parent = parent
         super().__init__()
+        self.menu_bf = menu_bf
+        self.bfs = list_boolean_functions()
+
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
         self.setWindowIcon(icon)
@@ -121,11 +124,14 @@ class ListarBF(QWidget):
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
-        bfunctions = list_boolean_functions()
-        self.add_bfs_to_table(bfunctions)
+        self.add_bfs_to_table(self.bfs)
 
         self.toolButton_Return.clicked.connect(self.close)
         self.toolButton_remove.clicked.connect(self.remove_row)
+        self.toolButton_load.clicked.connect(self.cargar_bf)
+
+        self.tableBF.horizontalHeader().sectionClicked.connect(self.sort_by_column)
+        self.tableBF.horizontalHeader().sectionDoubleClicked.connect(self.invert_sort_by_column)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -149,9 +155,10 @@ class ListarBF(QWidget):
     def remove_row(self):
         if self.tableBF.rowCount() > 0:
             current_row = self.tableBF.currentRow()
-            bf_id = self.tableBF.item(current_row, 0).text()
-            self.tableBF.removeRow(current_row)
-            remove_boolean_function(bf_id)
+            if current_row != -1:
+                bf_id = self.tableBF.item(current_row, 0).text()
+                self.tableBF.removeRow(current_row)
+                remove_boolean_function(bf_id)
 
     def add_bfs_to_table(self, bfs):
         for i, bf in enumerate(bfs):
@@ -163,17 +170,36 @@ class ListarBF(QWidget):
                 self.tableBF.setItem(i, 3, QtWidgets.QTableWidgetItem("Sí"))
             else:
                 self.tableBF.setItem(i, 3, QtWidgets.QTableWidgetItem("No"))
-            output_str = "("
-            for j, elem in enumerate(bf.outputs):
-                output_str = output_str + str(elem)
-                if j != len(bf.outputs) - 1:
-                    output_str = output_str + ","
-            output_str = output_str + ")"
-            text_scrolleable = QTextEdit()
-            text_scrolleable.setText(output_str)
-            text_scrolleable.setReadOnly(True)
-            self.tableBF.setCellWidget(i, 2, text_scrolleable)
+            if bf.outputs:
+                output_str = "("
+                for j, elem in enumerate(bf.outputs):
+                    output_str = output_str + str(elem)
+                    if j != len(bf.outputs) - 1:
+                        output_str = output_str + ","
+                output_str = output_str + ")"
+                text_scrolleable = QTextEdit()
+                text_scrolleable.setText(output_str)
+                text_scrolleable.setReadOnly(True)
+                self.tableBF.setCellWidget(i, 2, text_scrolleable)
         self.tableBF.setItemDelegate(AligDelegate())
+
+    def cargar_bf(self):
+        row = self.tableBF.currentRow()
+        if row != -1:
+            bf_name = self.tableBF.item(row, 0).text()
+            bf = next(x for x in self.bfs if x.name == bf_name)
+            self.menu_bf.show()
+            self.menu_bf.set_bf(bf)
+            self.parent = self.menu_bf
+            self.close()
+
+    def sort_by_column(self):
+        column = self.tableBF.currentColumn()
+        self.tableBF.sortItems(column, QtCore.Qt.AscendingOrder)
+
+    def invert_sort_by_column(self):
+        column = self.tableBF.currentColumn()
+        self.tableBF.sortItems(column, QtCore.Qt.DescendingOrder)
 
 
 class AligDelegate(QItemDelegate):
