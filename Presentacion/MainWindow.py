@@ -1,5 +1,7 @@
 import sys
 
+from Presentacion.Listar_SC import ListarSC
+from Presentacion.Nuevo_BF import NuevoBF
 from Presentacion.Nuevo_SC import NuevoSC
 from Recursos import resources
 from PyQt5.QtWidgets import QMainWindow, QApplication
@@ -10,9 +12,11 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.window_nuevo_bf = None
+        self.window_listar_sc = None
         self.window_nuevo_sc = None
         self.setWindowTitle("TFG Pablo Ascorbe")
-        self.resize(600, 400)
+        self.resize(750, 450)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.setSizePolicy(sizePolicy)
         icon = QtGui.QIcon()
@@ -104,6 +108,8 @@ class MainWindow(QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(self)
 
         self.actionNuevo_sc.triggered.connect(self.open_nuevo_sc)
+        self.actionListar_sc.triggered.connect(self.open_listar_sc)
+        self.actionNuevo_bf.triggered.connect(self.open_nuevo_bf)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -116,7 +122,9 @@ class MainWindow(QMainWindow):
         self.actionCargar_sc.setText(_translate("TFG", "Cargar"))
         self.actionGuardar_sc.setText(_translate("TFG", "Guardar"))
         self.actionListar_sc.setText(_translate("TFG", "Listar"))
+        self.actionListar_sc.setShortcut(_translate("TFG", "Ctrl+L"))
         self.actionNuevo_bf.setText(_translate("TFG", "Nuevo"))
+        self.actionNuevo_bf.setShortcut(_translate("TFG", "Ctrl+M"))
         self.actionCargar_bf.setText(_translate("TFG", "Cargar"))
         self.actionGuardar_bf.setText(_translate("TFG", "Guardar"))
         self.actionListar_bf.setText(_translate("TFG", "Listar"))
@@ -126,6 +134,16 @@ class MainWindow(QMainWindow):
     def open_nuevo_sc(self):
         self.window_nuevo_sc = NuevoSC(self)
         self.window_nuevo_sc.show()
+        self.hide()
+
+    def open_listar_sc(self):
+        self.window_listar_sc = ListarSC(self)
+        self.window_listar_sc.show()
+        self.hide()
+        
+    def open_nuevo_bf(self):
+        self.window_nuevo_bf = NuevoBF(self)
+        self.window_nuevo_bf.show()
         self.hide()
 
 

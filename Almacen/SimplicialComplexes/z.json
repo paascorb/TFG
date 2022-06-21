@@ -1,0 +1,13 @@
+{
+    "id": "z",
+    "omega": "1",
+    "simplex": [
+        {
+            "id": "a",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        }
+    ],
+    "vector_fields": []
+}

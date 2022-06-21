@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="images">
+    <file>load.ico</file>
+    <file>remove.ico</file>
     <file>mas.ico</file>
     <file>menos.ico</file>
     <file>logo.png</file>

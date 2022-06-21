@@ -14,8 +14,8 @@ class NuevoSC(QWidget):
         self.simplex = list()
         self.faces = list()
 
-        self.setWindowTitle("TFG Pablo Ascorbe")
-        self.resize(738, 375)
+        self.setWindowTitle("Crear Complejo Simplicial")
+        self.resize(750, 400)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
         self.setWindowIcon(icon)
@@ -336,13 +336,13 @@ class NuevoSC(QWidget):
             for elem in list_items:
                 self.list_faces.takeItem((self.list_faces.row(elem)))
                 sim_text = elem.text()
-                print(sim_text)
                 sim = Aux.get_sim_by_name(self.simplex, sim_text)
                 self.faces.remove(sim)
 
     def add_posible_faces(self):
         self.posible_faces.clear()
         self.list_faces.clear()
+        self.faces.clear()
         dim = self.text_dim_sim.text()
         if not dim:
             dim = 0
@@ -396,7 +396,17 @@ class NuevoSC(QWidget):
                 sim_text = elem.text()
                 sim_text = sim_text.split(',', 1)[1]
                 sim = Aux.get_sim_by_name(self.simplex, sim_text[9:])
+                star = SimplicialComplex("", Aux.get_num_simplex_by_dim(self.simplex, 0), self.simplex).star(sim)
                 self.simplex.remove(sim)
+                self.simplex = [x for x in self.simplex if x not in star]
+                for star_sim in star:
+                    self.delete_from_list_simplex(str(star_sim))
+
+    def delete_from_list_simplex(self, name_to_remove):
+        items_to_remove = self.list_simplex.findItems(name_to_remove, QtCore.Qt.MatchExactly)
+        for item in items_to_remove:
+            row = self.list_simplex.row(item)
+            self.list_simplex.takeItem(row)
 
     def acept_and_save_form(self):
         nombre_sc = self.text_sc_name.text()
@@ -416,7 +426,7 @@ class NuevoSC(QWidget):
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("Form_Nuevo_SC", "Form"))
+        self.setWindowTitle(_translate("Form_Nuevo_SC", "Crear Complejo Simplicial"))
         self.pushButton_Cancelar.setText(_translate("Form_Nuevo_SC", "Cancelar"))
         self.pushButton_Aceptar.setText(_translate("Form_Nuevo_SC", "Aceptar"))
         self.groupBox.setTitle(_translate("Form_Nuevo_SC", "Símplices"))
