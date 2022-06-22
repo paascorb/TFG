@@ -248,6 +248,16 @@ def get_sim_by_name(simplex, s_name):
     return next((sim for sim in simplex if sim.name == s_name), None)
 
 
+def get_sim_pos(c_vector, sim):
+    """
+    TODO
+    :param c_vector:
+    :param sim:
+    :return:
+    """
+    return sim.index - sum(c_vector[:sim.dimension])
+
+
 """
 Métodos auxiliares para la clase BooleanFunctions
 """
@@ -315,7 +325,7 @@ def check_output(num, result=None):
                 break
             pos_num += 1
         child = int(aux_copy, 2)
-        if child not in result:
+        if child not in result and child != 0:
             if num_ones > 2:
                 result = check_output(child, result)
             result.append(child)

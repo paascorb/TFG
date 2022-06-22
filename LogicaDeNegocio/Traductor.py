@@ -25,7 +25,7 @@ def boolean_function_to_simplicial_complex(bf):
     simplices = list()
     for i in reversed(range(1, len(aux_output))):
         if aux_output[i] == 1 and not any(x.name == str(i) for x in simplices):
-            act_sim = Simplex(str(i), Aux.num_1(i)-1)
+            act_sim = Simplex(str(i), Aux.num_1(i) - 1)
             simplices.append(act_sim)
             construct_simplex(act_sim, simplices)
     sc = SimplicialComplex(bf.name, bf.num_variables, simplices)
@@ -55,12 +55,13 @@ def construct_simplex(act_simp, simplices):
         child_sim = next((x for x in simplices if x.name == str(child)), None)
         if not child_sim:
             s = Simplex(str(child), Aux.num_1(child) - 1)
-            simplices.append(s)
-            faces.add(s)
-            if s.dimension > 0:
-                construct_simplex(s, simplices)
-            else:
-                s.set_faces()
+            if s.dimension != -1:
+                simplices.append(s)
+                faces.add(s)
+                if s.dimension > 0:
+                    construct_simplex(s, simplices)
+                else:
+                    s.set_faces()
         else:
             faces.add(child_sim)
     act_simp.set_faces(faces)

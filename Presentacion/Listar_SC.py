@@ -5,10 +5,10 @@ from LogicaDeNegocio.SimplicialComplexManager import *
 
 
 class ListarSC(QWidget):
-    def __init__(self, parent):
+    def __init__(self, parent, menu_sc):
         self.parent = parent
         super().__init__()
-
+        self.menu_sc = menu_sc
         self.setObjectName("Lista de Complejos Simpliciales")
         self.resize(750, 450)
         icon = QtGui.QIcon()
@@ -148,14 +148,17 @@ class ListarSC(QWidget):
         self.tableSC.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
         scomplexes = list_simplicial_complexes()
+        self.scs = scomplexes
         self.add_scs_to_table(scomplexes)
 
         self.toolButton_remove.clicked.connect(self.remove_row)
+        self.toolButton_Return.clicked.connect(self.close)
+        self.toolButton_load.clicked.connect(self.cargar_sc)
+
         self.tableSC.horizontalHeader().sectionClicked.connect(self.sort_by_column)
         self.tableSC.horizontalHeader().sectionDoubleClicked.connect(self.invert_sort_by_column)
-        self.toolButton_Return.clicked.connect(self.close)
         self.lineEdit.textChanged.connect(self.create_table_by_search)
-        # self.tableSC.itemDoubleClicked.connect(self)
+        self.tableSC.itemDoubleClicked.connect(self.cargar_sc)
 
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -209,6 +212,16 @@ class ListarSC(QWidget):
             self.tableSC.setItem(i, 4, QtWidgets.QTableWidgetItem(c_vector_str))
             self.tableSC.setItem(i, 5, QtWidgets.QTableWidgetItem(str(len(sc.simplex))))
         self.tableSC.setItemDelegate(AligDelegate())
+
+    def cargar_sc(self):
+        row = self.tableSC.currentRow()
+        if row != -1:
+            sc_name = self.tableSC.item(row, 0).text()
+            sc = next(x for x in self.scs if x.name == sc_name)
+            self.menu_sc.show()
+            self.menu_sc.set_sc(sc)
+            self.parent = self.menu_sc
+            self.close()
 
     def create_table_by_search(self):
         self.tableSC.setRowCount(0)

@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from ModeloDeDominio.BooleanFunction import BooleanFunction
 from Presentacion.Listar_BF import ListarBF
 from Presentacion.Listar_SC import ListarSC
+from Presentacion.Main_SC import MenuSC
 from Presentacion.Nuevo_BF import NuevoBF
 from Presentacion.Nuevo_SC import NuevoSC
 import ModeloDeDominio.Auxiliary as Aux
@@ -454,7 +455,7 @@ class MenuBF(QMainWindow):
         self.rellenar_datos_mod()
 
     def add_layout_tra(self):
-        if(self.bf.monotone_flag):
+        if self.bf.monotone_flag:
             self.clear_layout_dinamico(self.gridLayout_dinamico)
             self.gridLayout_dinamico = QtWidgets.QGridLayout()
             self.gridLayout_dinamico.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
@@ -585,8 +586,6 @@ class MenuBF(QMainWindow):
             crear_mensaje_error('La función no es monótona y por ello no puede ser traducida en un complejo simplicial',
                                 "No Monótona")
 
-
-
     def rellenar_tabla(self):
         self.table_ouputs.setRowCount(0)
         num = int(self.spin_n_variables.text())
@@ -629,7 +628,6 @@ class MenuBF(QMainWindow):
             crear_mensaje_error('No intentes romperme el programa', "Un saludo")
             self.text_fb_name.clear()
         else:
-
             all_bf = list_boolean_functions()
             edit = False
             if any(x for x in all_bf if x.name != self.label_nombre_bf.text() and x.name == nombre_bf):
@@ -720,6 +718,7 @@ class MenuBF(QMainWindow):
             crear_mensaje_error('No intentes romperme el programa', "Un saludo")
             self.text_fb_name.clear()
         else:
+            self.sc_tra.name = nombre
             edit = False
             all_sc = list_simplicial_complexes()
             if any(x for x in all_sc if x.name == nombre):
@@ -759,7 +758,8 @@ class MenuBF(QMainWindow):
         self.hide()
 
     def open_listar_sc(self):
-        self.window_listar_sc = ListarSC(self)
+        menu_sc = MenuSC()
+        self.window_listar_sc = ListarSC(self, menu_sc)
         self.window_listar_sc.show()
         self.hide()
 

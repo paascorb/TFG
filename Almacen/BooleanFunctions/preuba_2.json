@@ -1,0 +1,11 @@
+{
+    "id": "preuba_2",
+    "num_variables": 2,
+    "outputs": [
+        0,
+        1,
+        1,
+        0
+    ],
+    "m_flag": true
+}

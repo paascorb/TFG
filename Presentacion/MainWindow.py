@@ -3,6 +3,7 @@ import sys
 from Presentacion.Listar_BF import ListarBF
 from Presentacion.Listar_SC import ListarSC
 from Presentacion.Main_BF import MenuBF
+from Presentacion.Main_SC import MenuSC
 from Presentacion.Nuevo_BF import NuevoBF
 from Presentacion.Nuevo_SC import NuevoSC
 from Recursos import resources
@@ -148,7 +149,8 @@ class MainWindow(QMainWindow):
         self.hide()
 
     def open_listar_sc(self):
-        self.window_listar_sc = ListarSC(self)
+        menu_sc = MenuSC()
+        self.window_listar_sc = ListarSC(self, menu_sc)
         self.window_listar_sc.show()
         self.hide()
 

@@ -226,7 +226,7 @@ class NuevoBF(QWidget):
             crear_mensaje_error('Introduzca el nombre de la función booleana', "Función Booleana")
         elif '"' in nombre_bf:
             crear_mensaje_error('No intentes romperme el programa', "Un saludo")
-            self.text_sc_name.clear()
+            self.text_fb_name.clear()
         else:
             all_bf = list_boolean_functions()
             edit = False

@@ -1,5 +1,13 @@
 <RCC>
   <qresource prefix="images">
+    <file>auto_vf.ico</file>
+    <file>collapse.ico</file>
+    <file>cone.ico</file>
+    <file>expand.ico</file>
+    <file>join.ico</file>
+    <file>manual_vf.ico</file>
+    <file>link.ico</file>
+    <file>star.ico</file>
     <file>edit.ico</file>
     <file>translation_bf_to_sc.ico</file>
     <file>translation_sc_to_bf.ico</file>
