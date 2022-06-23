@@ -133,13 +133,13 @@ class MainWindow(QMainWindow):
         self.menuFunci_n_Booleana.setTitle(_translate("TFG", "Función Booleana"))
         self.menuAyuda.setTitle(_translate("TFG", "Ayuda"))
         self.actionNuevo_sc.setText(_translate("TFG", "Nuevo"))
-        self.actionNuevo_sc.setShortcut(_translate("TFG", "Ctrl+N"))
+        self.actionNuevo_sc.setShortcut(_translate("TFG", "Ctrl+A"))
         self.actionListar_sc.setText(_translate("TFG", "Cargar"))
-        self.actionListar_sc.setShortcut(_translate("TFG", "Ctrl+L"))
+        self.actionListar_sc.setShortcut(_translate("TFG", "Ctrl+Q"))
         self.actionNuevo_bf.setText(_translate("TFG", "Nuevo"))
-        self.actionNuevo_bf.setShortcut(_translate("TFG", "Ctrl+M"))
+        self.actionNuevo_bf.setShortcut(_translate("TFG", "Ctrl+S"))
         self.actionListar_bf.setText(_translate("TFG", "Cargar"))
-        self.actionListar_bf.setShortcut(_translate("TFG", "Ctrl+K"))
+        self.actionListar_bf.setShortcut(_translate("TFG", "Ctrl+W"))
         self.actionAyuda.setText(_translate("TFG", "Ayuda de TFG Pablo Ascorbe"))
         self.actionAcerca.setText(_translate("TFG", "Acerca de la aplicación"))
 
@@ -150,7 +150,8 @@ class MainWindow(QMainWindow):
 
     def open_listar_sc(self):
         menu_sc = MenuSC()
-        self.window_listar_sc = ListarSC(self, menu_sc)
+        menu_bf = MenuBF()
+        self.window_listar_sc = ListarSC(self, menu_sc, menu_bf)
         self.window_listar_sc.show()
         self.hide()
 
@@ -160,8 +161,9 @@ class MainWindow(QMainWindow):
         self.hide()
 
     def open_listar_bf(self):
+        menu_sc = MenuSC()
         menu_bf = MenuBF()
-        self.window_listar_bf = ListarBF(self, menu_bf)
+        self.window_listar_bf = ListarBF(self, menu_bf, menu_sc)
         self.window_listar_bf.show()
         self.hide()
 

@@ -224,7 +224,7 @@ class NuevoBF(QWidget):
         nombre_bf = self.text_fb_name.text()
         if not nombre_bf:
             crear_mensaje_error('Introduzca el nombre de la función booleana', "Función Booleana")
-        elif '"' in nombre_bf:
+        elif '"' in nombre_bf or ":" in nombre_bf:
             crear_mensaje_error('No intentes romperme el programa', "Un saludo")
             self.text_fb_name.clear()
         else:
@@ -261,6 +261,8 @@ class NuevoBF(QWidget):
             else:
                 add_boolean_function(bf)
             self.close_accepted = True
+            QMessageBox.information(self, "Éxito",
+                                    "Operación completada con éxito")
             self.close()
 
     def rellenar_tabla(self):

@@ -4,7 +4,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from ModeloDeDominio.BooleanFunction import BooleanFunction
 from Presentacion.Listar_BF import ListarBF
 from Presentacion.Listar_SC import ListarSC
-from Presentacion.Main_SC import MenuSC
 from Presentacion.Nuevo_BF import NuevoBF
 from Presentacion.Nuevo_SC import NuevoSC
 import ModeloDeDominio.Auxiliary as Aux
@@ -17,6 +16,7 @@ from LogicaDeNegocio.Traductor import *
 class MenuBF(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.menu_sc = None
         self.sc_tra = None
         self.window_listar_bf = None
         self.window_nuevo_bf = None
@@ -266,13 +266,13 @@ class MenuBF(QMainWindow):
         self.menuAyuda.setTitle(_translate("TFG", "Ayuda"))
         self.toolBar.setWindowTitle(_translate("TFG", "toolBar"))
         self.actionNuevo_sc.setText(_translate("TFG", "Nuevo"))
-        self.actionNuevo_sc.setShortcut(_translate("TFG", "Ctrl+N"))
+        self.actionNuevo_sc.setShortcut(_translate("TFG", "Ctrl+A"))
         self.actionListar_sc.setText(_translate("TFG", "Cargar"))
-        self.actionListar_sc.setShortcut(_translate("TFG", "Ctrl+L"))
+        self.actionListar_sc.setShortcut(_translate("TFG", "Ctrl+Q"))
         self.actionNuevo_bf.setText(_translate("TFG", "Nuevo"))
-        self.actionNuevo_bf.setShortcut(_translate("TFG", "Ctrl+M"))
+        self.actionNuevo_bf.setShortcut(_translate("TFG", "Ctrl+S"))
         self.actionListar_bf.setText(_translate("TFG", "Cargar"))
-        self.actionListar_bf.setShortcut(_translate("TFG", "Ctrl+K"))
+        self.actionListar_bf.setShortcut(_translate("TFG", "Ctrl+W"))
         self.actionAyuda.setText(_translate("TFG", "Ayuda de TFG Pablo Ascorbe"))
         self.actionAcerca.setText(_translate("TFG", "Acerca de la aplicación"))
         self.actionModificar_BF.setText(_translate("TFG", "Modificar_BF"))
@@ -425,7 +425,6 @@ class MenuBF(QMainWindow):
         self.text_fb_name.setObjectName("text_fb_name")
         self.gridLayout_dinamico.addWidget(self.text_fb_name, 2, 2, 1, 1)
         self.horizontalLayout.addLayout(self.gridLayout_dinamico)
-
         _translate = QtCore.QCoreApplication.translate
         self.toolButton_1.setText(_translate("TFG", "1"))
         self.toolButton_0.setText(_translate("TFG", "0"))
@@ -446,7 +445,7 @@ class MenuBF(QMainWindow):
         self.table_ouputs.verticalHeader().setVisible(False)
 
         self.spin_n_variables.textChanged.connect(self.rellenar_tabla)
-        self.pushButton_Aceptar.clicked.connect(self.update_sc)
+        self.pushButton_Aceptar.clicked.connect(self.update_bf)
         self.toolButton_0.clicked.connect(self.put_0_on_focus)
         self.toolButton_1.clicked.connect(self.put_1_on_focus)
 
@@ -495,7 +494,7 @@ class MenuBF(QMainWindow):
             self.pushButton_Guardar.setObjectName("pushButton_Guardar")
             self.gridLayout_dinamico.addWidget(self.pushButton_Guardar, 7, 2, 1, 1, QtCore.Qt.AlignRight)
             self.text_fb_name = QtWidgets.QLineEdit(self.centralwidget)
-            self.text_fb_name.setMaximumSize(QtCore.QSize(16777215, 50))
+            self.text_fb_name.setMaximumSize(QtCore.QSize(16777215, 25))
             font = QtGui.QFont()
             font.setPointSize(12)
             self.text_fb_name.setFont(font)
@@ -556,7 +555,6 @@ class MenuBF(QMainWindow):
             self.label_10.setObjectName("label_10")
             self.gridLayout_dinamico.addWidget(self.label_10, 4, 0, 1, 3)
             self.horizontalLayout.addLayout(self.gridLayout_dinamico)
-
             _translate = QtCore.QCoreApplication.translate
             self.label_8.setText(_translate("TFG", "Omega:"))
             self.pushButton_Guardar.setText(_translate("TFG", "Guardar"))
@@ -575,7 +573,7 @@ class MenuBF(QMainWindow):
             header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
             header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
             header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-            header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+            header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
 
             self.sc_tra = boolean_function_to_simplicial_complex(self.bf)
             self.rellenar_datos_tra(self.sc_tra)
@@ -620,11 +618,11 @@ class MenuBF(QMainWindow):
             self.table_ouputs.setCurrentIndex(next_index)
             self.table_ouputs.edit(next_index)
 
-    def update_sc(self):
+    def update_bf(self):
         nombre_bf = self.text_fb_name.text()
         if not nombre_bf:
             crear_mensaje_error('Introduzca el nombre de la función booleana', "Función Booleana")
-        elif '"' in nombre_bf:
+        elif '"' in nombre_bf or ":" in nombre_bf:
             crear_mensaje_error('No intentes romperme el programa', "Un saludo")
             self.text_fb_name.clear()
         else:
@@ -659,14 +657,14 @@ class MenuBF(QMainWindow):
             if edit:
                 edit_boolean_function(bf)
                 remove_boolean_function(self.label_nombre_bf.text())
-                self.set_bf(bf)
             elif bf.name != self.label_nombre_bf.text():
                 remove_boolean_function(self.label_nombre_bf.text())
                 add_boolean_function(bf)
-                self.set_bf(bf)
             else:
                 update_boolean_function(bf)
-                self.set_bf(bf)
+            QMessageBox.information(self, "Éxito",
+                                    "Operación completada con éxito")
+            self.set_bf(bf)
 
     def clear_layout_dinamico(self, layout):
         if layout is not None:
@@ -707,6 +705,8 @@ class MenuBF(QMainWindow):
                 text_scrolleable = QTextEdit()
                 text_scrolleable.setText(faces_str)
                 text_scrolleable.setReadOnly(True)
+                if i % 2 != 0:
+                    text_scrolleable.setStyleSheet("background-color: rgb(255, 255, 255);")
                 self.table_simplex.setCellWidget(i, 2, text_scrolleable)
         self.table_simplex.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
 
@@ -714,7 +714,7 @@ class MenuBF(QMainWindow):
         nombre = self.text_fb_name.text()
         if not nombre:
             crear_mensaje_error('Introduzca el nombre del complejo simplicial', "Complejo Simplicial")
-        elif '"' in nombre:
+        elif '"' in nombre or ":" in nombre:
             crear_mensaje_error('No intentes romperme el programa', "Un saludo")
             self.text_fb_name.clear()
         else:
@@ -752,14 +752,16 @@ class MenuBF(QMainWindow):
             QMessageBox.information(self, "Éxito",
                                     "Se ha guardado con éxito")
 
+    def set_MenuSC(self, menu_sc):
+        self.menu_sc = menu_sc
+
     def open_nuevo_sc(self):
         self.window_nuevo_sc = NuevoSC(self)
         self.window_nuevo_sc.show()
         self.hide()
 
     def open_listar_sc(self):
-        menu_sc = MenuSC()
-        self.window_listar_sc = ListarSC(self, menu_sc)
+        self.window_listar_sc = ListarSC(self, self.menu_sc, self)
         self.window_listar_sc.show()
         self.hide()
 
@@ -769,6 +771,6 @@ class MenuBF(QMainWindow):
         self.hide()
 
     def open_listar_bf(self):
-        self.window_listar_bf = ListarBF(self, self)
+        self.window_listar_bf = ListarBF(self, self, self.menu_sc)
         self.window_listar_bf.show()
         self.hide()

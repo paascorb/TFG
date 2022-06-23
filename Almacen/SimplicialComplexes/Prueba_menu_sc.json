@@ -1,0 +1,19 @@
+{
+    "id": "Prueba_menu_sc",
+    "omega": "2",
+    "simplex": [
+        {
+            "id": "1",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        },
+        {
+            "id": "2",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        }
+    ],
+    "vector_fields": []
+}

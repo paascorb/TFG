@@ -365,7 +365,7 @@ class NuevoSC(QWidget):
         else:
             dim = int(self.text_dim_sim.text()) if self.text_dim_sim.text() else -1
             if dim != len(self.faces) - 1 and dim != 0:
-                crear_mensaje_error("Las caras del símplice no son válidas para su dimensión",  "Caras Símplice")
+                crear_mensaje_error("Las caras del símplice no son válidas para su dimensión", "Caras Símplice")
             elif dim == -1:
                 crear_mensaje_error("Introduzca una dimensión", "Dimensión Símplice")
             else:
@@ -378,7 +378,7 @@ class NuevoSC(QWidget):
                     self.simplex.append(sim)
                     self.list_simplex.addItem(str(sim))
                     self.text_nombre_sim.setText("")
-                    self.text_dim_sim.setText("")
+                    self.text_dim_sim.setText("0")
                     self.faces = list()
                     self.list_faces.clear()
 
@@ -406,7 +406,7 @@ class NuevoSC(QWidget):
         nombre_sc = self.text_sc_name.text()
         if not nombre_sc:
             crear_mensaje_error('Introduzca el nombre del complejo simplicial', "Complejo Simplicial")
-        elif '"' in nombre_sc:
+        elif '"' in nombre_sc or ":" in nombre_sc:
             crear_mensaje_error('No intentes romperme el programa', "Un saludo")
             self.text_sc_name.clear()
         else:
@@ -443,6 +443,8 @@ class NuevoSC(QWidget):
             else:
                 add_simplicial_complex(sc)
             self.close_accepted = True
+            QMessageBox.information(self, "Éxito",
+                                    "Operación completada con éxito")
             self.close()
 
     def retranslateUi(self):

@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="images">
+    <file>vector_field.ico</file>
     <file>auto_vf.ico</file>
     <file>collapse.ico</file>
     <file>cone.ico</file>

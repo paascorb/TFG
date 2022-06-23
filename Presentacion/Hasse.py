@@ -14,11 +14,12 @@ class Hasse:
         TODO
         :param sc:
         """
+        self.targets = list()
+        self.sources = list()
         self.pair = list()
         g = Graph(directed=True)
         self.sc = sc
-        sc.create_vector_field("hasse_vf")
-        self.vf = sc.vector_fields[0]
+        self.vf = sc.create_vector_field("Default")
         self.all_routes = dict()
         self.g = g
         self.g.add_vertices(len(self.sc.simplex))
@@ -52,10 +53,10 @@ class Hasse:
             self.vf.add_route((target, source))
         except CycleException:
             ciclo = True
-        self.vf.sources.append(source)
-        self.vf.sources.append(target)
-        self.vf.targets.append(source)
-        self.vf.targets.append(target)
+        self.sources.append(source)
+        self.sources.append(target)
+        self.targets.append(source)
+        self.targets.append(target)
         aux = Graph(directed=True)
         aux.add_vertices(len(self.sc.simplex))
 
@@ -65,15 +66,18 @@ class Hasse:
                     for face in simplice.faces:
                         if any(x for x in self.pair if x[0] == simplice and x[1] == face):
                             aux.add_edge(face.index, simplice.index)["color"] = "black"
-                        elif (simplice in self.vf.targets or simplice in self.vf.sources) \
-                                or (face in self.vf.targets or face in self.vf.sources):
+                        elif (simplice in self.targets or simplice in self.sources) \
+                                or (face in self.targets or face in self.sources):
                             aux.add_edge(simplice.index, face.index)["color"] = "gray"
                         else:
-                            aux.add_edge(simplice.index, face.index)["color"]
+                            aux.add_edge(simplice.index, face.index)
         self.g = aux
         if ciclo:
             self.paint_cycle((target, source))
+            self.plot_hasse()
+            return True
         self.plot_hasse()
+        return False
 
     def paint_cycle(self, pair):
         routes = self.get_routes_of(pair[0].name, pair[0].name)

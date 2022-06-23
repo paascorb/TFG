@@ -130,7 +130,9 @@ class SimplicialComplex:
         :param name:
         :return:
         """
-        self.vector_fields.append(VectorField(name, Aux.slice_fmatrix(self.matrix, self.c_vector), self.c_vector))
+        vf = VectorField(name, Aux.slice_fmatrix(self.matrix, self.c_vector), self.c_vector)
+        self.vector_fields.append(vf)
+        return vf
 
     def closure(self, sim):
         """

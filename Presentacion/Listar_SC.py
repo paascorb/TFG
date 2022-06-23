@@ -5,10 +5,11 @@ from LogicaDeNegocio.SimplicialComplexManager import *
 
 
 class ListarSC(QWidget):
-    def __init__(self, parent, menu_sc):
+    def __init__(self, parent, menu_sc, menu_bf):
         self.parent = parent
         super().__init__()
         self.menu_sc = menu_sc
+        self.menu_bf = menu_bf
         self.setObjectName("Lista de Complejos Simpliciales")
         self.resize(750, 450)
         icon = QtGui.QIcon()
@@ -187,9 +188,29 @@ class ListarSC(QWidget):
     def remove_row(self):
         if self.tableSC.rowCount() > 0:
             current_row = self.tableSC.currentRow()
-            sc_id = self.tableSC.item(current_row, 0).text()
-            self.tableSC.removeRow(current_row)
-            remove_simplicial_complex(sc_id)
+            box = QtWidgets.QMessageBox()
+            box.setIcon(QtWidgets.QMessageBox.Question)
+            box.setWindowTitle('BORRAR')
+            box.setText('¿Estás seguro que deseas borrar ese Complejo Simplicial?')
+            box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            buttonY = box.button(QtWidgets.QMessageBox.Yes)
+            buttonY.setText('Sí')
+            buttonN = box.button(QtWidgets.QMessageBox.No)
+            buttonN.setText('No')
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
+            box.setWindowIcon(icon)
+            box.setStyleSheet("background-color: rgb(27, 27, 27);\n"
+                              "color: rgb(255, 255, 255);")
+            buttonN.setStyleSheet("background-color: rgb(71, 71, 71)")
+            buttonY.setStyleSheet("background-color: rgb(71, 71, 71)")
+            box.exec_()
+            if box.clickedButton() == buttonN:
+                return
+            if current_row != -1:
+                sc_id = self.tableSC.item(current_row, 0).text()
+                self.tableSC.removeRow(current_row)
+                remove_simplicial_complex(sc_id)
 
     def closeEvent(self, event):
         self.parent.show()
@@ -220,6 +241,7 @@ class ListarSC(QWidget):
             sc = next(x for x in self.scs if x.name == sc_name)
             self.menu_sc.show()
             self.menu_sc.set_sc(sc)
+            self.menu_sc.set_MenuBF(self.menu_bf)
             self.parent = self.menu_sc
             self.close()
 

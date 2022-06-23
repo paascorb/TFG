@@ -5,10 +5,11 @@ from LogicaDeNegocio.BooleanFunctionManager import *
 
 
 class ListarBF(QWidget):
-    def __init__(self, parent, menu_bf):
+    def __init__(self, parent, menu_bf, menu_sc):
         self.parent = parent
         super().__init__()
         self.menu_bf = menu_bf
+        self.menu_sc = menu_sc
         self.bfs = list_boolean_functions()
 
         icon = QtGui.QIcon()
@@ -173,6 +174,26 @@ class ListarBF(QWidget):
     def remove_row(self):
         if self.tableBF.rowCount() > 0:
             current_row = self.tableBF.currentRow()
+            box = QtWidgets.QMessageBox()
+            box.setIcon(QtWidgets.QMessageBox.Question)
+            box.setWindowTitle('BORRAR')
+            box.setText('¿Estás seguro que deseas borrar esa función booleana?')
+            box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            buttonY = box.button(QtWidgets.QMessageBox.Yes)
+            buttonY.setText('Sí')
+            buttonN = box.button(QtWidgets.QMessageBox.No)
+            buttonN.setText('No')
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
+            box.setWindowIcon(icon)
+            box.setStyleSheet("background-color: rgb(27, 27, 27);\n"
+                              "color: rgb(255, 255, 255);")
+            buttonN.setStyleSheet("background-color: rgb(71, 71, 71)")
+            buttonY.setStyleSheet("background-color: rgb(71, 71, 71)")
+            box.exec_()
+
+            if box.clickedButton() == buttonN:
+                return
             if current_row != -1:
                 bf_id = self.tableBF.item(current_row, 0).text()
                 self.tableBF.removeRow(current_row)
@@ -208,6 +229,7 @@ class ListarBF(QWidget):
             bf = next(x for x in self.bfs if x.name == bf_name)
             self.menu_bf.show()
             self.menu_bf.set_bf(bf)
+            self.menu_bf.set_MenuSC(self.menu_sc)
             self.parent = self.menu_bf
             self.close()
 
@@ -229,10 +251,10 @@ class ListarBF(QWidget):
                     if bf.outputs:
                         output_str = "("
                         for j, elem in enumerate(bf.outputs):
-                            output_str = output_str + str(elem)
+                            output_str += str(elem)
                             if j != len(bf.outputs) - 1:
-                                output_str = output_str + ","
-                        output_str = output_str + ")"
+                                output_str += ","
+                        output_str += ")"
                         text_scrolleable = QTextEdit()
                         text_scrolleable.setText(output_str)
                         text_scrolleable.setReadOnly(True)
