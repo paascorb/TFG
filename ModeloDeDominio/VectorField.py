@@ -19,6 +19,7 @@ class VectorField:
         self.c_vector = c_vector
         self.fblocks = fblocks
         self.routes = dict()
+        self.pairs_added = list()
         self.sources = list()
         self.targets = list()
 
@@ -97,6 +98,7 @@ class VectorField:
             self.targets.append(pair[0].name)
         if pair[1].dimension + 1 == len(self.fblocks):
             self.sources.append(pair[1].name)
+        self.pairs_added.append(pair)
         self.sources.append(pair[0].name)
         self.targets.append(pair[1].name)
 

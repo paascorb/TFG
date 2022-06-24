@@ -30,12 +30,16 @@ class TestJoin(unittest.TestCase):
         c = Simplex("c", 0)
         ab = Simplex("ab", 1)
         bc = Simplex("bc", 1)
+        ac = Simplex("ac", 1)
+        abc = Simplex("abc", 2)
         a.set_faces()
         b.set_faces()
         c.set_faces()
         ab.set_faces({a, b})
         bc.set_faces({b, c})
-        K = SimplicialComplex("K", 3, [a, b, c, ab, bc])
+        ac.set_faces({a, c})
+        abc.set_faces({ab, bc, ac})
+        K = SimplicialComplex("K", 3, [a, b, c, ab, bc, ac, abc])
         # Complejos simplicial L
         u = Simplex("u", 0)
         v = Simplex("v", 0)
@@ -44,7 +48,7 @@ class TestJoin(unittest.TestCase):
         v.set_faces()
         uv.set_faces({u, v})
         L = SimplicialComplex("L", 2, [u, v, uv])
-        expected_c_vector = [5, 9, 7, 2]
+        expected_c_vector = [5, 10, 10, 5, 1]
         self.assertTrue(Join.join(K, L).c_vector == expected_c_vector, "Error en el test join_2")
 
     if __name__ == '__main__':

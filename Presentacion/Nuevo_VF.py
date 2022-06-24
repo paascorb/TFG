@@ -61,7 +61,7 @@ class NuevoVF(QWidget):
         font.setPointSize(12)
         item.setFont(font)
         self.tablePairs.setHorizontalHeaderItem(1, item)
-        self.gridLayout.addWidget(self.tablePairs, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.tablePairs, 1, 1, 1, 2)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setSpacing(20)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -79,7 +79,7 @@ class NuevoVF(QWidget):
                                         "background-color: rgb(177, 177, 177);")
         self.line_vf_name.setObjectName("line_vf_name")
         self.horizontalLayout_3.addWidget(self.line_vf_name)
-        self.gridLayout.addLayout(self.horizontalLayout_3, 0, 1, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout_3, 0, 1, 1, 2)
         self.pushButton_Guardar = QtWidgets.QPushButton(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -107,6 +107,28 @@ class NuevoVF(QWidget):
         self.pushButton_Guardar.setFlat(False)
         self.pushButton_Guardar.setObjectName("pushButton_Guardar")
         self.gridLayout.addWidget(self.pushButton_Guardar, 3, 1, 1, 1, QtCore.Qt.AlignRight)
+        self.pushButton_Cancelar = QtWidgets.QPushButton(self)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_Cancelar.sizePolicy().hasHeightForWidth())
+        self.pushButton_Cancelar.setSizePolicy(sizePolicy)
+        self.pushButton_Cancelar.setMinimumSize(QtCore.QSize(150, 25))
+        self.pushButton_Cancelar.setMaximumSize(QtCore.QSize(350, 50))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_Cancelar.setFont(font)
+        self.pushButton_Cancelar.setStyleSheet("QPushButton{\n"
+                                               "color: rgb(255, 255, 255);\n"
+                                               "background-color: rgb(71, 71, 71);\n"
+                                               "border: 1px solid;\n"
+                                               "border-radius: 10px;}\n"
+                                               "\n"
+                                               "QPushButton:hover{\n"
+                                               "    background-color: rgb(100, 100, 100);\n"
+                                               "}")
+        self.pushButton_Cancelar.setObjectName("pushButton_Cancelar")
+        self.gridLayout.addWidget(self.pushButton_Cancelar, 3, 2, 1, 1)
         self.pushButton_Anadir = QtWidgets.QPushButton(self)
         self.pushButton_Anadir.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
@@ -122,7 +144,7 @@ class NuevoVF(QWidget):
                                              "    background-color: rgb(100, 100, 100);\n"
                                              "}")
         self.pushButton_Anadir.setObjectName("pushButton_Anadir")
-        self.gridLayout.addWidget(self.pushButton_Anadir, 2, 1, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_Anadir, 2, 1, 1, 2)
         self.scrollArea = QtWidgets.QScrollArea(self)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
@@ -153,11 +175,13 @@ class NuevoVF(QWidget):
         self.pushButton_Anadir.clicked.connect(self.add_route)
         self.tablePairs.cellDoubleClicked.connect(self.add_route)
         self.pushButton_Guardar.clicked.connect(self.guardar_vf)
+        self.pushButton_Cancelar.clicked.connect(self.close)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Form", "Creación Campo de Vectores"))
         self.label_3.setText(_translate("Form", "Creación manual de un campo de vectores"))
+        self.pushButton_Cancelar.setText(_translate("Form", "Cancelar"))
         item = self.tablePairs.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Sigma"))
         item = self.tablePairs.horizontalHeaderItem(1)

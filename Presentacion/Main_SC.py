@@ -3,9 +3,11 @@ from PyQt5.QtWidgets import QWidget, QItemDelegate, QMainWindow, QTextEdit
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from LogicaDeNegocio.BooleanFunctionManager import *
+from LogicaDeNegocio.Join import *
 from LogicaDeNegocio.SimplicialComplexManager import *
 import ModeloDeDominio.Auxiliary as Aux
 from LogicaDeNegocio.Traductor import simplicial_complex_to_boolean_function
+from LogicaDeNegocio.VectorFieldResolver import resolve_field
 from Presentacion.Listar_BF import ListarBF
 from Presentacion.Listar_SC import ListarSC
 from Presentacion.Nuevo_BF import NuevoBF
@@ -17,6 +19,8 @@ from Presentacion.PresentacionAuxiliar import *
 class MenuSC(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.sc_cone = None
+        self.vf_auto = None
         self.bf_tra = None
         self.bf = None
         self.faces = list()
@@ -310,6 +314,8 @@ class MenuSC(QMainWindow):
         self.actionTraducir_SC.triggered.connect(self.add_layout_tra)
         self.actionCampo_de_Vectores_Manual.triggered.connect(self.open_nuevo_vf)
         self.actionCampo_De_Vectores.triggered.connect(self.add_layout_vf)
+        self.actionCampo_de_Vectors_autom_tico.triggered.connect(self.add_layout_vf_auto)
+        self.actionCono.triggered.connect(self.add_layout_cone)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -317,7 +323,7 @@ class MenuSC(QMainWindow):
         self.label_2.setText(_translate("TFG", "Complejo Simplicial"))
         self.label_nombre_sc.setText(_translate("TFG", "(Nombre)"))
         self.label_omega.setText(_translate("TFG", "(N_variables)"))
-        self.label_3.setText(_translate("TFG", "Salidas:"))
+        self.label_3.setText(_translate("TFG", "Símplices:"))
         self.label.setText(_translate("TFG", "Nombre:"))
         self.label_4.setText(_translate("TFG", "Omega:"))
         self.label_dimension.setText(_translate("TFG", "(Monotona)"))
@@ -899,6 +905,345 @@ class MenuSC(QMainWindow):
             QMessageBox.information(self, "Imposible",
                                     "El complejo simplicial seleccionado no dispone de ningún campo")
 
+    def add_layout_vf_auto(self):
+        self.clear_layout_dinamico(self.gridLayout_dinamico)
+        self.gridLayout_dinamico = QtWidgets.QGridLayout()
+        self.gridLayout_dinamico.setContentsMargins(0, 4, 15, 10)
+        self.gridLayout_dinamico.setHorizontalSpacing(15)
+        self.gridLayout_dinamico.setVerticalSpacing(10)
+        self.gridLayout_dinamico.setObjectName("gridLayout_dinamico")
+        self.label_9 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_9.setFont(font)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout_dinamico.addWidget(self.label_9, 2, 1, 1, 2)
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.gridLayout_dinamico.addWidget(self.label_7, 1, 1, 1, 1)
+        self.table_vf = QtWidgets.QTableWidget(self.centralwidget)
+        self.table_vf.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                    "background-color: rgb(177, 177, 177);")
+        self.table_vf.setObjectName("table_vf")
+        self.table_vf.setColumnCount(2)
+        self.table_vf.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.table_vf.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.table_vf.setHorizontalHeaderItem(1, item)
+        self.gridLayout_dinamico.addWidget(self.table_vf, 5, 1, 1, 2)
+        self.line_vf_name = QtWidgets.QLineEdit(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.line_vf_name.setFont(font)
+        self.line_vf_name.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                        "background-color: rgb(177, 177, 177);")
+        self.line_vf_name.setObjectName("line_vf_name")
+        self.gridLayout_dinamico.addWidget(self.line_vf_name, 1, 2, 1, 1)
+        self.label_8 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_8.setFont(font)
+        self.label_8.setObjectName("label_8")
+        self.gridLayout_dinamico.addWidget(self.label_8, 4, 1, 1, 2)
+        self.label_6 = QtWidgets.QLabel(self.centralwidget)
+        self.label_6.setMaximumSize(QtCore.QSize(16777215, 30))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.gridLayout_dinamico.addWidget(self.label_6, 0, 1, 1, 2)
+        self.tablePairs = QtWidgets.QTableWidget(self.centralwidget)
+        self.tablePairs.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.tablePairs.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                      "background-color: rgb(177, 177, 177);")
+        self.tablePairs.setObjectName("tablePairs")
+        self.tablePairs.setColumnCount(2)
+        self.tablePairs.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.tablePairs.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.tablePairs.setHorizontalHeaderItem(1, item)
+        self.gridLayout_dinamico.addWidget(self.tablePairs, 3, 1, 1, 2)
+        self.pushButton_Guardar = QtWidgets.QPushButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(100)
+        sizePolicy.setHeightForWidth(self.pushButton_Guardar.sizePolicy().hasHeightForWidth())
+        self.pushButton_Guardar.setSizePolicy(sizePolicy)
+        self.pushButton_Guardar.setMinimumSize(QtCore.QSize(150, 25))
+        self.pushButton_Guardar.setMaximumSize(QtCore.QSize(250, 25))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_Guardar.setFont(font)
+        self.pushButton_Guardar.setStyleSheet("QPushButton{\n"
+                                              "color: rgb(255, 255, 255);\n"
+                                              "background-color: rgb(71, 71, 71);\n"
+                                              "border: 1px solid;\n"
+                                              "border-radius: 10px;}\n"
+                                              "\n"
+                                              "QPushButton:hover{\n"
+                                              "    background-color: rgb(100, 100, 100);\n"
+                                              "}\n"
+                                              "\n"
+                                              "")
+        self.pushButton_Guardar.setAutoDefault(False)
+        self.pushButton_Guardar.setDefault(False)
+        self.pushButton_Guardar.setFlat(False)
+        self.pushButton_Guardar.setObjectName("pushButton_Guardar")
+        self.gridLayout_dinamico.addWidget(self.pushButton_Guardar, 6, 2, 1, 1, QtCore.Qt.AlignRight)
+        self.horizontalLayout.addLayout(self.gridLayout_dinamico)
+
+        header = self.tablePairs.horizontalHeader()
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+
+        header = self.table_vf.horizontalHeader()
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.tablePairs.setFont(font)
+        self.table_vf.setFont(font)
+
+        self.tablePairs.setItemDelegate(AligDelegate())
+        self.table_vf.setItemDelegate(AligDelegate())
+
+        self.tablePairs.setAlternatingRowColors(True)
+        self.table_vf.setAlternatingRowColors(True)
+
+        self.tablePairs.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.table_vf.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+
+        _translate = QtCore.QCoreApplication.translate
+
+        resolve_field(self.sc.create_vector_field("Default"), self.sc)
+        self.vf_auto = self.sc.vector_fields[len(self.sc.vector_fields) - 1]
+        self.sc.vector_fields.pop()
+        self.rellenar_tablas_vf_auto()
+
+        self.pushButton_Guardar.clicked.connect(self.guardar_vf_auto)
+
+        self.label_9.setText(_translate("TFG", "Parejas Añadidas:"))
+        self.label_7.setText(_translate("TFG", "Nombre:"))
+        item = self.table_vf.horizontalHeaderItem(0)
+        item.setText(_translate("TFG", "Inicio"))
+        item = self.table_vf.horizontalHeaderItem(1)
+        item.setText(_translate("TFG", "Alcanzables"))
+        self.line_vf_name.setPlaceholderText(_translate("TFG", "Nombre"))
+        self.label_8.setText(_translate("TFG", "Rutas:"))
+        self.label_6.setText(_translate("TFG", "Campo de vectores autogenerado"))
+        item = self.tablePairs.horizontalHeaderItem(0)
+        item.setText(_translate("TFG", "Sigma"))
+        item = self.tablePairs.horizontalHeaderItem(1)
+        item.setText(_translate("TFG", "Tau"))
+        self.pushButton_Guardar.setText(_translate("TFG", "Guardar"))
+
+    def add_layout_cone(self):
+        self.clear_layout_dinamico(self.gridLayout_dinamico)
+        self.gridLayout_dinamico = QtWidgets.QGridLayout()
+        self.gridLayout_dinamico.setContentsMargins(0, 4, 15, 10)
+        self.gridLayout_dinamico.setHorizontalSpacing(15)
+        self.gridLayout_dinamico.setVerticalSpacing(10)
+        self.gridLayout_dinamico.setObjectName("gridLayout_dinamico")
+        self.label_cone_omega = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_cone_omega.setFont(font)
+        self.label_cone_omega.setObjectName("label_cone_omega")
+        self.gridLayout_dinamico.addWidget(self.label_cone_omega, 2, 2, 1, 1)
+        self.label_10 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_10.setFont(font)
+        self.label_10.setObjectName("label_10")
+        self.gridLayout_dinamico.addWidget(self.label_10, 3, 1, 1, 1)
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.gridLayout_dinamico.addWidget(self.label_7, 1, 1, 1, 1)
+        self.label_12 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_12.setFont(font)
+        self.label_12.setObjectName("label_12")
+        self.gridLayout_dinamico.addWidget(self.label_12, 4, 1, 1, 2)
+        self.line_cone_name = QtWidgets.QLineEdit(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.line_cone_name.setFont(font)
+        self.line_cone_name.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                          "background-color: rgb(177, 177, 177);")
+        self.line_cone_name.setObjectName("line_cone_name")
+        self.gridLayout_dinamico.addWidget(self.line_cone_name, 1, 2, 1, 1)
+        self.label_9 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_9.setFont(font)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout_dinamico.addWidget(self.label_9, 2, 1, 1, 1)
+        self.label_6 = QtWidgets.QLabel(self.centralwidget)
+        self.label_6.setMaximumSize(QtCore.QSize(16777215, 30))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.gridLayout_dinamico.addWidget(self.label_6, 0, 1, 1, 2)
+        self.label_cone_dim = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_cone_dim.setFont(font)
+        self.label_cone_dim.setObjectName("label_cone_dim")
+        self.gridLayout_dinamico.addWidget(self.label_cone_dim, 3, 2, 1, 1)
+        self.pushButton_Guardar = QtWidgets.QPushButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(100)
+        sizePolicy.setHeightForWidth(self.pushButton_Guardar.sizePolicy().hasHeightForWidth())
+        self.pushButton_Guardar.setSizePolicy(sizePolicy)
+        self.pushButton_Guardar.setMinimumSize(QtCore.QSize(150, 25))
+        self.pushButton_Guardar.setMaximumSize(QtCore.QSize(250, 25))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_Guardar.setFont(font)
+        self.pushButton_Guardar.setStyleSheet("QPushButton{\n"
+                                              "color: rgb(255, 255, 255);\n"
+                                              "background-color: rgb(71, 71, 71);\n"
+                                              "border: 1px solid;\n"
+                                              "border-radius: 10px;}\n"
+                                              "\n"
+                                              "QPushButton:hover{\n"
+                                              "    background-color: rgb(100, 100, 100);\n"
+                                              "}\n"
+                                              "\n"
+                                              "")
+        self.pushButton_Guardar.setAutoDefault(False)
+        self.pushButton_Guardar.setDefault(False)
+        self.pushButton_Guardar.setFlat(False)
+        self.pushButton_Guardar.setObjectName("pushButton_Guardar")
+        self.gridLayout_dinamico.addWidget(self.pushButton_Guardar, 6, 2, 1, 1, QtCore.Qt.AlignRight)
+        self.tableWidget_2 = QtWidgets.QTableWidget(self.centralwidget)
+        self.tableWidget_2.setMinimumSize(QtCore.QSize(300, 0))
+        self.tableWidget_2.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                         "background-color: rgb(177, 177, 177);")
+        self.tableWidget_2.setObjectName("tableWidget_2")
+        self.tableWidget_2.setColumnCount(3)
+        self.tableWidget_2.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.tableWidget_2.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.tableWidget_2.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.tableWidget_2.setHorizontalHeaderItem(2, item)
+        self.gridLayout_dinamico.addWidget(self.tableWidget_2, 5, 1, 1, 2)
+        self.horizontalLayout.addLayout(self.gridLayout_dinamico)
+
+        header = self.tableWidget_2.horizontalHeader()
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.tableWidget_2.setFont(font)
+
+        self.tableWidget_2.setItemDelegate(AligDelegate())
+
+        self.tableWidget_2.setAlternatingRowColors(True)
+
+        self.sc_cone = cono(self.sc)
+
+        _translate = QtCore.QCoreApplication.translate
+
+        self.label_cone_omega.setText(_translate("TFG", str(self.sc_cone.omega)))
+        self.label_10.setText(_translate("TFG", "Dimensión"))
+        self.label_7.setText(_translate("TFG", "Nombre:"))
+        self.label_12.setText(_translate("TFG", "Símplices:"))
+        self.line_cone_name.setPlaceholderText(_translate("TFG", "Cono"))
+        self.label_9.setText(_translate("TFG", "Omega:"))
+        self.label_6.setText(_translate("TFG", "Cono de " + self.sc.name))
+        self.label_cone_dim.setText(_translate("TFG", str(self.sc_cone.dimension)))
+        self.pushButton_Guardar.setText(_translate("TFG", "Guardar"))
+        item = self.tableWidget_2.horizontalHeaderItem(0)
+        item.setText(_translate("TFG", "Nombre"))
+        item = self.tableWidget_2.horizontalHeaderItem(1)
+        item.setText(_translate("TFG", "Dimensión"))
+        item = self.tableWidget_2.horizontalHeaderItem(2)
+        item.setText(_translate("TFG", "Caras"))
+
+        self.rellenar_tabla_cono()
+
+    def rellenar_tabla_cono(self):
+        self.tableWidget_2.setRowCount(0)
+        for i, sim in enumerate(self.sc_cone.simplex):
+            numRows = self.tableWidget_2.rowCount()
+            self.tableWidget_2.insertRow(numRows)
+            self.tableWidget_2.setItem(i, 0, QtWidgets.QTableWidgetItem(sim.name))
+            self.tableWidget_2.setItem(i, 1, QtWidgets.QTableWidgetItem(str(sim.dimension)))
+            if sim.faces:
+                faces_str = "["
+                for j, elem in enumerate(sim.faces):
+                    faces_str = faces_str + elem.name
+                    if j != len(sim.faces) - 1:
+                        faces_str += ","
+                faces_str += "]"
+                text_scrolleable = QTextEdit()
+                text_scrolleable.setText(faces_str)
+                text_scrolleable.setReadOnly(True)
+                if i % 2 != 0:
+                    text_scrolleable.setStyleSheet("background-color: rgb(255, 255, 255);")
+                self.tableWidget_2.setCellWidget(i, 2, text_scrolleable)
+
+    def rellenar_tablas_vf_auto(self):
+        self.tablePairs.setRowCount(0)
+        self.table_vf.setRowCount(0)
+        for i, pair in enumerate(self.vf_auto.pairs_added):
+            numRows = self.tablePairs.rowCount()
+            self.tablePairs.insertRow(numRows)
+            self.tablePairs.setItem(i, 0, QtWidgets.QTableWidgetItem(pair[0].name + ", " + str(pair[0].dimension)))
+            self.tablePairs.setItem(i, 1, QtWidgets.QTableWidgetItem(pair[1].name + ", " + str(pair[1].dimension)))
+        for i, key in enumerate(self.vf_auto.routes.keys()):
+            numRows = self.table_vf.rowCount()
+            self.table_vf.insertRow(numRows)
+            self.table_vf.setItem(i, 0, QtWidgets.QTableWidgetItem(key))
+            rutas_str = "("
+            for j, rutas in enumerate(self.vf_auto.routes[key]):
+                rutas_str += rutas
+                if j != len(self.vf_auto.routes[key]) - 1:
+                    rutas_str += ","
+            rutas_str += ")"
+            self.table_vf.setItem(i, 1, QtWidgets.QTableWidgetItem(rutas_str))
+
     def rellenar_datos_vf(self):
         self.table_vf.setRowCount(0)
         vf_name = self.comboBox_vf.currentText()
@@ -915,6 +1260,50 @@ class MenuSC(QMainWindow):
                     rutas_str += ","
             rutas_str += ")"
             self.table_vf.setItem(i, 1, QtWidgets.QTableWidgetItem(rutas_str))
+
+    def guardar_vf_auto(self):
+        nombre = self.line_vf_name.text()
+        edit = False
+        if not nombre:
+            crear_mensaje_error('Introduzca el nombre del campo de vectores', "Campo de Vectores")
+        elif '"' in nombre or ":" in nombre:
+            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+            self.text_sc_name.clear()
+        else:
+            if any(x for x in self.sc.vector_fields if x.name == nombre):
+                box = QtWidgets.QMessageBox()
+                box.setIcon(QtWidgets.QMessageBox.Question)
+                box.setWindowTitle('GUARDAR')
+                box.setText('Ya existe un Campo de vectores con ese nombre \r\n ¿Deseas sobreescribirlo?')
+                box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                buttonY = box.button(QtWidgets.QMessageBox.Yes)
+                buttonY.setText('Sí')
+                buttonN = box.button(QtWidgets.QMessageBox.No)
+                buttonN.setText('No')
+                icon = QtGui.QIcon()
+                icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
+                box.setWindowIcon(icon)
+                box.setStyleSheet("background-image: url(:/images/fondo.png);\n"
+                                  "background-color: rgb(27, 27, 27);\n"
+                                  "color: rgb(255, 255, 255);")
+                buttonN.setStyleSheet("background-color: rgb(71, 71, 71)")
+                buttonY.setStyleSheet("background-color: rgb(71, 71, 71)")
+                box.exec_()
+                if box.clickedButton() == buttonY:
+                    edit = True
+                else:
+                    return
+            self.vf_auto.name = nombre
+            if edit:
+                vf_to_remove = next((x for x in self.sc.vector_fields if x.name == nombre), None)
+                self.sc.vector_fields.remove(vf_to_remove)
+                self.sc.add_vector_field(self.vf_auto)
+            else:
+                self.sc.add_vector_field(self.vf_auto)
+            edit_simplicial_complex(self.sc)
+            QMessageBox.information(self, "Éxito",
+                                    "Operación completada con éxito")
+            self.clear_layout_dinamico(self.gridLayout_dinamico)
 
     def populate_simplex_list_mod(self, simplex):
         for sim in simplex:
@@ -1110,3 +1499,7 @@ class MenuSC(QMainWindow):
         self.hide()
         self.clear_layout_dinamico(self.gridLayout_dinamico)
 
+class AligDelegate(QItemDelegate):
+    def paint(self, painter, option, index):
+        option.displayAlignment = QtCore.Qt.AlignCenter
+        QItemDelegate.paint(self, painter, option, index)
