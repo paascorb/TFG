@@ -164,13 +164,30 @@ class SimplicialComplex:
         :param sim:
         :return:
         """
-        if sim.dimension == self.dimension:
+        if sim in self.facets:
             return [sim]
         star_list = list()
         star_list.append(sim)
         for coface in self.get_sim_cofaces(sim):
             star_list.extend(self.star(coface))
+        aux = star_list.copy()
+        for elem in aux:
+            star_list.extend(self.closure(elem))
         return list(set(star_list))
+
+    def open_star(self, sim):
+        """
+        TODO
+        :param sim:
+        :return:
+        """
+        if sim in self.facets:
+            return [sim]
+        open_star = list()
+        open_star.append(sim)
+        for coface in self.get_sim_cofaces(sim):
+            open_star.extend(self.open_star(coface))
+        return list(set(open_star))
 
     def link(self, sim):
         """
@@ -179,16 +196,8 @@ class SimplicialComplex:
         :return:
         """
         star = self.star(sim)
-        closure_star = list()
-        closure = self.closure(sim)
-        star_closure = list()
-        for elem in star:
-            closure_star.extend(self.closure(elem))
-        for elem in closure:
-            star_closure.extend(self.star(elem))
-        closure_star = list(set(closure_star))
-        star_closure = list(set(star_closure))
-        return list(filter(lambda x: x not in star_closure, closure_star))
+        open_star = self.open_star(sim)
+        return [x for x in star if x not in open_star]
 
     # Método auxiliar que recalcula los parámetros del complejo simplicial, reordenando e indexando sus simplices,
     # volviendo a calcular su matriz de caras y su c-vector además de sus facests y dimensión
