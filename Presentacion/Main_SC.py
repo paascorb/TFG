@@ -19,6 +19,7 @@ from Presentacion.PresentacionAuxiliar import *
 class MenuSC(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.sc = None
         self.sc_cone = None
         self.vf_auto = None
         self.bf_tra = None
@@ -376,12 +377,14 @@ class MenuSC(QMainWindow):
             _translate("TFG", "Calcular un campo de vectores automáticamente"))
 
     def set_sc(self, sc):
-        self.clear_layout_dinamico(self.gridLayout_dinamico)
         self.sc = sc
         self.label_nombre_sc.setText(sc.name)
         self.label_dimension.setText(str(sc.dimension))
         self.label_omega.setText(str(sc.omega))
         self.add_simplex_table(sc.simplex)
+        self.clear_layout_dinamico(self.gridLayout_dinamico)
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 0)
 
     def add_layout_tra(self):
         self.clear_layout_dinamico(self.gridLayout_dinamico)
@@ -796,6 +799,8 @@ class MenuSC(QMainWindow):
         self.gridLayout_6.addWidget(self.pushButton_Aceptar, 0, 0, 1, 1, QtCore.Qt.AlignRight)
         self.gridLayout_dinamico.addLayout(self.gridLayout_6, 3, 1, 1, 1)
         self.horizontalLayout.addLayout(self.gridLayout_dinamico)
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 1)
 
         _translate = QtCore.QCoreApplication.translate
         self.label_6.setText(_translate("TFG", "Nombre del Complejo simplicial:"))
@@ -818,7 +823,7 @@ class MenuSC(QMainWindow):
         self.pushButton_Aceptar.clicked.connect(self.update_sc)
         self.pushButton_QuitarSim.clicked.connect(self.remove_simplex)
         self.pushButton_Anadir.clicked.connect(self.add_simplex)
-
+        self.text_nombre_sim.installEventFilter(self)
         self.text_dim_sim.textChanged.connect(self.add_posible_faces)
         self.toolButton_mas.clicked.connect(self.add_face_to_list)
         self.toolButton_menos.clicked.connect(self.remove_face_of_list)
@@ -878,6 +883,8 @@ class MenuSC(QMainWindow):
             self.label_8.setObjectName("label_8")
             self.gridLayout_dinamico.addWidget(self.label_8, 3, 1, 1, 2)
             self.horizontalLayout.addLayout(self.gridLayout_dinamico)
+            self.horizontalLayout.setStretch(0, 1)
+            self.horizontalLayout.setStretch(1, 1)
 
             _translate = QtCore.QCoreApplication.translate
             self.comboBox_vf.setPlaceholderText(_translate("TFG", "Seleccione un campo"))
@@ -1008,6 +1015,8 @@ class MenuSC(QMainWindow):
         self.pushButton_Guardar.setObjectName("pushButton_Guardar")
         self.gridLayout_dinamico.addWidget(self.pushButton_Guardar, 6, 2, 1, 1, QtCore.Qt.AlignRight)
         self.horizontalLayout.addLayout(self.gridLayout_dinamico)
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 1)
 
         header = self.tablePairs.horizontalHeader()
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
@@ -1059,6 +1068,22 @@ class MenuSC(QMainWindow):
 
     def add_layout_cone(self):
         self.clear_layout_dinamico(self.gridLayout_dinamico)
+        input_dialog = QtWidgets.QInputDialog(self)
+        input_dialog.setCancelButtonText("Cancelar")
+        input_dialog.setOkButtonText("Aceptar")
+        input_dialog.setWindowTitle("Nombre vértice")
+        input_dialog.setLabelText("Nombre del vértice del cono:")
+
+        if input_dialog.exec_() == QtWidgets.QDialog.Accepted:
+            cone_name = input_dialog.textValue()
+            for elem in self.sc.simplex[:self.sc.c_vector[0]]:
+                if elem.name == cone_name:
+                    crear_mensaje_error('Ya existe un vértice con ese nombre', "Nombre inválido")
+                    self.clear_layout_dinamico(self.gridLayout_dinamico)
+                    return
+        else:
+            self.clear_layout_dinamico(self.gridLayout_dinamico)
+            return
         self.gridLayout_dinamico = QtWidgets.QGridLayout()
         self.gridLayout_dinamico.setContentsMargins(0, 4, 15, 10)
         self.gridLayout_dinamico.setHorizontalSpacing(15)
@@ -1166,6 +1191,8 @@ class MenuSC(QMainWindow):
         self.tableWidget_2.setHorizontalHeaderItem(2, item)
         self.gridLayout_dinamico.addWidget(self.tableWidget_2, 5, 1, 1, 2)
         self.horizontalLayout.addLayout(self.gridLayout_dinamico)
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 1)
 
         header = self.tableWidget_2.horizontalHeader()
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
@@ -1181,7 +1208,7 @@ class MenuSC(QMainWindow):
 
         self.tableWidget_2.setAlternatingRowColors(True)
 
-        self.sc_cone = cono(self.sc)
+        self.sc_cone = cono(self.sc, cone_name)
 
         _translate = QtCore.QCoreApplication.translate
 
@@ -1200,6 +1227,8 @@ class MenuSC(QMainWindow):
         item.setText(_translate("TFG", "Dimensión"))
         item = self.tableWidget_2.horizontalHeaderItem(2)
         item.setText(_translate("TFG", "Caras"))
+
+        self.pushButton_Guardar.clicked.connect(self.save_cone)
 
         self.rellenar_tabla_cono()
 
@@ -1220,9 +1249,50 @@ class MenuSC(QMainWindow):
                 text_scrolleable = QTextEdit()
                 text_scrolleable.setText(faces_str)
                 text_scrolleable.setReadOnly(True)
-                if i % 2 != 0:
-                    text_scrolleable.setStyleSheet("background-color: rgb(255, 255, 255);")
                 self.tableWidget_2.setCellWidget(i, 2, text_scrolleable)
+
+    def save_cone(self):
+        nombre = self.line_cone_name.text()
+        edit = False
+        if not nombre:
+            crear_mensaje_error('Introduzca el nombre del cono', "Nombre vacío")
+        elif '"' in nombre or ":" in nombre:
+            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+            self.line_cone_name.clear()
+        else:
+            edit = False
+            all_sc = list_simplicial_complexes()
+            if any(x for x in all_sc if x.name == nombre and x.name != self.label_nombre_sc.text()):
+                box = QtWidgets.QMessageBox()
+                box.setIcon(QtWidgets.QMessageBox.Question)
+                box.setWindowTitle('GUARDAR')
+                box.setText('Ya existe un Complejo simplicial con ese nombre \r\n ¿Deseas sobreescribirlo?')
+                box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                buttonY = box.button(QtWidgets.QMessageBox.Yes)
+                buttonY.setText('Sí')
+                buttonN = box.button(QtWidgets.QMessageBox.No)
+                buttonN.setText('No')
+                icon = QtGui.QIcon()
+                icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
+                box.setWindowIcon(icon)
+                box.setStyleSheet("background-image: url(:/images/fondo.png);\n"
+                                  "background-color: rgb(27, 27, 27);\n"
+                                  "color: rgb(255, 255, 255);")
+                buttonN.setStyleSheet("background-color: rgb(71, 71, 71)")
+                buttonY.setStyleSheet("background-color: rgb(71, 71, 71)")
+                box.exec_()
+                if box.clickedButton() == buttonY:
+                    edit = True
+                else:
+                    return
+            self.sc_cone.name = nombre
+            if edit:
+                edit_simplicial_complex(self.sc_cone)
+            else:
+                add_simplicial_complex(self.sc_cone)
+            QMessageBox.information(self, "Éxito",
+                                    "Operación completada con éxito")
+            self.clear_layout_dinamico(self.gridLayout_dinamico)
 
     def rellenar_tablas_vf_auto(self):
         self.tablePairs.setRowCount(0)
@@ -1380,6 +1450,11 @@ class MenuSC(QMainWindow):
                                     "Operación completada con éxito")
             self.set_sc(sc)
 
+    def eventFilter(self, obj, event):
+        if event.type() == QtCore.QEvent.KeyPress and obj is self.text_nombre_sim:
+            if event.key() == QtCore.Qt.Key_Return and self.text_nombre_sim.hasFocus():
+                self.add_simplex()
+        return super().eventFilter(obj, event)
 
     def add_face_to_list(self):
         face = self.posible_faces.currentText()
@@ -1405,42 +1480,54 @@ class MenuSC(QMainWindow):
         self.posible_faces.clear()
         self.list_faces.clear()
         self.faces.clear()
-        dim = self.text_dim_sim.text()
-        if not dim.isdigit() or int(dim) < 0:
-            self.text_dim_sim.setText("")
+        try:
+            self.posible_faces.disconnect()
+        except Exception:
+            pass
+        dim = int(self.text_dim_sim.text())
+        if dim > 0:
+            self.text_nombre_sim.setEnabled(False)
+            self.text_nombre_sim.clear()
+            self.text_nombre_sim.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                               "background-color: rgb(50, 50, 50);")
+            list_posible_faces = Aux.list_simplex_by_dim(self.simplex, dim - 1)
+            list_posible_faces = [elem.name for elem in list_posible_faces]
+            self.posible_faces.addItems(list_posible_faces)
+            self.posible_faces.currentIndexChanged.connect(self.add_face_to_list)
         else:
-            dim = int(dim)
-            if dim > 0:
-                list_posible_faces = Aux.list_simplex_by_dim(self.simplex, dim - 1)
-                list_posible_faces = [elem.name for elem in list_posible_faces]
-                self.posible_faces.addItems(list_posible_faces)
+            self.text_nombre_sim.setEnabled(True)
+            self.text_nombre_sim.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                               "background-color: rgb(177, 177, 177);")
 
     def add_simplex(self):
-        nombre_sim = self.text_nombre_sim.text()
-        repetido = Aux.get_sim_by_name(self.simplex, nombre_sim)
-        if not nombre_sim:
-            crear_mensaje_error('Introduzca el nombre del símplice', "Nombre Símplice")
-        elif repetido is not None:
-            crear_mensaje_error('Ya existe un símplice con ese nombre', "Nombre Símplice")
+        dim = int(self.text_dim_sim.text())
+        sim_faces = set([x for x in self.faces if x is not None])
+        repetido = None
+        if dim > 0 and dim == len(self.faces) - 1:
+            nombre_sim = generate_sim_name(sim_faces)
         else:
-            dim = int(self.text_dim_sim.text()) if self.text_dim_sim.text() else -1
-            if dim != len(self.faces) - 1 and dim != 0:
-                crear_mensaje_error("Las caras del símplice no son válidas para su dimensión", "Caras Símplice")
-            elif dim == -1:
-                crear_mensaje_error("Introduzca una dimensión", "Dimensión Símplice")
-            else:
-                sim = Simplex(nombre_sim, dim)
-                sim_faces = set([x for x in self.faces if x is not None])
-                if sim_faces and any(elem.faces == sim_faces for elem in self.simplex):
-                    crear_mensaje_error("Ya existe un símplice con esas caras", "Caras Símplice")
-                else:
-                    sim.set_faces(sim_faces)
-                    self.simplex.append(sim)
-                    self.list_simplex.addItem(str(sim))
-                    self.text_nombre_sim.setText("")
-                    self.text_dim_sim.setValue(0)
-                    self.faces = list()
-                    self.list_faces.clear()
+            nombre_sim = self.text_nombre_sim.text()
+            repetido = Aux.get_sim_by_name(self.simplex, nombre_sim)
+        if dim != len(self.faces) - 1 and dim != 0:
+            crear_mensaje_error("Las caras del símplice no son válidas para su dimensión", "Caras Símplice")
+            return
+        elif repetido is not None:
+            crear_mensaje_error('Ya existe un vértice con ese nombre', "Nombre Símplice")
+            return
+        elif not nombre_sim:
+            crear_mensaje_error('Introduzca el nombre del vértice', "Nombre Símplice")
+            return
+        sim = Simplex(nombre_sim, dim)
+        if sim_faces and any(elem.faces == sim_faces for elem in self.simplex):
+            crear_mensaje_error("Ya existe un símplice con esas caras", "Caras Símplice")
+        else:
+            sim.set_faces(sim_faces)
+            self.simplex.append(sim)
+            self.list_simplex.addItem(str(sim))
+            self.text_nombre_sim.setText("")
+            self.text_dim_sim.setValue(0)
+            self.faces = list()
+            self.list_faces.clear()
 
     def remove_simplex(self):
         list_items = self.list_simplex.selectedItems()
@@ -1462,6 +1549,7 @@ class MenuSC(QMainWindow):
             self.list_simplex.takeItem(row)
 
     def clear_layout_dinamico(self, layout):
+        self.horizontalLayout.takeAt(1)
         if layout is not None:
             while layout.count():
                 child = layout.takeAt(0)

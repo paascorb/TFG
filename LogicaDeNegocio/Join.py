@@ -1,4 +1,5 @@
 # Métodos de lógica de negocio que calculan el join y cono por Pablo Ascorbe 18/06/2022
+import copy
 from functools import reduce
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
@@ -11,35 +12,27 @@ def join(k_sc, l_sc):
     :param l_sc:
     :return:
     """
-    all_simplex = k_sc.simplex + l_sc.simplex
+    k_simplex = copy.deepcopy(k_sc.simplex)
+    l_simplex = copy.deepcopy(l_sc.simplex)
+    all_simplex = k_simplex + l_simplex
     for K_simplex in k_sc.simplex:
         k_sim_faces = list(K_simplex.faces) if K_simplex.dimension > 0 else [K_simplex]
         for L_simplex in l_sc.simplex:
             faces_aux = k_sim_faces.copy()
             faces_aux.extend(L_simplex.faces if L_simplex.dimension > 0 else [L_simplex])
             simplex = Simplex(generate_sim_name(faces_aux), len(faces_aux) - 1)
-            faces = set()
-            for sim in all_simplex:
-                for face in faces_aux:
-                    if sim.name == face.name:
-                        faces.add(sim)
-            simplex.set_faces(faces)
-            # simplex.set_faces(set(all_simplex_by_names(all_simplex, generate_faces_names(simplex.name))))
+            simplex.set_faces(set(all_simplex_by_names(all_simplex, generate_faces_names(faces_aux))))
             all_simplex.append(simplex)
-    for elem in all_simplex:
-        print("-------")
-        print(elem)
-        print(elem.faces)
     return SimplicialComplex("L*K", k_sc.omega + l_sc.omega, all_simplex)
 
 
-def cono(k):
+def cono(k, name):
     """
     TODO
     :param k:
     :return:
     """
-    point = Simplex("Point", 0)
+    point = Simplex(name, 0)
     point.set_faces()
     sc_point = SimplicialComplex("sc_point", 1, [point])
     return join(k, sc_point)
@@ -51,35 +44,45 @@ def generate_sim_name(faces):
     :param faces:
     :return:
     """
-    faces_ids = list(map(lambda x: x.name, faces))
     faces_aux = list()
-    if any(x for x in faces_ids if len(x) > 1):
-        faces_aux = faces_ids
-        faces_aux.sort()
+    for elem in faces:
+        faces_aux.extend(get_vertex_sim(elem))
+    faces_aux = list(set(faces_aux))
+    faces_aux.sort()
+    return concatenate_list(faces_aux)
+
+
+def get_vertex_sim(sim):
+    if sim.dimension == 0:
+        return [sim.name]
     else:
-        for elem in faces_ids:
-            faces_aux.extend(elem)
-        faces_aux = list(set(faces_aux))
-        faces_aux.sort()
-    return concatenate_char_list(faces_aux)
+        result = list()
+        for face in sim.faces:
+            result.extend(get_vertex_sim(face))
+        return result
 
 
-def generate_faces_names(sim_name):
+def generate_faces_names(generative_sim):
     """
     TODO
-    :param sim_name:
+    :param generative_sim:
     :return:
     """
-    name_char = list(sim_name)
+    sim_vertex_names = list()
+    for elem in generative_sim:
+        sim_vertex_names.extend(get_vertex_sim(elem))
+    sim_vertex_names = list(set(sim_vertex_names))
+    sim_vertex_names.sort()
+    aux = sim_vertex_names.copy()
     result = list()
-    for i in range(0, len(name_char)):
-        aux = name_char.copy()
+    for i, elem in enumerate(sim_vertex_names):
         aux.pop(i)
-        result.append(concatenate_char_list(aux))
+        result.append(concatenate_list(aux))
+        aux = sim_vertex_names.copy()
     return result
 
 
-def concatenate_char_list(c_list):
+def concatenate_list(c_list):
     """
     TODO
     :param c_list:
@@ -95,7 +98,6 @@ def all_simplex_by_names(simplex, names):
     :param names:
     :return:
     """
-    print(simplex, names)
     result = list()
     for elem in names:
         result.append(next((sim for sim in simplex if sim.name == elem), None))

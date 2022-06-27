@@ -1,6 +1,9 @@
+from functools import reduce
+
 from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from LogicaDeNegocio.Join import *
 from LogicaDeNegocio.SimplicialComplexManager import *
 import ModeloDeDominio.Auxiliary as Aux
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
@@ -21,7 +24,7 @@ class NuevoSC(QWidget):
         icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
         self.setWindowIcon(icon)
         self.setStyleSheet("background-color: rgb(27, 27, 27);\n"
-                                    "color: rgb(255, 255, 255);")
+                           "color: rgb(255, 255, 255);")
         self.gridLayout_4 = QtWidgets.QGridLayout(self)
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.gridLayout_6 = QtWidgets.QGridLayout()
@@ -146,7 +149,7 @@ class NuevoSC(QWidget):
         self.groupBox_2.setObjectName("groupBox_2")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_2)
         self.gridLayout_3.setObjectName("gridLayout_3")
-        self.text_dim_sim = QtWidgets.QLineEdit(self.groupBox_2)
+        self.text_dim_sim = QtWidgets.QSpinBox(self.groupBox_2)
         font = QtGui.QFont()
         font.setPointSize(12)
         self.text_dim_sim.setFont(font)
@@ -270,7 +273,6 @@ class NuevoSC(QWidget):
         self.text_sc_name.setObjectName("text_sc_name")
         self.gridLayout.addWidget(self.text_sc_name, 2, 0, 1, 1)
         self.gridLayout_4.addLayout(self.gridLayout, 0, 0, 1, 1)
-        self.text_dim_sim.setText("0")
 
         # Aquí definiremos el orden:
         self.setTabOrder(self.text_sc_name, self.text_nombre_sim)
@@ -284,13 +286,19 @@ class NuevoSC(QWidget):
         self.pushButton_Aceptar.clicked.connect(self.acept_and_save_form)
         self.pushButton_Anadir.clicked.connect(self.add_simplex)
         self.pushButton_QuitarSim.clicked.connect(self.remove_simplex)
-
         self.text_dim_sim.textChanged.connect(self.add_posible_faces)
+        self.text_nombre_sim.installEventFilter(self)
         self.toolButton_mas.clicked.connect(self.add_face_to_list)
         self.toolButton_menos.clicked.connect(self.remove_face_of_list)
 
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
+
+    def eventFilter(self, obj, event):
+        if event.type() == QtCore.QEvent.KeyPress and obj is self.text_nombre_sim:
+            if event.key() == QtCore.Qt.Key_Return and self.text_nombre_sim.hasFocus():
+                self.add_simplex()
+        return super().eventFilter(obj, event)
 
     def closeEvent(self, event):
         if self.close_accepted:
@@ -345,42 +353,57 @@ class NuevoSC(QWidget):
         self.posible_faces.clear()
         self.list_faces.clear()
         self.faces.clear()
-        dim = self.text_dim_sim.text()
-        if not dim.isdigit() or int(dim) < 0:
-            self.text_dim_sim.setText("")
+        try:
+            self.posible_faces.disconnect()
+        except Exception:
+            pass
+        dim = int(self.text_dim_sim.text())
+        if dim > 0:
+            self.text_nombre_sim.setEnabled(False)
+            self.text_nombre_sim.clear()
+            self.text_nombre_sim.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                               "background-color: rgb(50, 50, 50);")
+            list_posible_faces = Aux.list_simplex_by_dim(self.simplex, dim - 1)
+            list_posible_faces = [elem.name for elem in list_posible_faces]
+            self.posible_faces.addItems(list_posible_faces)
+            self.posible_faces.currentIndexChanged.connect(self.add_face_to_list)
         else:
-            dim = int(dim)
-            if dim > 0:
-                list_posible_faces = Aux.list_simplex_by_dim(self.simplex, dim - 1)
-                list_posible_faces = [elem.name for elem in list_posible_faces]
-                self.posible_faces.addItems(list_posible_faces)
+            self.text_nombre_sim.setEnabled(True)
+            self.text_nombre_sim.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                               "background-color: rgb(177, 177, 177);")
 
     def add_simplex(self):
-        nombre_sim = self.text_nombre_sim.text()
-        repetido = Aux.get_sim_by_name(self.simplex, nombre_sim)
-        if not nombre_sim:
-            crear_mensaje_error('Introduzca el nombre del símplice', "Nombre Símplice")
-        elif repetido is not None:
-            crear_mensaje_error('Ya existe un símplice con ese nombre', "Nombre Símplice")
+        dim = int(self.text_dim_sim.text())
+        sim_faces = set([x for x in self.faces if x is not None])
+        repetido = None
+        if dim > 0 and dim == len(self.faces) - 1:
+            nombre_sim = generate_sim_name(sim_faces)
         else:
-            dim = int(self.text_dim_sim.text()) if self.text_dim_sim.text() else -1
-            if dim != len(self.faces) - 1 and dim != 0:
-                crear_mensaje_error("Las caras del símplice no son válidas para su dimensión", "Caras Símplice")
-            elif dim == -1:
-                crear_mensaje_error("Introduzca una dimensión", "Dimensión Símplice")
-            else:
-                sim = Simplex(nombre_sim, dim)
-                sim_faces = set([x for x in self.faces if x is not None])
-                if sim_faces and any(elem.faces == sim_faces for elem in self.simplex):
-                    crear_mensaje_error("Ya existe un símplice con esas caras", "Caras Símplice")
-                else:
-                    sim.set_faces(sim_faces)
-                    self.simplex.append(sim)
-                    self.list_simplex.addItem(str(sim))
-                    self.text_nombre_sim.setText("")
-                    self.text_dim_sim.setText("0")
-                    self.faces = list()
-                    self.list_faces.clear()
+            nombre_sim = self.text_nombre_sim.text()
+            repetido = Aux.get_sim_by_name(self.simplex, nombre_sim)
+        if dim != len(self.faces) - 1 and dim != 0:
+            crear_mensaje_error("Las caras del símplice no son válidas para su dimensión", "Caras Símplice")
+            return
+        elif repetido is not None:
+            crear_mensaje_error('Ya existe un vértice con ese nombre', "Nombre Símplice")
+            return
+        elif not nombre_sim:
+            crear_mensaje_error('Introduzca el nombre del vértice', "Nombre Símplice")
+            return
+        sim = Simplex(nombre_sim, dim)
+        if sim_faces and any(elem.faces == sim_faces for elem in self.simplex):
+            crear_mensaje_error("Ya existe un símplice con esas caras", "Caras Símplice")
+        else:
+            sim.set_faces(sim_faces)
+            self.simplex.append(sim)
+            self.list_simplex.addItem(str(sim))
+            self.text_nombre_sim.setText("")
+            self.text_dim_sim.setValue(0)
+            self.faces = list()
+            self.list_faces.clear()
+
+    def is_char_list(self, lista):
+        return not any(x for x in lista if len(x) > 1)
 
     def remove_simplex(self):
         list_items = self.list_simplex.selectedItems()

@@ -1,0 +1,136 @@
+{
+    "id": "Cono de abc",
+    "omega": "4",
+    "simplex": [
+        {
+            "id": "a",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        },
+        {
+            "id": "b",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        },
+        {
+            "id": "c",
+            "dimension": 0,
+            "index": 2,
+            "faces": []
+        },
+        {
+            "id": "q",
+            "dimension": 0,
+            "index": 3,
+            "faces": []
+        },
+        {
+            "id": "ab",
+            "dimension": 1,
+            "index": 4,
+            "faces": [
+                "b",
+                "a"
+            ]
+        },
+        {
+            "id": "ac",
+            "dimension": 1,
+            "index": 5,
+            "faces": [
+                "c",
+                "a"
+            ]
+        },
+        {
+            "id": "aq",
+            "dimension": 1,
+            "index": 6,
+            "faces": [
+                "q",
+                "a"
+            ]
+        },
+        {
+            "id": "bc",
+            "dimension": 1,
+            "index": 7,
+            "faces": [
+                "b",
+                "c"
+            ]
+        },
+        {
+            "id": "bq",
+            "dimension": 1,
+            "index": 8,
+            "faces": [
+                "b",
+                "q"
+            ]
+        },
+        {
+            "id": "cq",
+            "dimension": 1,
+            "index": 9,
+            "faces": [
+                "q",
+                "c"
+            ]
+        },
+        {
+            "id": "abc",
+            "dimension": 2,
+            "index": 10,
+            "faces": [
+                "ab",
+                "bc",
+                "ac"
+            ]
+        },
+        {
+            "id": "abq",
+            "dimension": 2,
+            "index": 11,
+            "faces": [
+                "ab",
+                "bq",
+                "aq"
+            ]
+        },
+        {
+            "id": "acq",
+            "dimension": 2,
+            "index": 12,
+            "faces": [
+                "cq",
+                "aq",
+                "ac"
+            ]
+        },
+        {
+            "id": "bcq",
+            "dimension": 2,
+            "index": 13,
+            "faces": [
+                "cq",
+                "bc",
+                "bq"
+            ]
+        },
+        {
+            "id": "abcq",
+            "dimension": 3,
+            "index": 14,
+            "faces": [
+                "acq",
+                "abq",
+                "bcq",
+                "abc"
+            ]
+        }
+    ],
+    "vector_fields": []
+}

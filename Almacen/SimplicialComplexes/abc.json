@@ -1,0 +1,126 @@
+{
+    "id": "abc",
+    "omega": "3",
+    "simplex": [
+        {
+            "id": "a",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        },
+        {
+            "id": "b",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        },
+        {
+            "id": "c",
+            "dimension": 0,
+            "index": 2,
+            "faces": []
+        },
+        {
+            "id": "ab",
+            "dimension": 1,
+            "index": 3,
+            "faces": [
+                "b",
+                "a"
+            ]
+        },
+        {
+            "id": "ac",
+            "dimension": 1,
+            "index": 4,
+            "faces": [
+                "a",
+                "c"
+            ]
+        },
+        {
+            "id": "bc",
+            "dimension": 1,
+            "index": 5,
+            "faces": [
+                "b",
+                "c"
+            ]
+        },
+        {
+            "id": "abc",
+            "dimension": 2,
+            "index": 6,
+            "faces": [
+                "ab",
+                "ac",
+                "bc"
+            ]
+        }
+    ],
+    "vector_fields": [
+        {
+            "id": "1",
+            "fblocks": [
+                [
+                    [
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    [
+                        1.0,
+                        0.0,
+                        1.0
+                    ],
+                    [
+                        0.0,
+                        1.0,
+                        1.0
+                    ]
+                ],
+                [
+                    [
+                        1.0
+                    ],
+                    [
+                        1.0
+                    ],
+                    [
+                        1.0
+                    ]
+                ]
+            ],
+            "c_vector": [
+                3,
+                3,
+                1
+            ],
+            "routes": {
+                "a": [
+                    "c"
+                ],
+                "b": [
+                    "c"
+                ],
+                "ac": [
+                    "ab",
+                    "bc"
+                ]
+            },
+            "targets": [
+                "ab",
+                "bc",
+                "ac",
+                "abc"
+            ],
+            "sources": [
+                "ab",
+                "a",
+                "bc",
+                "b",
+                "ac"
+            ]
+        }
+    ]
+}
