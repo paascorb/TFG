@@ -19,6 +19,8 @@ from Presentacion.PresentacionAuxiliar import *
 class MenuSC(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.link = None
+        self.star = None
         self.sc = None
         self.sc_cone = None
         self.vf_auto = None
@@ -317,6 +319,8 @@ class MenuSC(QMainWindow):
         self.actionCampo_De_Vectores.triggered.connect(self.add_layout_vf)
         self.actionCampo_de_Vectors_autom_tico.triggered.connect(self.add_layout_vf_auto)
         self.actionCono.triggered.connect(self.add_layout_cone)
+        self.actionLink.triggered.connect(self.add_layout_link)
+        self.actionStar.triggered.connect(self.add_layout_star)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -1232,6 +1236,231 @@ class MenuSC(QMainWindow):
 
         self.rellenar_tabla_cono()
 
+    def add_layout_star(self):
+        self.clear_layout_dinamico(self.gridLayout_dinamico)
+        self.gridLayout_dinamico = QtWidgets.QGridLayout()
+        self.gridLayout_dinamico.setContentsMargins(5, -1, 5, -1)
+        self.gridLayout_dinamico.setSpacing(15)
+        self.gridLayout_dinamico.setObjectName("gridLayout_dinamico")
+        self.list_sim_star = QtWidgets.QListWidget(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.list_sim_star.setFont(font)
+        self.list_sim_star.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                         "background-color: rgb(177, 177, 177);")
+        self.list_sim_star.setAlternatingRowColors(True)
+        self.list_sim_star.setObjectName("list_sim_star")
+        self.gridLayout_dinamico.addWidget(self.list_sim_star, 5, 0, 1, 2)
+        self.pushButton_Guardar = QtWidgets.QPushButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(100)
+        sizePolicy.setHeightForWidth(self.pushButton_Guardar.sizePolicy().hasHeightForWidth())
+        self.pushButton_Guardar.setSizePolicy(sizePolicy)
+        self.pushButton_Guardar.setMinimumSize(QtCore.QSize(150, 25))
+        self.pushButton_Guardar.setMaximumSize(QtCore.QSize(250, 25))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_Guardar.setFont(font)
+        self.pushButton_Guardar.setStyleSheet("QPushButton{\n"
+                                              "color: rgb(255, 255, 255);\n"
+                                              "background-color: rgb(71, 71, 71);\n"
+                                              "border: 1px solid;\n"
+                                              "border-radius: 10px;}\n"
+                                              "\n"
+                                              "QPushButton:hover{\n"
+                                              "    background-color: rgb(100, 100, 100);\n"
+                                              "}\n"
+                                              "\n"
+                                              "")
+        self.pushButton_Guardar.setAutoDefault(False)
+        self.pushButton_Guardar.setDefault(False)
+        self.pushButton_Guardar.setFlat(False)
+        self.pushButton_Guardar.setObjectName("pushButton_Guardar")
+        self.gridLayout_dinamico.addWidget(self.pushButton_Guardar, 6, 1, 1, 1, QtCore.Qt.AlignRight)
+        self.label_8 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_8.setFont(font)
+        self.label_8.setObjectName("label_8")
+        self.gridLayout_dinamico.addWidget(self.label_8, 4, 0, 1, 2)
+        self.label_6 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.gridLayout_dinamico.addWidget(self.label_6, 0, 0, 1, 2, QtCore.Qt.AlignHCenter)
+        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.lineEdit.setFont(font)
+        self.lineEdit.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                    "background-color: rgb(177, 177, 177);")
+        self.lineEdit.setObjectName("lineEdit")
+        self.gridLayout_dinamico.addWidget(self.lineEdit, 3, 1, 1, 1)
+        self.label_9 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_9.setFont(font)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout_dinamico.addWidget(self.label_9, 3, 0, 1, 1)
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.gridLayout_dinamico.addWidget(self.label_7, 1, 0, 2, 1)
+        self.comboBox_sim_star = QtWidgets.QComboBox(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.comboBox_sim_star.setFont(font)
+        self.comboBox_sim_star.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                             "background-color: rgb(177, 177, 177);")
+        self.comboBox_sim_star.setObjectName("comboBox_sim_star")
+        self.gridLayout_dinamico.addWidget(self.comboBox_sim_star, 1, 1, 2, 1)
+        self.horizontalLayout.addLayout(self.gridLayout_dinamico)
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 1)
+
+        self.rellenar_combo_sim_stlk(self.comboBox_sim_star)
+        self.comboBox_sim_star.currentIndexChanged.connect(self.rellenar_tabla_star)
+        self.reset_listWidget(self.list_sim_star)
+        self.pushButton_Guardar.clicked.connect(self.save_star)
+
+        _translate = QtCore.QCoreApplication.translate
+        self.label_7.setText(_translate("TFG", "Seleccione el vértice:"))
+        self.label_6.setText(_translate("TFG", "Cálculo del Star"))
+        self.label_8.setText(_translate("TFG", "Star:"))
+        self.lineEdit.setPlaceholderText(_translate("TFG", "Nombre"))
+        self.label_9.setText(_translate("TFG", "Nombre:"))
+        self.pushButton_Guardar.setText(_translate("TFG", "Guardar"))
+
+    def add_layout_link(self):
+        self.clear_layout_dinamico(self.gridLayout_dinamico)
+        self.gridLayout_dinamico = QtWidgets.QGridLayout()
+        self.gridLayout_dinamico.setContentsMargins(5, -1, 5, -1)
+        self.gridLayout_dinamico.setSpacing(15)
+        self.gridLayout_dinamico.setObjectName("gridLayout_dinamico")
+        self.list_sim_link = QtWidgets.QListWidget(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.list_sim_link.setFont(font)
+        self.list_sim_link.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                         "background-color: rgb(177, 177, 177);")
+        self.list_sim_link.setAlternatingRowColors(True)
+        self.list_sim_link.setObjectName("list_sim_star")
+        self.gridLayout_dinamico.addWidget(self.list_sim_link, 5, 0, 1, 2)
+        self.pushButton_Guardar = QtWidgets.QPushButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(100)
+        sizePolicy.setHeightForWidth(self.pushButton_Guardar.sizePolicy().hasHeightForWidth())
+        self.pushButton_Guardar.setSizePolicy(sizePolicy)
+        self.pushButton_Guardar.setMinimumSize(QtCore.QSize(150, 25))
+        self.pushButton_Guardar.setMaximumSize(QtCore.QSize(250, 25))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_Guardar.setFont(font)
+        self.pushButton_Guardar.setStyleSheet("QPushButton{\n"
+                                              "color: rgb(255, 255, 255);\n"
+                                              "background-color: rgb(71, 71, 71);\n"
+                                              "border: 1px solid;\n"
+                                              "border-radius: 10px;}\n"
+                                              "\n"
+                                              "QPushButton:hover{\n"
+                                              "    background-color: rgb(100, 100, 100);\n"
+                                              "}\n"
+                                              "\n"
+                                              "")
+        self.pushButton_Guardar.setAutoDefault(False)
+        self.pushButton_Guardar.setDefault(False)
+        self.pushButton_Guardar.setFlat(False)
+        self.pushButton_Guardar.setObjectName("pushButton_Guardar")
+        self.gridLayout_dinamico.addWidget(self.pushButton_Guardar, 6, 1, 1, 1, QtCore.Qt.AlignRight)
+        self.label_8 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_8.setFont(font)
+        self.label_8.setObjectName("label_8")
+        self.gridLayout_dinamico.addWidget(self.label_8, 4, 0, 1, 2)
+        self.label_6 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.gridLayout_dinamico.addWidget(self.label_6, 0, 0, 1, 2, QtCore.Qt.AlignHCenter)
+        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.lineEdit.setFont(font)
+        self.lineEdit.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                    "background-color: rgb(177, 177, 177);")
+        self.lineEdit.setObjectName("lineEdit")
+        self.gridLayout_dinamico.addWidget(self.lineEdit, 3, 1, 1, 1)
+        self.label_9 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_9.setFont(font)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout_dinamico.addWidget(self.label_9, 3, 0, 1, 1)
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.gridLayout_dinamico.addWidget(self.label_7, 1, 0, 2, 1)
+        self.comboBox_sim_link = QtWidgets.QComboBox(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.comboBox_sim_link.setFont(font)
+        self.comboBox_sim_link.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                             "background-color: rgb(177, 177, 177);")
+        self.comboBox_sim_link.setObjectName("comboBox_sim_star")
+        self.gridLayout_dinamico.addWidget(self.comboBox_sim_link, 1, 1, 2, 1)
+        self.horizontalLayout.addLayout(self.gridLayout_dinamico)
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 1)
+
+        self.rellenar_combo_sim_stlk(self.comboBox_sim_link)
+        self.comboBox_sim_link.currentIndexChanged.connect(self.rellenar_tabla_link)
+        self.reset_listWidget(self.list_sim_link)
+        self.pushButton_Guardar.clicked.connect(self.save_link)
+
+        _translate = QtCore.QCoreApplication.translate
+        self.label_7.setText(_translate("TFG", "Seleccione el vértice:"))
+        self.label_6.setText(_translate("TFG", "Cálculo del Link"))
+        self.label_8.setText(_translate("TFG", "Link:"))
+        self.lineEdit.setPlaceholderText(_translate("TFG", "Nombre"))
+        self.label_9.setText(_translate("TFG", "Nombre:"))
+        self.pushButton_Guardar.setText(_translate("TFG", "Guardar"))
+
+    def rellenar_combo_sim_stlk(self, combo):
+        nombres_sim = [x.name for x in self.sc.simplex if x.dimension == 0]
+        combo.addItems(nombres_sim)
+
+    def reset_listWidget(self, list):
+        list.addItem("")
+
+    def rellenar_tabla_star(self):
+        sim_name = self.comboBox_sim_star.currentText()
+        sim = Aux.get_sim_by_name(self.sc.simplex, sim_name)
+        star = self.sc.star(sim)
+        star.sort(key=lambda x: (x.dimension, x.name))
+        self.list_sim_star.clear()
+        for elem in star:
+            self.list_sim_star.addItem(str(elem))
+        self.star = star
+
+    def rellenar_tabla_link(self):
+        sim_name = self.comboBox_sim_link.currentText()
+        sim = Aux.get_sim_by_name(self.sc.simplex, sim_name)
+        link = self.sc.link(sim)
+        link.sort(key=lambda x: (x.dimension, x.name))
+        self.list_sim_link.clear()
+        for elem in link:
+            self.list_sim_link.addItem(str(elem))
+        self.link = link
+
     def rellenar_tabla_cono(self):
         self.tableWidget_2.setRowCount(0)
         for i, sim in enumerate(self.sc_cone.simplex):
@@ -1250,6 +1479,100 @@ class MenuSC(QMainWindow):
                 text_scrolleable.setText(faces_str)
                 text_scrolleable.setReadOnly(True)
                 self.tableWidget_2.setCellWidget(i, 2, text_scrolleable)
+
+    def save_star(self):
+        if self.star is not None:
+            nombre = self.lineEdit.text()
+            edit = False
+            if not nombre:
+                crear_mensaje_error('Introduzca el nombre', "Nombre vacío")
+            elif '"' in nombre or ":" in nombre:
+                crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+                self.lineEdit.clear()
+            else:
+                edit = False
+                all_sc = list_simplicial_complexes()
+                if any(x for x in all_sc if x.name == nombre and x.name != self.lineEdit.text()):
+                    box = QtWidgets.QMessageBox()
+                    box.setIcon(QtWidgets.QMessageBox.Question)
+                    box.setWindowTitle('GUARDAR')
+                    box.setText('Ya existe un Complejo simplicial con ese nombre \r\n ¿Deseas sobreescribirlo?')
+                    box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                    buttonY = box.button(QtWidgets.QMessageBox.Yes)
+                    buttonY.setText('Sí')
+                    buttonN = box.button(QtWidgets.QMessageBox.No)
+                    buttonN.setText('No')
+                    icon = QtGui.QIcon()
+                    icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
+                    box.setWindowIcon(icon)
+                    box.setStyleSheet("background-image: url(:/images/fondo.png);\n"
+                                      "background-color: rgb(27, 27, 27);\n"
+                                      "color: rgb(255, 255, 255);")
+                    buttonN.setStyleSheet("background-color: rgb(71, 71, 71)")
+                    buttonY.setStyleSheet("background-color: rgb(71, 71, 71)")
+                    box.exec_()
+                    if box.clickedButton() == buttonY:
+                        edit = True
+                    else:
+                        return
+                star = SimplicialComplex(nombre, Aux.get_num_simplex_by_dim(self.star, 0), self.star.copy())
+                if edit:
+                    edit_simplicial_complex(star)
+                else:
+                    add_simplicial_complex(star)
+                QMessageBox.information(self, "Éxito",
+                                        "Operación completada con éxito")
+                self.clear_layout_dinamico(self.gridLayout_dinamico)
+        else:
+            QMessageBox.information(self, "Error",
+                                    "No ha seleccionado ningún símplice")
+
+    def save_link(self):
+        if self.link is not None:
+            nombre = self.lineEdit.text()
+            edit = False
+            if not nombre:
+                crear_mensaje_error('Introduzca el nombre', "Nombre vacío")
+            elif '"' in nombre or ":" in nombre:
+                crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+                self.lineEdit.clear()
+            else:
+                edit = False
+                all_sc = list_simplicial_complexes()
+                if any(x for x in all_sc if x.name == nombre and x.name != self.lineEdit.text()):
+                    box = QtWidgets.QMessageBox()
+                    box.setIcon(QtWidgets.QMessageBox.Question)
+                    box.setWindowTitle('GUARDAR')
+                    box.setText('Ya existe un Complejo simplicial con ese nombre \r\n ¿Deseas sobreescribirlo?')
+                    box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                    buttonY = box.button(QtWidgets.QMessageBox.Yes)
+                    buttonY.setText('Sí')
+                    buttonN = box.button(QtWidgets.QMessageBox.No)
+                    buttonN.setText('No')
+                    icon = QtGui.QIcon()
+                    icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
+                    box.setWindowIcon(icon)
+                    box.setStyleSheet("background-image: url(:/images/fondo.png);\n"
+                                      "background-color: rgb(27, 27, 27);\n"
+                                      "color: rgb(255, 255, 255);")
+                    buttonN.setStyleSheet("background-color: rgb(71, 71, 71)")
+                    buttonY.setStyleSheet("background-color: rgb(71, 71, 71)")
+                    box.exec_()
+                    if box.clickedButton() == buttonY:
+                        edit = True
+                    else:
+                        return
+                link = SimplicialComplex(nombre, Aux.get_num_simplex_by_dim(self.link, 0), self.link.copy())
+                if edit:
+                    edit_simplicial_complex(link)
+                else:
+                    add_simplicial_complex(link)
+                QMessageBox.information(self, "Éxito",
+                                        "Operación completada con éxito")
+                self.clear_layout_dinamico(self.gridLayout_dinamico)
+        else:
+            QMessageBox.information(self, "Error",
+                                    "No ha seleccionado ningún símplice")
 
     def save_cone(self):
         nombre = self.line_cone_name.text()
@@ -1549,14 +1872,15 @@ class MenuSC(QMainWindow):
             self.list_simplex.takeItem(row)
 
     def clear_layout_dinamico(self, layout):
-        self.horizontalLayout.takeAt(1)
         if layout is not None:
             while layout.count():
                 child = layout.takeAt(0)
                 if child.widget():
                     child.widget().deleteLater()
+                    child.widget().setParent(None)
                 else:
                     self.clear_layout_dinamico(child.layout())
+        self.horizontalLayout.takeAt(1)
 
     def set_MenuBF(self, menu_bf):
         self.menu_bf = menu_bf

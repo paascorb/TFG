@@ -1,0 +1,28 @@
+{
+    "id": "Link de abc y c",
+    "omega": "2",
+    "simplex": [
+        {
+            "id": "a",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        },
+        {
+            "id": "b",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        },
+        {
+            "id": "ab",
+            "dimension": 1,
+            "index": 2,
+            "faces": [
+                "b",
+                "a"
+            ]
+        }
+    ],
+    "vector_fields": []
+}
