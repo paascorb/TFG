@@ -11,9 +11,11 @@ class BooleanFunction:
     ----------
     """
     # Contructor de la clase BooleanFunctions.
-    def __init__(self, name, num_variables, outputs):
+    def __init__(self, name, num_variables, name_variables, outputs):
         self.name = name
-        if 2**num_variables == len(outputs) or (num_variables == 0 and not outputs):
+        if 2**num_variables == len(outputs) or (num_variables == 0 and not outputs) \
+                or num_variables == len(name_variables):
+            self.name_variables = name_variables
             self.num_variables = num_variables
             self.outputs = outputs
             self.monotone_flag = None
@@ -64,5 +66,6 @@ class BooleanFunction:
         """
         return {'id': self.name,
                 'num_variables': self.num_variables,
+                'name_variables': self.name_variables,
                 'outputs': self.outputs,
                 'm_flag': self.monotone_flag}

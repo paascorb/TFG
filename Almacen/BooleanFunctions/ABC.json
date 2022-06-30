@@ -1,8 +1,12 @@
 {
-    "id": "a_traducida",
+    "id": "ABC",
     "num_variables": 2,
+    "name_variables": [
+        "b",
+        "a"
+    ],
     "outputs": [
-        0,
+        1,
         1,
         1,
         1

@@ -1,9 +1,9 @@
 # Fichero de traducción entre sc y fb desarrollado por Pablo Ascorbe Fernández 15/06/2022
-from functools import reduce
 import ModeloDeDominio.Auxiliary as Aux
+from LogicaDeNegocio.Join import *
+from ModeloDeDominio.BooleanFunction import BooleanFunction
 from ModeloDeDominio.Simplex import Simplex
 from ModeloDeDominio.SimplicialComplex import SimplicialComplex
-from ModeloDeDominio.BooleanFunction import BooleanFunction
 
 
 def boolean_function_to_simplicial_complex(bf):
@@ -28,9 +28,25 @@ def boolean_function_to_simplicial_complex(bf):
             act_sim = Simplex(str(i), Aux.num_1(i) - 1)
             simplices.append(act_sim)
             construct_simplex(act_sim, simplices)
+    simplices = Aux.order_simplicial_list(simplices)
+    rename_simplices_for_boolean_function(simplices, bf.name_variables)
     sc = SimplicialComplex(bf.name, bf.num_variables, simplices)
     return sc
 
+def rename_simplices_for_boolean_function(simplices, name_variables):
+    """
+    TODO
+    :param simplices:
+    :param name_variables:
+    :return:
+    """
+    vertex_count = 0
+    for sim in simplices:
+        if sim.dimension == 0:
+            sim.name = name_variables[vertex_count]
+            vertex_count += 1
+        else:
+            sim.name = generate_sim_name(sim.faces)
 
 def construct_simplex(act_simp, simplices):
     """
@@ -78,13 +94,22 @@ def simplicial_complex_to_boolean_function(sc):
     """
     num_variables = sc.c_vector[0]
     outputs = [0] * (2**num_variables)
+    outputs[0] = 1
     sim_pos = dict()
     for sim in sc.simplex:
         pos = 2**sim.index if sim.dimension == 0 else position_in_ouput(sim, sim_pos)
         outputs[pos] = 1
         sim_pos[sim.name] = pos
-    return BooleanFunction(sc.name, num_variables, outputs)
+    return BooleanFunction(sc.name, num_variables, get_vertex_names(sc.simplex), outputs)
 
+def get_vertex_names(simplices):
+    """
+    TODO
+    :param simplices:
+    :return:
+    """
+    vertex = [x for x in simplices if x.dimension == 0]
+    return [x.name for x in vertex]
 
 def position_in_ouput(simplex, sim_pos):
     """

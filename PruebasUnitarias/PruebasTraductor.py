@@ -11,10 +11,10 @@ import PruebasUnitarias.PruebasAuxiliar as Puaux
 class TestTraductor(unittest.TestCase):
 
     def test_traductor_bl_to_sc(self):
-        bf = BooleanFunction('bf', 3, [1, 1, 1, 1, 1, 1, 1, 1])
+        bf = BooleanFunction('bf', 3, ['a', 'b', 'c'], [1, 1, 1, 1, 1, 1, 1, 1])
         sc = Tra.boolean_function_to_simplicial_complex(bf)
         self.assertTrue(True is Aux.is_simplicial_complex(sc.simplex), "Error en el test_constructor_bl_to_sc")
-        bf2 = BooleanFunction('bf2', 4, [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0])
+        bf2 = BooleanFunction('bf2', 4, ['a', 'b', 'c', 'd'], [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0])
         sc2 = Tra.boolean_function_to_simplicial_complex(bf2)
         self.assertTrue(True is Aux.is_simplicial_complex(sc2.simplex), "Error en el test_constructor_bl_to_sc")
 

@@ -46,7 +46,7 @@ def crear_bf_prueba():
     BooleanFunction
         Función booleana de prueba para trabajar en las pruebas unitarias.
     """
-    return BooleanFunction("fb_prueba", 4, [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0])
+    return BooleanFunction("fb_prueba", 4, ['a', 'b', 'c', 'd'], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0])
 
 def crear_sim_prueba():
     """

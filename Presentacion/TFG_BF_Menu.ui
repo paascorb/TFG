@@ -110,15 +110,15 @@ QMenu::item:selected{
         <property name="verticalSpacing">
          <number>15</number>
         </property>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_nombre_bf">
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_5">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>(Nombre)</string>
+           <string>Monótona:</string>
           </property>
          </widget>
         </item>
@@ -134,15 +134,15 @@ QMenu::item:selected{
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QLabel" name="label_3">
+        <item row="3" column="1">
+         <widget class="QLabel" name="label_monotona">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>Salidas:</string>
+           <string>(Monotona)</string>
           </property>
          </widget>
         </item>
@@ -158,43 +158,7 @@ QMenu::item:selected{
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Número de Variables:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="label_monotona">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>(Monotona)</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Monótona:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QTableWidget" name="tableWidget">
           <property name="styleSheet">
            <string notr="true">color: rgb(0, 0, 0);
@@ -220,6 +184,66 @@ background-color: rgb(177, 177, 177);</string>
             </font>
            </property>
           </column>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_nombre_bf">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>(Nombre)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Número de Variables:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Salidas:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Nombre de las variables:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="label_name_variables">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>(Na_variables)</string>
+          </property>
          </widget>
         </item>
        </layout>

@@ -69,7 +69,8 @@ def bf_decode(json_dict):
         Función booleana traducida del diccionario proporcionado.
     """
 
-    bf = BooleanFunction(json_dict.get('id'), json_dict.get('num_variables'), json_dict.get('outputs'))
+    bf = BooleanFunction(json_dict.get('id'), json_dict.get('num_variables'), json_dict.get('name_variables'),
+                         json_dict.get('outputs'))
     bf.set_monotone_flag(json_dict.get('m_flag'))
     return bf
 
