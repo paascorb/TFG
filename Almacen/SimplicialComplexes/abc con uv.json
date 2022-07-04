@@ -1,0 +1,294 @@
+{
+    "id": "abc con uv",
+    "omega": "5",
+    "simplex": [
+        {
+            "id": "a",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        },
+        {
+            "id": "b",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        },
+        {
+            "id": "c",
+            "dimension": 0,
+            "index": 2,
+            "faces": []
+        },
+        {
+            "id": "u",
+            "dimension": 0,
+            "index": 3,
+            "faces": []
+        },
+        {
+            "id": "v",
+            "dimension": 0,
+            "index": 4,
+            "faces": []
+        },
+        {
+            "id": "ab",
+            "dimension": 1,
+            "index": 5,
+            "faces": [
+                "a",
+                "b"
+            ]
+        },
+        {
+            "id": "ac",
+            "dimension": 1,
+            "index": 6,
+            "faces": [
+                "a",
+                "c"
+            ]
+        },
+        {
+            "id": "au",
+            "dimension": 1,
+            "index": 7,
+            "faces": [
+                "a",
+                "u"
+            ]
+        },
+        {
+            "id": "av",
+            "dimension": 1,
+            "index": 8,
+            "faces": [
+                "v",
+                "a"
+            ]
+        },
+        {
+            "id": "bc",
+            "dimension": 1,
+            "index": 9,
+            "faces": [
+                "b",
+                "c"
+            ]
+        },
+        {
+            "id": "bu",
+            "dimension": 1,
+            "index": 10,
+            "faces": [
+                "u",
+                "b"
+            ]
+        },
+        {
+            "id": "bv",
+            "dimension": 1,
+            "index": 11,
+            "faces": [
+                "v",
+                "b"
+            ]
+        },
+        {
+            "id": "cu",
+            "dimension": 1,
+            "index": 12,
+            "faces": [
+                "u",
+                "c"
+            ]
+        },
+        {
+            "id": "cv",
+            "dimension": 1,
+            "index": 13,
+            "faces": [
+                "v",
+                "c"
+            ]
+        },
+        {
+            "id": "uv",
+            "dimension": 1,
+            "index": 14,
+            "faces": [
+                "v",
+                "u"
+            ]
+        },
+        {
+            "id": "abc",
+            "dimension": 2,
+            "index": 15,
+            "faces": [
+                "ac",
+                "ab",
+                "bc"
+            ]
+        },
+        {
+            "id": "abu",
+            "dimension": 2,
+            "index": 16,
+            "faces": [
+                "au",
+                "bu",
+                "ab"
+            ]
+        },
+        {
+            "id": "abv",
+            "dimension": 2,
+            "index": 17,
+            "faces": [
+                "av",
+                "bv",
+                "ab"
+            ]
+        },
+        {
+            "id": "acu",
+            "dimension": 2,
+            "index": 18,
+            "faces": [
+                "au",
+                "cu",
+                "ac"
+            ]
+        },
+        {
+            "id": "acv",
+            "dimension": 2,
+            "index": 19,
+            "faces": [
+                "av",
+                "cv",
+                "ac"
+            ]
+        },
+        {
+            "id": "auv",
+            "dimension": 2,
+            "index": 20,
+            "faces": [
+                "av",
+                "au",
+                "uv"
+            ]
+        },
+        {
+            "id": "bcu",
+            "dimension": 2,
+            "index": 21,
+            "faces": [
+                "cu",
+                "bu",
+                "bc"
+            ]
+        },
+        {
+            "id": "bcv",
+            "dimension": 2,
+            "index": 22,
+            "faces": [
+                "bc",
+                "cv",
+                "bv"
+            ]
+        },
+        {
+            "id": "buv",
+            "dimension": 2,
+            "index": 23,
+            "faces": [
+                "bv",
+                "bu",
+                "uv"
+            ]
+        },
+        {
+            "id": "cuv",
+            "dimension": 2,
+            "index": 24,
+            "faces": [
+                "cv",
+                "cu",
+                "uv"
+            ]
+        },
+        {
+            "id": "abcu",
+            "dimension": 3,
+            "index": 25,
+            "faces": [
+                "acu",
+                "bcu",
+                "abc",
+                "abu"
+            ]
+        },
+        {
+            "id": "abcv",
+            "dimension": 3,
+            "index": 26,
+            "faces": [
+                "abc",
+                "abv",
+                "bcv",
+                "acv"
+            ]
+        },
+        {
+            "id": "abuv",
+            "dimension": 3,
+            "index": 27,
+            "faces": [
+                "auv",
+                "buv",
+                "abv",
+                "abu"
+            ]
+        },
+        {
+            "id": "acuv",
+            "dimension": 3,
+            "index": 28,
+            "faces": [
+                "acu",
+                "auv",
+                "acv",
+                "cuv"
+            ]
+        },
+        {
+            "id": "bcuv",
+            "dimension": 3,
+            "index": 29,
+            "faces": [
+                "bcu",
+                "buv",
+                "bcv",
+                "cuv"
+            ]
+        },
+        {
+            "id": "abcuv",
+            "dimension": 4,
+            "index": 30,
+            "faces": [
+                "abcv",
+                "acuv",
+                "bcuv",
+                "abuv",
+                "abcu"
+            ]
+        }
+    ],
+    "vector_fields": []
+}

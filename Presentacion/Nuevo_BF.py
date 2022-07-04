@@ -313,8 +313,9 @@ class NuevoBF(QWidget):
         nombre_bf = self.text_fb_name.text()
         if not nombre_bf:
             crear_mensaje_error('Introduzca el nombre de la función booleana', "Función Booleana")
-        elif '"' in nombre_bf or ":" in nombre_bf:
-            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+        elif nombre_invalido(nombre_bf):
+            QMessageBox.information(self, "Error",
+                                    "El nombre contiene caracteres inválidos")
             self.text_fb_name.clear()
         else:
             all_bf = list_boolean_functions()

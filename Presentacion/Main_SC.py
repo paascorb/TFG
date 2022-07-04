@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QItemDelegate, QMainWindow, QTextEdit
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from LogicaDeNegocio import Join
 from LogicaDeNegocio.BooleanFunctionManager import *
 from LogicaDeNegocio.Join import *
 from LogicaDeNegocio.SimplicialComplexManager import *
@@ -19,6 +20,7 @@ from Presentacion.PresentacionAuxiliar import *
 class MenuSC(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.join = None
         self.link = None
         self.star = None
         self.sc = None
@@ -321,6 +323,7 @@ class MenuSC(QMainWindow):
         self.actionCono.triggered.connect(self.add_layout_cone)
         self.actionLink.triggered.connect(self.add_layout_link)
         self.actionStar.triggered.connect(self.add_layout_star)
+        self.actionJoin.triggered.connect(self.add_layout_join)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -531,6 +534,8 @@ class MenuSC(QMainWindow):
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         self.table_outputs.setAlternatingRowColors(True)
         self.table_outputs.verticalHeader().setVisible(False)
+        delegate_one_column = DelegateTableOutputs(self.table_outputs)
+        self.table_outputs.setItemDelegate(delegate_one_column)
 
         self.bf_tra = simplicial_complex_to_boolean_function(self.sc)
         if Aux.is_monotone(self.bf_tra.outputs):
@@ -568,8 +573,9 @@ class MenuSC(QMainWindow):
         nombre = self.text_fb_name.text()
         if not nombre:
             crear_mensaje_error('Introduzca el nombre de la función booleana', "Función booleana")
-        elif '"' in nombre or ":" in nombre:
-            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+        elif nombre_invalido(nombre):
+            QMessageBox.information(self, "Error",
+                                    "El nombre contiene caracteres inválidos")
             self.text_fb_name.clear()
         else:
             self.bf_tra.name = nombre
@@ -1231,8 +1237,8 @@ class MenuSC(QMainWindow):
         self.tableWidget_2.setFont(font)
 
         self.tableWidget_2.setItemDelegate(AligDelegate())
-
         self.tableWidget_2.setAlternatingRowColors(True)
+        self.tableWidget_2.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
 
         self.sc_cone = cono(self.sc, cone_name)
 
@@ -1456,6 +1462,177 @@ class MenuSC(QMainWindow):
         self.label_9.setText(_translate("TFG", "Nombre:"))
         self.pushButton_Guardar.setText(_translate("TFG", "Guardar"))
 
+    def add_layout_join(self):
+        self.clear_layout_dinamico(self.gridLayout_dinamico)
+        self.gridLayout_dinamico = QtWidgets.QGridLayout()
+        self.gridLayout_dinamico.setContentsMargins(5, -1, 5, 15)
+        self.gridLayout_dinamico.setHorizontalSpacing(15)
+        self.gridLayout_dinamico.setVerticalSpacing(12)
+        self.gridLayout_dinamico.setObjectName("gridLayout_dinamico")
+        self.label_9 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_9.setFont(font)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout_dinamico.addWidget(self.label_9, 5, 0, 1, 2)
+        self.label_dimension_join = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_dimension_join.setFont(font)
+        self.label_dimension_join.setObjectName("label_dimension_join")
+        self.gridLayout_dinamico.addWidget(self.label_dimension_join, 4, 1, 1, 1)
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.gridLayout_dinamico.addWidget(self.label_7, 3, 0, 1, 1)
+        self.line_join_name = QtWidgets.QLineEdit(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.line_join_name.setFont(font)
+        self.line_join_name.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                          "background-color: rgb(177, 177, 177);")
+        self.line_join_name.setObjectName("line_join_name")
+        self.gridLayout_dinamico.addWidget(self.line_join_name, 2, 1, 1, 1)
+        self.combo_join = QtWidgets.QComboBox(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.combo_join.setFont(font)
+        self.combo_join.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                      "background-color: rgb(177, 177, 177);")
+        self.combo_join.setObjectName("combo_join")
+        self.gridLayout_dinamico.addWidget(self.combo_join, 1, 0, 1, 2)
+        self.label_8 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_8.setFont(font)
+        self.label_8.setObjectName("label_8")
+        self.gridLayout_dinamico.addWidget(self.label_8, 4, 0, 1, 1)
+        self.label_omega_join = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_omega_join.setFont(font)
+        self.label_omega_join.setObjectName("label_omega_join")
+        self.gridLayout_dinamico.addWidget(self.label_omega_join, 3, 1, 1, 1)
+        self.label_join = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_join.setFont(font)
+        self.label_join.setObjectName("label_join")
+        self.gridLayout_dinamico.addWidget(self.label_join, 0, 0, 1, 2, QtCore.Qt.AlignHCenter)
+        self.label_6 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.gridLayout_dinamico.addWidget(self.label_6, 2, 0, 1, 1)
+        self.table_join = QtWidgets.QTableWidget(self.centralwidget)
+        self.table_join.setMinimumSize(QtCore.QSize(300, 0))
+        self.table_join.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                      "background-color: rgb(177, 177, 177);")
+        self.table_join.setObjectName("table_join")
+        self.table_join.setColumnCount(3)
+        self.table_join.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.table_join.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.table_join.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.table_join.setHorizontalHeaderItem(2, item)
+        self.gridLayout_dinamico.addWidget(self.table_join, 6, 0, 1, 2)
+        self.pushButton_Guardar = QtWidgets.QPushButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(100)
+        sizePolicy.setHeightForWidth(self.pushButton_Guardar.sizePolicy().hasHeightForWidth())
+        self.pushButton_Guardar.setSizePolicy(sizePolicy)
+        self.pushButton_Guardar.setMinimumSize(QtCore.QSize(150, 25))
+        self.pushButton_Guardar.setMaximumSize(QtCore.QSize(250, 25))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_Guardar.setFont(font)
+        self.pushButton_Guardar.setStyleSheet("QPushButton{\n"
+                                              "color: rgb(255, 255, 255);\n"
+                                              "background-color: rgb(71, 71, 71);\n"
+                                              "border: 1px solid;\n"
+                                              "border-radius: 10px;}\n"
+                                              "\n"
+                                              "QPushButton:hover{\n"
+                                              "    background-color: rgb(100, 100, 100);\n"
+                                              "}\n"
+                                              "\n"
+                                              "")
+        self.pushButton_Guardar.setAutoDefault(False)
+        self.pushButton_Guardar.setDefault(False)
+        self.pushButton_Guardar.setFlat(False)
+        self.pushButton_Guardar.setObjectName("pushButton_Guardar")
+        self.gridLayout_dinamico.addWidget(self.pushButton_Guardar, 7, 1, 1, 1, QtCore.Qt.AlignRight)
+        self.horizontalLayout.addLayout(self.gridLayout_dinamico)
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 1)
+
+        header = self.table_join.horizontalHeader()
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        self.table_join.setAlternatingRowColors(True)
+        self.table_join.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+
+        _translate = QtCore.QCoreApplication.translate
+        self.label_8.setText(_translate("TFG", "Dimensión:"))
+        self.label_7.setText(_translate("TFG", "Omega:"))
+        self.label_join.setText(_translate("TFG", "Join de ..."))
+        self.line_join_name.setPlaceholderText(_translate("TFG", "Nombre"))
+        self.label_6.setText(_translate("TFG", "Nombre:"))
+        self.label_9.setText(_translate("TFG", "Salidas:"))
+        self.label_dimension_join.setText(_translate("TFG", "(Dimensión)"))
+        self.label_omega_join.setText(_translate("TFG", "(N_variables)"))
+        item = self.table_join.horizontalHeaderItem(0)
+        item.setText(_translate("TFG", "Nombre"))
+        item = self.table_join.horizontalHeaderItem(1)
+        item.setText(_translate("TFG", "Dimensión"))
+        item = self.table_join.horizontalHeaderItem(2)
+        item.setText(_translate("TFG", "Caras"))
+        self.pushButton_Guardar.setText(_translate("TFG", "Guardar"))
+
+        self.set_join_ui()
+        self.combo_join.currentIndexChanged.connect(self.compute_join)
+        self.pushButton_Guardar.clicked.connect(self.save_join)
+
+    def set_join_ui(self):
+        self.label_join.setText("Join de " + self.sc.name)
+        self.label_omega_join.setText("")
+        self.label_dimension_join.setText("")
+        scs = list_simplicial_complexes()
+        other_scs_names = [x.name for x in scs if x.name != self.sc.name]
+        self.combo_join.addItems(other_scs_names)
+
+    def compute_join(self):
+        name_l = self.combo_join.currentText()
+        sc_l = get_simplicial_complex(name_l)
+        n_vertex_l = Aux.get_num_simplex_by_dim(sc_l.simplex, 0)
+        vertex_l = sc_l.simplex[:n_vertex_l]
+        if any(x for x in vertex_l if x in self.sc.simplex):
+            QMessageBox.information(self, "Error",
+                                    "No puede haber vértices coincidentes entre los complejos simpliciales de un join")
+        else:
+            self.join = join(self.sc, sc_l)
+            self.label_join.setText("Join de " + self.sc.name + " con " + name_l)
+            self.label_omega_join.setText(str(self.join.omega))
+            self.label_dimension_join.setText(str(self.join.dimension))
+            self.rellenar_tabla_join()
+
     def rellenar_combo_sim_stlk(self, combo):
         nombres_sim = [x.name for x in self.sc.simplex if x.dimension == 0]
         combo.addItems(nombres_sim)
@@ -1502,14 +1679,34 @@ class MenuSC(QMainWindow):
                 text_scrolleable.setReadOnly(True)
                 self.tableWidget_2.setCellWidget(i, 2, text_scrolleable)
 
+    def rellenar_tabla_join(self):
+       self.table_join.setRowCount(0)
+       for i, sim in enumerate(self.join.simplex):
+           numRows = self.table_join.rowCount()
+           self.table_join.insertRow(numRows)
+           self.table_join.setItem(i, 0, QtWidgets.QTableWidgetItem(sim.name))
+           self.table_join.setItem(i, 1, QtWidgets.QTableWidgetItem(str(sim.dimension)))
+           if sim.faces:
+               faces_str = "["
+               for j, elem in enumerate(sim.faces):
+                   faces_str = faces_str + elem.name
+                   if j != len(sim.faces) - 1:
+                       faces_str += ","
+               faces_str += "]"
+               text_scrolleable = QTextEdit()
+               text_scrolleable.setText(faces_str)
+               text_scrolleable.setReadOnly(True)
+               self.table_join.setCellWidget(i, 2, text_scrolleable)
+
     def save_star(self):
         if self.star is not None:
             nombre = self.lineEdit.text()
             edit = False
             if not nombre:
                 crear_mensaje_error('Introduzca el nombre', "Nombre vacío")
-            elif '"' in nombre or ":" in nombre:
-                crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+            elif nombre_invalido(nombre):
+                QMessageBox.information(self, "Error",
+                                    "El nombre contiene caracteres inválidos")
                 self.lineEdit.clear()
             else:
                 edit = False
@@ -1555,8 +1752,9 @@ class MenuSC(QMainWindow):
             edit = False
             if not nombre:
                 crear_mensaje_error('Introduzca el nombre', "Nombre vacío")
-            elif '"' in nombre or ":" in nombre:
-                crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+            elif nombre_invalido(nombre):
+                QMessageBox.information(self, "Error",
+                                    "El nombre contiene caracteres inválidos")
                 self.lineEdit.clear()
             else:
                 edit = False
@@ -1601,8 +1799,9 @@ class MenuSC(QMainWindow):
         edit = False
         if not nombre:
             crear_mensaje_error('Introduzca el nombre del cono', "Nombre vacío")
-        elif '"' in nombre or ":" in nombre:
-            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+        elif nombre_invalido(nombre):
+            QMessageBox.information(self, "Error",
+                                    "El nombre contiene caracteres inválidos")
             self.line_cone_name.clear()
         else:
             edit = False
@@ -1635,6 +1834,50 @@ class MenuSC(QMainWindow):
                 edit_simplicial_complex(self.sc_cone)
             else:
                 add_simplicial_complex(self.sc_cone)
+            QMessageBox.information(self, "Éxito",
+                                    "Operación completada con éxito")
+            self.clear_layout_dinamico(self.gridLayout_dinamico)
+
+    def save_join(self):
+        nombre = self.line_join_name.text()
+        edit = False
+        if not nombre:
+            crear_mensaje_error('Introduzca el nombre del join', "Nombre vacío")
+        elif nombre_invalido(nombre):
+            QMessageBox.information(self, "Error",
+                                    "El nombre contiene caracteres inválidos")
+            self.line_join_name.clear()
+        else:
+            edit = False
+            all_sc = list_simplicial_complexes()
+            if any(x for x in all_sc if x.name == nombre and x.name != self.label_nombre_sc.text()):
+                box = QtWidgets.QMessageBox()
+                box.setIcon(QtWidgets.QMessageBox.Question)
+                box.setWindowTitle('GUARDAR')
+                box.setText('Ya existe un Complejo simplicial con ese nombre \r\n ¿Deseas sobreescribirlo?')
+                box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                buttonY = box.button(QtWidgets.QMessageBox.Yes)
+                buttonY.setText('Sí')
+                buttonN = box.button(QtWidgets.QMessageBox.No)
+                buttonN.setText('No')
+                icon = QtGui.QIcon()
+                icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
+                box.setWindowIcon(icon)
+                box.setStyleSheet("background-image: url(:/images/fondo.png);\n"
+                                  "background-color: rgb(27, 27, 27);\n"
+                                  "color: rgb(255, 255, 255);")
+                buttonN.setStyleSheet("background-color: rgb(71, 71, 71)")
+                buttonY.setStyleSheet("background-color: rgb(71, 71, 71)")
+                box.exec_()
+                if box.clickedButton() == buttonY:
+                    edit = True
+                else:
+                    return
+            self.join.name = nombre
+            if edit:
+                edit_simplicial_complex(self.join)
+            else:
+                add_simplicial_complex(self.join)
             QMessageBox.information(self, "Éxito",
                                     "Operación completada con éxito")
             self.clear_layout_dinamico(self.gridLayout_dinamico)
@@ -1683,8 +1926,9 @@ class MenuSC(QMainWindow):
         edit = False
         if not nombre:
             crear_mensaje_error('Introduzca el nombre del campo de vectores', "Campo de Vectores")
-        elif '"' in nombre or ":" in nombre:
-            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+        elif nombre_invalido(nombre):
+            QMessageBox.information(self, "Error",
+                                    "El nombre contiene caracteres inválidos")
             self.text_sc_name.clear()
         else:
             if any(x for x in self.sc.vector_fields if x.name == nombre):
@@ -1752,8 +1996,8 @@ class MenuSC(QMainWindow):
         nombre_sc = self.text_sc_name.text()
         if not nombre_sc:
             crear_mensaje_error('Introduzca el nombre del complejo simplicial', "Complejo Simplicial")
-        elif '"' in nombre_sc or ":" in nombre_sc:
-            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+        elif nombre_invalido(nombre_sc):
+            crear_mensaje_error('El nombre contiene caracteres inválidos', "Cuidado")
             self.text_sc_name.clear()
         else:
             edit = False

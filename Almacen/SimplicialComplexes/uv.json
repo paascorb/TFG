@@ -1,0 +1,28 @@
+{
+    "id": "uv",
+    "omega": "2",
+    "simplex": [
+        {
+            "id": "u",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        },
+        {
+            "id": "v",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        },
+        {
+            "id": "uv",
+            "dimension": 1,
+            "index": 2,
+            "faces": [
+                "v",
+                "u"
+            ]
+        }
+    ],
+    "vector_fields": []
+}

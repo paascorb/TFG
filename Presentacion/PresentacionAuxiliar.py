@@ -20,6 +20,14 @@ def crear_mensaje_error(mensaje, titulo):
     msg.exec_()
 
 
+def nombre_invalido(nombre):
+    if '"' in nombre or ":" in nombre or "*" in nombre or "|" in nombre or "?" in nombre or "<" in nombre \
+            or ">" in nombre or "'" in nombre or "/" in nombre or "\\" in nombre or "$" in nombre or "&" in nombre \
+            or "+" in nombre or "#" in nombre or "{" in nombre or "}" in nombre or "`" in nombre:
+        return True
+    else:
+        False
+
 class DelegateTableOutputs(QtWidgets.QStyledItemDelegate):
     def createEditor(self, parent, option, index):
         editor = super().createEditor(parent, option, index)

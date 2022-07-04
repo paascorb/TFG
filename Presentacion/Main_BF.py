@@ -762,8 +762,9 @@ class MenuBF(QMainWindow):
         nombre_bf = self.text_fb_name.text()
         if not nombre_bf:
             crear_mensaje_error('Introduzca el nombre de la función booleana', "Función Booleana")
-        elif '"' in nombre_bf or ":" in nombre_bf:
-            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+        elif nombre_invalido(nombre_bf):
+            QMessageBox.information(self, "Error",
+                                    "El nombre contiene caracteres inválidos")
             self.text_fb_name.clear()
         else:
             all_bf = list_boolean_functions()
@@ -857,8 +858,9 @@ class MenuBF(QMainWindow):
         nombre = self.text_fb_name.text()
         if not nombre:
             crear_mensaje_error('Introduzca el nombre del complejo simplicial', "Complejo Simplicial")
-        elif '"' in nombre or ":" in nombre:
-            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+        elif nombre_invalido(nombre):
+            QMessageBox.information(self, "Error",
+                                    "El nombre contiene caracteres inválidos")
             self.text_fb_name.clear()
         else:
             self.sc_tra.name = nombre

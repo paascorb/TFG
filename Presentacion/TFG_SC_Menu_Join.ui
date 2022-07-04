@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>750</width>
-    <height>450</height>
+    <height>476</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>C:/Users/pablo/.designer/Recursos/icono.ico</normaloff>C:/Users/pablo/.designer/Recursos/icono.ico</iconset>
+    <normaloff>../Recursos/icono.ico</normaloff>../Recursos/icono.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget{
@@ -73,11 +73,26 @@ QMenu::item:selected{
     <property name="verticalSpacing">
      <number>18</number>
     </property>
-    <item row="2" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
-      <property name="spacing">
-       <number>26</number>
+    <item row="0" column="0" alignment="Qt::AlignHCenter">
+     <widget class="QLabel" name="label_2">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>30</height>
+       </size>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Complejo Simplicial</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
       <item>
        <layout class="QGridLayout" name="gridLayout_fijo">
         <property name="leftMargin">
@@ -93,8 +108,20 @@ QMenu::item:selected{
          <number>24</number>
         </property>
         <property name="verticalSpacing">
-         <number>14</number>
+         <number>15</number>
         </property>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_nombre_sc">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>(Nombre)</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="1">
          <widget class="QLabel" name="label_omega">
           <property name="font">
@@ -104,30 +131,6 @@ QMenu::item:selected{
           </property>
           <property name="text">
            <string>(N_variables)</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Nombre:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Dimensión:</string>
           </property>
          </widget>
         </item>
@@ -143,27 +146,15 @@ QMenu::item:selected{
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="label_dimension">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>(Monotona)</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_nombre_sc">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>(Nombre)</string>
+           <string>Nombre:</string>
           </property>
          </widget>
         </item>
@@ -179,8 +170,202 @@ QMenu::item:selected{
           </property>
          </widget>
         </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="label_dimension">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>(Monotona)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Dimensión:</string>
+          </property>
+         </widget>
+        </item>
         <item row="4" column="0" colspan="2">
          <widget class="QTableWidget" name="tableWidget">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(177, 177, 177);</string>
+          </property>
+          <column>
+           <property name="text">
+            <string>Nombre</string>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Dimensión</string>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Caras</string>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_dinamico">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>15</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>15</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>12</number>
+        </property>
+        <item row="5" column="0" colspan="2">
+         <widget class="QLabel" name="label_9">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Salidas:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="label_dimension_join">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>(Dimensión)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Omega:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="line_join_name">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(177, 177, 177);</string>
+          </property>
+          <property name="placeholderText">
+           <string>Nombre</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QComboBox" name="combo_join">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(177, 177, 177);</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Dimensión:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="label_omega_join">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>(N_variables)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2" alignment="Qt::AlignHCenter">
+         <widget class="QLabel" name="label_join">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Join de ...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Nombre:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="QTableWidget" name="table_join">
           <property name="minimumSize">
            <size>
             <width>300</width>
@@ -223,161 +408,7 @@ background-color: rgb(177, 177, 177);</string>
           </column>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QGridLayout" name="gridLayout_dinamico">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>4</number>
-        </property>
-        <property name="rightMargin">
-         <number>15</number>
-        </property>
-        <property name="bottomMargin">
-         <number>10</number>
-        </property>
-        <property name="horizontalSpacing">
-         <number>15</number>
-        </property>
-        <property name="verticalSpacing">
-         <number>10</number>
-        </property>
-        <item row="2" column="1" colspan="2">
-         <widget class="QLabel" name="label_9">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Parejas Añadidas:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="label_7">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Nombre:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1" colspan="2">
-         <widget class="QTableWidget" name="table_vf">
-          <property name="styleSheet">
-           <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(177, 177, 177);</string>
-          </property>
-          <column>
-           <property name="text">
-            <string>Inicio</string>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Alcanzables</string>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QLineEdit" name="line_vf_name">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(177, 177, 177);</string>
-          </property>
-          <property name="placeholderText">
-           <string>Nombre</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1" colspan="2">
-         <widget class="QLabel" name="label_8">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Rutas:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" colspan="2">
-         <widget class="QLabel" name="label_6">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>14</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Campo de vectores autogenerado</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1" colspan="2">
-         <widget class="QTableWidget" name="tablePairs">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(177, 177, 177);</string>
-          </property>
-          <column>
-           <property name="text">
-            <string>Sigma</string>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Tau</string>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item row="6" column="2" alignment="Qt::AlignRight">
+        <item row="7" column="1" alignment="Qt::AlignRight">
          <widget class="QPushButton" name="pushButton_Guardar">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -440,24 +471,6 @@ QPushButton:hover{
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0" alignment="Qt::AlignHCenter">
-     <widget class="QLabel" name="label_2">
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Complejo Simplicial</string>
       </property>
      </widget>
     </item>
@@ -569,7 +582,6 @@ QPushButton:hover{
    <addaction name="separator"/>
    <addaction name="actionCampo_de_Vectores_Manual"/>
    <addaction name="actionCampo_de_Vectors_autom_tico"/>
-   <addaction name="actionCampo_De_Vectores"/>
   </widget>
   <action name="actionNuevo_sc">
    <property name="text">
@@ -745,18 +757,6 @@ QPushButton:hover{
    </property>
    <property name="toolTip">
     <string>Calcular un campo de vectores automáticamente</string>
-   </property>
-  </action>
-  <action name="actionCampo_De_Vectores">
-   <property name="icon">
-    <iconset resource="../Recursos/resources.qrc">
-     <normaloff>:/images/vector_field.ico</normaloff>:/images/vector_field.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Campo De Vectores</string>
-   </property>
-   <property name="toolTip">
-    <string>Ver todos los campos de vectores asociados al complejo simplicial</string>
    </property>
   </action>
  </widget>

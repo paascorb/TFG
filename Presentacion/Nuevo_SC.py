@@ -429,8 +429,9 @@ class NuevoSC(QWidget):
         nombre_sc = self.text_sc_name.text()
         if not nombre_sc:
             crear_mensaje_error('Introduzca el nombre del complejo simplicial', "Complejo Simplicial")
-        elif '"' in nombre_sc or ":" in nombre_sc:
-            crear_mensaje_error('No intentes romperme el programa', "Un saludo")
+        elif nombre_invalido(nombre_sc):
+            QMessageBox.information(self, "Error",
+                                    "El nombre contiene caracteres inválidos")
             self.text_sc_name.clear()
         else:
             all_sc = list_simplicial_complexes()
