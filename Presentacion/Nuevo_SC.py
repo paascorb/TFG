@@ -378,6 +378,10 @@ class NuevoSC(QWidget):
         repetido = None
         if dim > 0 and dim == len(self.faces) - 1:
             nombre_sim = generate_sim_name(sim_faces)
+            # if any(x for x in self.simplex if x.name == nombre_sim):
+            #     crear_mensaje_error("Es imposible añadir este símplice ya que ya existe otro con ese nombre",
+            #                         "Nombre Símplice")
+            #     return
         else:
             nombre_sim = self.text_nombre_sim.text()
             repetido = Aux.get_sim_by_name(self.simplex, nombre_sim)
@@ -389,6 +393,9 @@ class NuevoSC(QWidget):
             return
         elif not nombre_sim:
             crear_mensaje_error('Introduzca el nombre del vértice', "Nombre Símplice")
+            return
+        elif not nombre_sim.isalnum():
+            crear_mensaje_error('El nombre contiene caracteres inválidos', "Nombre Símplice")
             return
         sim = Simplex(nombre_sim, dim)
         if sim_faces and any(elem.faces == sim_faces for elem in self.simplex):
@@ -413,7 +420,7 @@ class NuevoSC(QWidget):
                 sim_text = elem.text()
                 sim_text = sim_text.split(',', 1)[1]
                 sim = Aux.get_sim_by_name(self.simplex, sim_text[9:])
-                star = SimplicialComplex("", Aux.get_num_simplex_by_dim(self.simplex, 0), self.simplex).star(sim)
+                star = SimplicialComplex("", Aux.get_num_simplex_by_dim(self.simplex, 0), self.simplex).open_star(sim)
                 self.simplex.remove(sim)
                 self.simplex = [x for x in self.simplex if x not in star]
                 for star_sim in star:
@@ -424,6 +431,10 @@ class NuevoSC(QWidget):
         for item in items_to_remove:
             row = self.list_simplex.row(item)
             self.list_simplex.takeItem(row)
+        self.text_nombre_sim.setText("")
+        self.text_dim_sim.setValue(0)
+        self.faces = list()
+        self.list_faces.clear()
 
     def acept_and_save_form(self):
         nombre_sc = self.text_sc_name.text()

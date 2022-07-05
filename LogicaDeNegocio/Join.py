@@ -21,7 +21,8 @@ def join(k_sc, l_sc):
             faces_aux = k_sim_faces.copy()
             faces_aux.extend(L_simplex.faces if L_simplex.dimension > 0 else [L_simplex])
             simplex = Simplex(generate_sim_name(faces_aux), len(faces_aux) - 1)
-            simplex.set_faces(set(all_simplex_by_names(all_simplex, generate_faces_names(faces_aux))))
+            simplex.set_faces(set(all_simplex_by_names(all_simplex, generate_faces_names(faces_aux),
+                                                       simplex.dimension - 1)))
             all_simplex.append(simplex)
     return SimplicialComplex("L*K", k_sc.omega + l_sc.omega, all_simplex)
 
@@ -91,7 +92,7 @@ def concatenate_list(c_list):
     return reduce(lambda a, b: a + b, c_list)
 
 
-def all_simplex_by_names(simplex, names):
+def all_simplex_by_names(simplex, names, dim):
     """
     TODO
     :param simplex:
@@ -100,5 +101,5 @@ def all_simplex_by_names(simplex, names):
     """
     result = list()
     for elem in names:
-        result.append(next((sim for sim in simplex if sim.name == elem), None))
+        result.append(next((sim for sim in simplex if sim.name == elem and sim.dimension == dim), None))
     return result
