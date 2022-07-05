@@ -46,7 +46,8 @@ class BooleanFunction:
     def set_monotone_flag(self, flag):
         """Método setter para modificar el flag de monotonía que indica si la función booleana es o no monótona. Este
         flag es opcional y por defecto estará puesto en None, pero se le puede dar valor para ahorrar tiempo
-        computacional.
+        computacional. Como precondición se sobrentiende que el valor del flag será True si la función es monótona y
+        False en caso contrario.
 
         Parameters
         ---------

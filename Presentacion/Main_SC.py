@@ -20,6 +20,7 @@ from Presentacion.PresentacionAuxiliar import *
 class MenuSC(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.colapso = None
         self.join = None
         self.link = None
         self.star = None
@@ -324,6 +325,7 @@ class MenuSC(QMainWindow):
         self.actionLink.triggered.connect(self.add_layout_link)
         self.actionStar.triggered.connect(self.add_layout_star)
         self.actionJoin.triggered.connect(self.add_layout_join)
+        self.actionCollapsar.triggered.connect(self.add_layout_collapse)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -563,7 +565,7 @@ class MenuSC(QMainWindow):
     def add_ouputs_table_tra(self, outputs, num):
         self.table_outputs.setRowCount(0)
         if outputs:
-            for i in range(2**num):
+            for i in range(2 ** num):
                 numRows = self.table_outputs.rowCount()
                 self.table_outputs.insertRow(numRows)
                 self.table_outputs.setItem(i, 0, QtWidgets.QTableWidgetItem(str(i)))
@@ -697,7 +699,7 @@ class MenuSC(QMainWindow):
         font.setPointSize(12)
         self.text_dim_sim.setFont(font)
         self.text_dim_sim.setStyleSheet("color: rgb(0, 0, 0);\n"
-                                   "background-color: rgb(177, 177, 177);")
+                                        "background-color: rgb(177, 177, 177);")
         self.text_dim_sim.setObjectName("text_dim_sim")
         self.gridLayout_4.addWidget(self.text_dim_sim, 3, 1, 1, 1)
         self.posible_faces = QtWidgets.QComboBox(self.groupBox_2)
@@ -1610,6 +1612,236 @@ class MenuSC(QMainWindow):
         self.combo_join.currentIndexChanged.connect(self.compute_join)
         self.pushButton_Guardar.clicked.connect(self.save_join)
 
+    def add_layout_collapse(self):
+        self.clear_layout_dinamico(self.gridLayout_dinamico)
+        self.colapso = None
+        self.gridLayout_dinamico = QtWidgets.QGridLayout()
+        self.gridLayout_dinamico.setContentsMargins(5, -1, 5, 15)
+        self.gridLayout_dinamico.setHorizontalSpacing(15)
+        self.gridLayout_dinamico.setVerticalSpacing(12)
+        self.gridLayout_dinamico.setObjectName("gridLayout_dinamico")
+        self.label_6 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.gridLayout_dinamico.addWidget(self.label_6, 0, 0, 1, 2, QtCore.Qt.AlignHCenter)
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.gridLayout_dinamico.addWidget(self.label_7, 3, 0, 1, 1)
+        self.combo_sigma = QtWidgets.QComboBox(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.combo_sigma.setFont(font)
+        self.combo_sigma.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                       "background-color: rgb(177, 177, 177);")
+        self.combo_sigma.setObjectName("combo_sigma")
+        self.gridLayout_dinamico.addWidget(self.combo_sigma, 3, 1, 1, 1)
+        self.pushButton_Guardar = QtWidgets.QPushButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(100)
+        sizePolicy.setHeightForWidth(self.pushButton_Guardar.sizePolicy().hasHeightForWidth())
+        self.pushButton_Guardar.setSizePolicy(sizePolicy)
+        self.pushButton_Guardar.setMinimumSize(QtCore.QSize(150, 25))
+        self.pushButton_Guardar.setMaximumSize(QtCore.QSize(250, 25))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_Guardar.setFont(font)
+        self.pushButton_Guardar.setStyleSheet("QPushButton{\n"
+                                              "color: rgb(255, 255, 255);\n"
+                                              "background-color: rgb(71, 71, 71);\n"
+                                              "border: 1px solid;\n"
+                                              "border-radius: 10px;}\n"
+                                              "\n"
+                                              "QPushButton:hover{\n"
+                                              "    background-color: rgb(100, 100, 100);\n"
+                                              "}\n"
+                                              "\n"
+                                              "")
+        self.pushButton_Guardar.setAutoDefault(False)
+        self.pushButton_Guardar.setDefault(False)
+        self.pushButton_Guardar.setFlat(False)
+        self.pushButton_Guardar.setObjectName("pushButton_Guardar")
+        self.gridLayout_dinamico.addWidget(self.pushButton_Guardar, 7, 1, 1, 1, QtCore.Qt.AlignRight)
+        self.combo_tau = QtWidgets.QComboBox(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.combo_tau.setFont(font)
+        self.combo_tau.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                     "background-color: rgb(177, 177, 177);")
+        self.combo_tau.setObjectName("combo_tau")
+        self.gridLayout_dinamico.addWidget(self.combo_tau, 2, 1, 1, 1)
+        self.label_9 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_9.setFont(font)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout_dinamico.addWidget(self.label_9, 5, 0, 1, 2)
+        self.table_colapso = QtWidgets.QTableWidget(self.centralwidget)
+        self.table_colapso.setMinimumSize(QtCore.QSize(300, 0))
+        self.table_colapso.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                         "background-color: rgb(177, 177, 177);")
+        self.table_colapso.setObjectName("table_colapso")
+        self.table_colapso.setColumnCount(3)
+        self.table_colapso.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.table_colapso.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.table_colapso.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        item.setFont(font)
+        self.table_colapso.setHorizontalHeaderItem(2, item)
+        self.gridLayout_dinamico.addWidget(self.table_colapso, 6, 0, 1, 2)
+        self.label_8 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_8.setFont(font)
+        self.label_8.setObjectName("label_8")
+        self.gridLayout_dinamico.addWidget(self.label_8, 2, 0, 1, 1)
+        self.label_10 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_10.setFont(font)
+        self.label_10.setObjectName("label_10")
+        self.gridLayout_dinamico.addWidget(self.label_10, 1, 0, 1, 1)
+        self.line_cone_name = QtWidgets.QLineEdit(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.line_cone_name.setFont(font)
+        self.line_cone_name.setStyleSheet("color: rgb(0, 0, 0);\n"
+                                          "background-color: rgb(177, 177, 177);")
+        self.line_cone_name.setObjectName("line_cone_name")
+        self.gridLayout_dinamico.addWidget(self.line_cone_name, 1, 1, 1, 1)
+        self.horizontalLayout.addLayout(self.gridLayout_dinamico)
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 1)
+
+        header = self.table_colapso.horizontalHeader()
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        self.table_colapso.setAlternatingRowColors(True)
+        self.table_colapso.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+
+        self.rellenar_combo_tau_colapso()
+
+        _translate = QtCore.QCoreApplication.translate
+        self.label_6.setText(_translate("TFG", "Colapso elemental"))
+        self.label_7.setText(_translate("TFG", "Sigma:"))
+        self.pushButton_Guardar.setText(_translate("TFG", "Guardar"))
+        self.label_9.setText(_translate("TFG", "Resultado"))
+        item = self.table_colapso.horizontalHeaderItem(0)
+        item.setText(_translate("TFG", "Nombre"))
+        item = self.table_colapso.horizontalHeaderItem(1)
+        item.setText(_translate("TFG", "Dimensión"))
+        item = self.table_colapso.horizontalHeaderItem(2)
+        item.setText(_translate("TFG", "Caras"))
+        self.label_8.setText(_translate("TFG", "Tau:"))
+        self.label_10.setText(_translate("TFG", "Nombre:"))
+        self.line_cone_name.setPlaceholderText(_translate("TFG", "Colapso Elemental"))
+
+        self.pushButton_Guardar.clicked.connect(self.save_colapso)
+
+    def rellenar_combo_tau_colapso(self):
+        facets_names = [x.name for x in self.sc.facets]
+        self.combo_tau.addItems(facets_names)
+        self.combo_tau.setCurrentIndex(-1)
+        self.combo_tau.currentIndexChanged.connect(self.rellenar_combo_sigma_colapso)
+
+    def rellenar_combo_sigma_colapso(self):
+        facet_name = self.combo_tau.currentText()
+        self.combo_sigma.clear()
+        facet = next(x for x in self.sc.facets if x.name == facet_name)
+        faces_names = [x.name for x in facet.faces]
+        self.combo_sigma.addItems(faces_names)
+        self.combo_sigma.currentIndexChanged.connect(self.rellenar_tabla_colapso)
+
+    def rellenar_tabla_colapso(self):
+        facet_name = self.combo_tau.currentText()
+        facet = next(x for x in self.sc.facets if x.name == facet_name)
+        sigma_name = self.combo_sigma.currentText()
+        sigma = next(x for x in self.sc.simplex if x.name == sigma_name)
+        sc_cloned = copy.deepcopy(self.sc)
+        self.colapso = sc_cloned.collapse(sigma, facet)
+        self.table_colapso.setRowCount(0)
+        for i, sim in enumerate(self.colapso.simplex):
+            numRows = self.table_colapso.rowCount()
+            self.table_colapso.insertRow(numRows)
+            self.table_colapso.setItem(i, 0, QtWidgets.QTableWidgetItem(sim.name))
+            self.table_colapso.setItem(i, 1, QtWidgets.QTableWidgetItem(str(sim.dimension)))
+            if sim.faces:
+                faces_str = "["
+                for j, elem in enumerate(sim.faces):
+                    faces_str = faces_str + elem.name
+                    if j != len(sim.faces) - 1:
+                        faces_str += ","
+                faces_str += "]"
+                text_scrolleable = QTextEdit()
+                text_scrolleable.setText(faces_str)
+                text_scrolleable.setReadOnly(True)
+                self.table_colapso.setCellWidget(i, 2, text_scrolleable)
+
+    def save_colapso(self):
+        if self.colapso is not None:
+            nombre = self.line_cone_name.text()
+            edit = False
+            if not nombre:
+                crear_mensaje_error('Introduzca el nombre', "Nombre vacío")
+            elif nombre_invalido(nombre):
+                QMessageBox.information(self, "Error",
+                                        "El nombre contiene caracteres inválidos")
+                self.lineEdit.clear()
+            else:
+                edit = False
+                all_sc = list_simplicial_complexes()
+                if any(x for x in all_sc if x.name == nombre and x.name != self.lineEdit.text()):
+                    box = QtWidgets.QMessageBox()
+                    box.setIcon(QtWidgets.QMessageBox.Question)
+                    box.setWindowTitle('GUARDAR')
+                    box.setText('Ya existe un Complejo simplicial con ese nombre \r\n ¿Deseas sobreescribirlo?')
+                    box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                    buttonY = box.button(QtWidgets.QMessageBox.Yes)
+                    buttonY.setText('Sí')
+                    buttonN = box.button(QtWidgets.QMessageBox.No)
+                    buttonN.setText('No')
+                    icon = QtGui.QIcon()
+                    icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
+                    box.setWindowIcon(icon)
+                    box.setStyleSheet("background-image: url(:/images/fondo.png);\n"
+                                      "background-color: rgb(27, 27, 27);\n"
+                                      "color: rgb(255, 255, 255);")
+                    buttonN.setStyleSheet("background-color: rgb(71, 71, 71)")
+                    buttonY.setStyleSheet("background-color: rgb(71, 71, 71)")
+                    box.exec_()
+                    if box.clickedButton() == buttonY:
+                        edit = True
+                    else:
+                        return
+                self.colapso.name = nombre
+                if edit:
+                    edit_simplicial_complex(self.colapso)
+                else:
+                    add_simplicial_complex(self.colapso)
+                QMessageBox.information(self, "Éxito",
+                                        "Operación completada con éxito")
+                self.clear_layout_dinamico(self.gridLayout_dinamico)
+        else:
+            QMessageBox.information(self, "Error",
+                                    "No se ha calculado ningún colapso")
+
     def set_join_ui(self):
         self.label_join.setText("Join de " + self.sc.name)
         self.label_omega_join.setText("")
@@ -1680,23 +1912,23 @@ class MenuSC(QMainWindow):
                 self.tableWidget_2.setCellWidget(i, 2, text_scrolleable)
 
     def rellenar_tabla_join(self):
-       self.table_join.setRowCount(0)
-       for i, sim in enumerate(self.join.simplex):
-           numRows = self.table_join.rowCount()
-           self.table_join.insertRow(numRows)
-           self.table_join.setItem(i, 0, QtWidgets.QTableWidgetItem(sim.name))
-           self.table_join.setItem(i, 1, QtWidgets.QTableWidgetItem(str(sim.dimension)))
-           if sim.faces:
-               faces_str = "["
-               for j, elem in enumerate(sim.faces):
-                   faces_str = faces_str + elem.name
-                   if j != len(sim.faces) - 1:
-                       faces_str += ","
-               faces_str += "]"
-               text_scrolleable = QTextEdit()
-               text_scrolleable.setText(faces_str)
-               text_scrolleable.setReadOnly(True)
-               self.table_join.setCellWidget(i, 2, text_scrolleable)
+        self.table_join.setRowCount(0)
+        for i, sim in enumerate(self.join.simplex):
+            numRows = self.table_join.rowCount()
+            self.table_join.insertRow(numRows)
+            self.table_join.setItem(i, 0, QtWidgets.QTableWidgetItem(sim.name))
+            self.table_join.setItem(i, 1, QtWidgets.QTableWidgetItem(str(sim.dimension)))
+            if sim.faces:
+                faces_str = "["
+                for j, elem in enumerate(sim.faces):
+                    faces_str = faces_str + elem.name
+                    if j != len(sim.faces) - 1:
+                        faces_str += ","
+                faces_str += "]"
+                text_scrolleable = QTextEdit()
+                text_scrolleable.setText(faces_str)
+                text_scrolleable.setReadOnly(True)
+                self.table_join.setCellWidget(i, 2, text_scrolleable)
 
     def save_star(self):
         if self.star is not None:
@@ -1706,7 +1938,7 @@ class MenuSC(QMainWindow):
                 crear_mensaje_error('Introduzca el nombre', "Nombre vacío")
             elif nombre_invalido(nombre):
                 QMessageBox.information(self, "Error",
-                                    "El nombre contiene caracteres inválidos")
+                                        "El nombre contiene caracteres inválidos")
                 self.lineEdit.clear()
             else:
                 edit = False
@@ -1754,7 +1986,7 @@ class MenuSC(QMainWindow):
                 crear_mensaje_error('Introduzca el nombre', "Nombre vacío")
             elif nombre_invalido(nombre):
                 QMessageBox.information(self, "Error",
-                                    "El nombre contiene caracteres inválidos")
+                                        "El nombre contiene caracteres inválidos")
                 self.lineEdit.clear()
             else:
                 edit = False
@@ -1882,6 +2114,7 @@ class MenuSC(QMainWindow):
                                     "Operación completada con éxito")
             self.clear_layout_dinamico(self.gridLayout_dinamico)
 
+
     def rellenar_tablas_vf_auto(self):
         self.tablePairs.setRowCount(0)
         self.table_vf.setRowCount(0)
@@ -1889,9 +2122,9 @@ class MenuSC(QMainWindow):
             numRows = self.tablePairs.rowCount()
             self.tablePairs.insertRow(numRows)
             self.tablePairs.setItem(i, 0, QtWidgets.QTableWidgetItem("Nombre: " + pair[0].name + ", Dimensión: "
-                                                                    + str(pair[0].dimension)))
+                                                                     + str(pair[0].dimension)))
             self.tablePairs.setItem(i, 1, QtWidgets.QTableWidgetItem("Nombre: " + pair[1].name + ", Dimensión: "
-                                                                    + str(pair[1].dimension)))
+                                                                     + str(pair[1].dimension)))
         for i, key in enumerate(self.vf_auto.routes.keys()):
             numRows = self.table_vf.rowCount()
             self.table_vf.insertRow(numRows)
@@ -1903,6 +2136,7 @@ class MenuSC(QMainWindow):
                     rutas_str += ","
             rutas_str += ")"
             self.table_vf.setItem(i, 1, QtWidgets.QTableWidgetItem(rutas_str))
+
 
     def rellenar_datos_vf(self):
         self.table_vf.setRowCount(0)
@@ -1920,6 +2154,7 @@ class MenuSC(QMainWindow):
                     rutas_str += ","
             rutas_str += ")"
             self.table_vf.setItem(i, 1, QtWidgets.QTableWidgetItem(rutas_str))
+
 
     def guardar_vf_auto(self):
         nombre = self.line_vf_name.text()
@@ -1966,9 +2201,11 @@ class MenuSC(QMainWindow):
                                     "Operación completada con éxito")
             self.clear_layout_dinamico(self.gridLayout_dinamico)
 
+
     def populate_simplex_list_mod(self, simplex):
         for sim in simplex:
             self.list_simplex.addItem(str(sim))
+
 
     def add_simplex_table(self, simplex):
         self.tableWidget.setRowCount(0)
@@ -1991,6 +2228,7 @@ class MenuSC(QMainWindow):
                     text_scrolleable.setStyleSheet("background-color: rgb(255, 255, 255);")
                 self.tableWidget.setCellWidget(i, 2, text_scrolleable)
         self.tableWidget.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+
 
     def update_sc(self):
         nombre_sc = self.text_sc_name.text()
@@ -2041,11 +2279,13 @@ class MenuSC(QMainWindow):
                                     "Operación completada con éxito")
             self.set_sc(sc)
 
+
     def eventFilter(self, obj, event):
         if event.type() == QtCore.QEvent.KeyPress and obj is self.text_nombre_sim:
             if event.key() == QtCore.Qt.Key_Return and self.text_nombre_sim.hasFocus():
                 self.add_simplex()
         return super().eventFilter(obj, event)
+
 
     def add_face_to_list(self):
         face = self.posible_faces.currentText()
@@ -2058,6 +2298,7 @@ class MenuSC(QMainWindow):
             self.faces.append(sim)
             self.list_faces.addItem(face)
 
+
     def remove_face_of_list(self):
         list_items = self.list_faces.selectedItems()
         if list_items:
@@ -2066,6 +2307,7 @@ class MenuSC(QMainWindow):
                 sim_text = elem.text()
                 sim = Aux.get_sim_by_name(self.simplex, sim_text)
                 self.faces.remove(sim)
+
 
     def add_posible_faces(self):
         self.posible_faces.clear()
@@ -2089,6 +2331,7 @@ class MenuSC(QMainWindow):
             self.text_nombre_sim.setEnabled(True)
             self.text_nombre_sim.setStyleSheet("color: rgb(0, 0, 0);\n"
                                                "background-color: rgb(177, 177, 177);")
+
 
     def add_simplex(self):
         dim = int(self.text_dim_sim.text())
@@ -2120,6 +2363,7 @@ class MenuSC(QMainWindow):
             self.faces = list()
             self.list_faces.clear()
 
+
     def remove_simplex(self):
         list_items = self.list_simplex.selectedItems()
         if list_items:
@@ -2133,11 +2377,13 @@ class MenuSC(QMainWindow):
                 for star_sim in star:
                     self.delete_from_list_simplex(str(star_sim))
 
+
     def delete_from_list_simplex(self, name_to_remove):
         items_to_remove = self.list_simplex.findItems(name_to_remove, QtCore.Qt.MatchExactly)
         for item in items_to_remove:
             row = self.list_simplex.row(item)
             self.list_simplex.takeItem(row)
+
 
     def clear_layout_dinamico(self, layout):
         if layout is not None:
@@ -2150,34 +2396,41 @@ class MenuSC(QMainWindow):
                     self.clear_layout_dinamico(child.layout())
         self.horizontalLayout.takeAt(1)
 
+
     def set_MenuBF(self, menu_bf):
         self.menu_bf = menu_bf
+
 
     def open_nuevo_sc(self):
         self.window_nuevo_sc = NuevoSC(self)
         self.window_nuevo_sc.show()
         self.hide()
 
+
     def open_listar_sc(self):
         self.window_listar_sc = ListarSC(self, self, self.menu_bf)
         self.window_listar_sc.show()
         self.hide()
+
 
     def open_nuevo_bf(self):
         self.window_nuevo_bf = NuevoBF(self)
         self.window_nuevo_bf.show()
         self.hide()
 
+
     def open_listar_bf(self):
         self.window_listar_bf = ListarBF(self, self.menu_bf, self)
         self.window_listar_bf.show()
         self.hide()
+
 
     def open_nuevo_vf(self):
         self.window_nuevo_vf = NuevoVF(self, self.sc)
         self.window_nuevo_vf.show()
         self.hide()
         self.clear_layout_dinamico(self.gridLayout_dinamico)
+
 
 class AligDelegate(QItemDelegate):
     def paint(self, painter, option, index):

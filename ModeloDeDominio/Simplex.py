@@ -150,7 +150,8 @@ class Simplex:
         else:
             if self.dimension == 0 and len(faces) != self.dimension:
                 raise Exception("El número de caras es incorrecto para la dimensión del símplice")
-            elif self.dimension != 0 and (self.dimension + 1) != len(faces):
+            elif self.dimension != 0 and (self.dimension + 1) != len(faces) \
+                    or any(x for x in faces if x.dimension != self.dimension - 1):
                 raise Exception("El número de caras es incorrecto para la dimensión del símplice")
             else:
                 self.faces = faces

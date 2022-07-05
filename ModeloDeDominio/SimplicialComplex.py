@@ -160,9 +160,18 @@ class SimplicialComplex:
 
     def star(self, sim):
         """
-        TODO
-        :param sim:
-        :return:
+        Método que calcula el star cerrado del 0-símplice proporcionado por parámetros.
+
+        Parameters
+        ----------
+        sim : Simplex
+            Vértice del que se desea calcular el star.
+
+        Returns
+        -------
+        List
+            Lista que contiene los símplices que conforman el star del vértice, esta lista puede conformar un complejo
+            simplicial.
         """
         if sim in self.facets:
             return [sim]
