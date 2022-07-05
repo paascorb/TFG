@@ -1,0 +1,20 @@
+{
+    "id": "a",
+    "num_variables": 3,
+    "name_variables": [
+        "a",
+        "b",
+        "ab"
+    ],
+    "outputs": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "m_flag": true
+}

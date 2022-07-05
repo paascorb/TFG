@@ -17,7 +17,7 @@ def get_boolean_function(bf_name):
     :param bf_name:
     :return:
     """
-    return read_boolean_function(BooleanFunction(bf_name, 0, []))
+    return read_boolean_function(BooleanFunction(bf_name, 0, [], []))
 
 
 def remove_boolean_function(bf_name):
@@ -26,7 +26,7 @@ def remove_boolean_function(bf_name):
     :param bf_name:
     :return:
     """
-    delete_boolean_function(BooleanFunction(bf_name, 0, []))
+    delete_boolean_function(BooleanFunction(bf_name, 0, [], []))
 
 
 def edit_boolean_function(bf):

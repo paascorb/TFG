@@ -313,6 +313,8 @@ class NuevoBF(QWidget):
         nombre_bf = self.text_fb_name.text()
         if not nombre_bf:
             crear_mensaje_error('Introduzca el nombre de la función booleana', "Función Booleana")
+        elif self.list_variables.count() != int(self.spin_n_variables.text()):
+            crear_mensaje_error('Introduzca el nombre de todas las variables', "Función Booleana")
         elif nombre_invalido(nombre_bf):
             QMessageBox.information(self, "Error",
                                     "El nombre contiene caracteres inválidos")
@@ -371,8 +373,9 @@ class NuevoBF(QWidget):
                 self.list_variables.addItem(var)
             else:
                 for elem in range(self.list_variables.count()):
-                    if var != self.list_variables.item(elem).text():
-                        self.list_variables.addItem(var)
+                    if var == self.list_variables.item(elem).text():
+                        return
+                self.list_variables.addItem(var)
         else:
             QMessageBox.information(self, "Error",
                                     "Se ha alcanzado el máximo de variables")

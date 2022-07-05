@@ -272,6 +272,8 @@ def is_monotone(outputs):
 
     aux_outputs = outputs.copy()
     outputs_checked = list()
+    if aux_outputs[0] != 1:
+        return False
     for i in reversed(range(0, len(outputs))):
         if aux_outputs[i] == 1:
             outputs_checked = check_output(i, outputs_checked)
