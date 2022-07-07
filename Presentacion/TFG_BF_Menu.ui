@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
-    <height>450</height>
+    <width>986</width>
+    <height>680</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -87,7 +87,7 @@ QMenu::item:selected{
        </font>
       </property>
       <property name="text">
-       <string>Función Booleana</string>
+       <string>Complejo Simplicial</string>
       </property>
      </widget>
     </item>
@@ -110,20 +110,20 @@ QMenu::item:selected{
         <property name="verticalSpacing">
          <number>15</number>
         </property>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_5">
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_nombre_sc">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>Monótona:</string>
+           <string>(Nombre)</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLabel" name="label_n_variables">
+         <widget class="QLabel" name="label_omega">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
@@ -134,15 +134,15 @@ QMenu::item:selected{
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="label_monotona">
+        <item row="3" column="0" colspan="2">
+         <widget class="QLabel" name="label_3">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>(Monotona)</string>
+           <string>Salidas:</string>
           </property>
          </widget>
         </item>
@@ -158,46 +158,6 @@ QMenu::item:selected{
           </property>
          </widget>
         </item>
-        <item row="6" column="0" colspan="2">
-         <widget class="QTableWidget" name="tableWidget">
-          <property name="styleSheet">
-           <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(177, 177, 177);</string>
-          </property>
-          <column>
-           <property name="text">
-            <string>Posición</string>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Valor</string>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_nombre_bf">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>(Nombre)</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_4">
           <property name="font">
@@ -206,63 +166,91 @@ background-color: rgb(177, 177, 177);</string>
            </font>
           </property>
           <property name="text">
-           <string>Número de Variables:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0" colspan="2">
-         <widget class="QLabel" name="label_3">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Salidas:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Nombre de las variables:</string>
+           <string>Omega:</string>
           </property>
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QLabel" name="label_name_variables">
+         <widget class="QLabel" name="label_dimension">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>(Na_variables)</string>
+           <string>(Monotona)</string>
           </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Dimensión:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QTableWidget" name="tableWidget">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(177, 177, 177);</string>
+          </property>
+          <column>
+           <property name="text">
+            <string>Nombre</string>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Dimensión</string>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Caras</string>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+          </column>
          </widget>
         </item>
        </layout>
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout_dinamico">
-        <item row="0" column="0">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>15</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>15</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>12</number>
+        </property>
        </layout>
       </item>
      </layout>
@@ -284,7 +272,7 @@ background-color: rgb(177, 177, 177);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>750</width>
+     <width>986</width>
      <height>29</height>
     </rect>
    </property>
@@ -370,9 +358,21 @@ background-color: rgb(177, 177, 177);</string>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionModificar_BF"/>
+   <addaction name="actionModificar_SC"/>
    <addaction name="separator"/>
-   <addaction name="actionTraducir_BF"/>
+   <addaction name="actionTraducir_SC"/>
+   <addaction name="separator"/>
+   <addaction name="actionLink"/>
+   <addaction name="actionStar"/>
+   <addaction name="separator"/>
+   <addaction name="actionJoin"/>
+   <addaction name="actionCono"/>
+   <addaction name="separator"/>
+   <addaction name="actionCollapsar"/>
+   <addaction name="actionExpandir"/>
+   <addaction name="separator"/>
+   <addaction name="actionCampo_de_Vectores_Manual"/>
+   <addaction name="actionCampo_de_Vectors_autom_tico"/>
   </widget>
   <action name="actionNuevo_sc">
    <property name="text">
@@ -427,31 +427,127 @@ background-color: rgb(177, 177, 177);</string>
     <string>Acerca de la aplicación</string>
    </property>
   </action>
-  <action name="actionModificar_BF">
+  <action name="actionModificar_SC">
    <property name="icon">
     <iconset resource="../Recursos/resources.qrc">
      <normaloff>:/images/edit.ico</normaloff>:/images/edit.ico</iconset>
    </property>
    <property name="text">
-    <string>Modificar_BF</string>
+    <string>Modificar_SC</string>
    </property>
    <property name="toolTip">
-    <string>Modificar la Función Booleana</string>
+    <string>Modificar el Complejo Simplicial</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+1</string>
    </property>
   </action>
-  <action name="actionTraducir_BF">
+  <action name="actionTraducir_SC">
    <property name="icon">
     <iconset resource="../Recursos/resources.qrc">
-     <normaloff>:/images/translation_bf_to_sc.ico</normaloff>:/images/translation_bf_to_sc.ico</iconset>
+     <normaloff>:/images/translation_sc_to_bf.ico</normaloff>:/images/translation_sc_to_bf.ico</iconset>
    </property>
    <property name="text">
-    <string>Traducir_BF</string>
+    <string>Traducir_SC</string>
    </property>
    <property name="toolTip">
-    <string>Traduccir la función booleana a un complejo simplicial</string>
+    <string>Traducir el complejo simplicial a una función booleana</string>
+   </property>
+  </action>
+  <action name="actionLink">
+   <property name="icon">
+    <iconset resource="../Recursos/resources.qrc">
+     <normaloff>:/images/link.ico</normaloff>:/images/link.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Link</string>
+   </property>
+   <property name="toolTip">
+    <string>Calcular Link para un símplice</string>
+   </property>
+  </action>
+  <action name="actionStar">
+   <property name="icon">
+    <iconset resource="../Recursos/resources.qrc">
+     <normaloff>:/images/star.ico</normaloff>:/images/star.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Star</string>
+   </property>
+   <property name="toolTip">
+    <string>Calcular Star para un símplice</string>
+   </property>
+  </action>
+  <action name="actionJoin">
+   <property name="icon">
+    <iconset resource="../Recursos/resources.qrc">
+     <normaloff>:/images/join.ico</normaloff>:/images/join.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Join</string>
+   </property>
+   <property name="toolTip">
+    <string>Calcular el Join del complejo simplicial con otro a seleccionar</string>
+   </property>
+  </action>
+  <action name="actionCono">
+   <property name="icon">
+    <iconset resource="../Recursos/resources.qrc">
+     <normaloff>:/images/cone.ico</normaloff>:/images/cone.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Cono</string>
+   </property>
+   <property name="toolTip">
+    <string>Calcular el cono del Complejo Simplicial</string>
+   </property>
+  </action>
+  <action name="actionCollapsar">
+   <property name="icon">
+    <iconset resource="../Recursos/resources.qrc">
+     <normaloff>:/images/collapse.ico</normaloff>:/images/collapse.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Collapsar</string>
+   </property>
+   <property name="toolTip">
+    <string>Collapsar el Complejo Simplicial</string>
+   </property>
+  </action>
+  <action name="actionExpandir">
+   <property name="icon">
+    <iconset resource="../Recursos/resources.qrc">
+     <normaloff>:/images/expand.ico</normaloff>:/images/expand.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Expandir</string>
+   </property>
+   <property name="toolTip">
+    <string>Expandir el Complejo Simplicial</string>
+   </property>
+  </action>
+  <action name="actionCampo_de_Vectores_Manual">
+   <property name="icon">
+    <iconset resource="../Recursos/resources.qrc">
+     <normaloff>:/images/manual_vf.ico</normaloff>:/images/manual_vf.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Campo de Vectores Manual</string>
+   </property>
+   <property name="toolTip">
+    <string>Calcular un campo de vectores manualmente</string>
+   </property>
+  </action>
+  <action name="actionCampo_de_Vectors_autom_tico">
+   <property name="icon">
+    <iconset resource="../Recursos/resources.qrc">
+     <normaloff>:/images/auto_vf.ico</normaloff>:/images/auto_vf.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Campo de Vectors automático</string>
+   </property>
+   <property name="toolTip">
+    <string>Calcular un campo de vectores automáticamente</string>
    </property>
   </action>
  </widget>

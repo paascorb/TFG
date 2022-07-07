@@ -98,6 +98,8 @@ class SimplicialComplex:
 
     # Método que comprueba si nuestro complejo simplicial puede expandirse con el par libre de símplices dado
     def can_expand(self, sigma, tau):
+        if sigma.dimension != tau.dimension - 1:
+            return False
         aux = tau.faces.copy()
         aux.remove(sigma)
         if tau and sigma in self.simplex or sigma not in tau.faces or not set(sigma.faces).issubset(set(self.simplex)) \
@@ -111,8 +113,10 @@ class SimplicialComplex:
     def expand(self, sigma, tau):
         if not self.can_expand(sigma, tau):
             raise Exception("El complejo simplicial no puede expandirse con el par de simplices dado.")
-        list(self.simplex).append(sigma)
-        list(self.simplex).append(tau)
+        if sigma.dimension == 0:
+            self.omega += 1
+        self.simplex.append(sigma)
+        self.simplex.append(tau)
         self.recalculate()
         return self
 
