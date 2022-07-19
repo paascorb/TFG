@@ -1,0 +1,52 @@
+{
+    "id": "prueba",
+    "omega": "3",
+    "simplex": [
+        {
+            "id": "a",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        },
+        {
+            "id": "b",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        },
+        {
+            "id": "c",
+            "dimension": 0,
+            "index": 2,
+            "faces": []
+        },
+        {
+            "id": "ab",
+            "dimension": 1,
+            "index": 3,
+            "faces": [
+                "b",
+                "a"
+            ]
+        },
+        {
+            "id": "ac",
+            "dimension": 1,
+            "index": 4,
+            "faces": [
+                "c",
+                "a"
+            ]
+        },
+        {
+            "id": "bc",
+            "dimension": 1,
+            "index": 5,
+            "faces": [
+                "c",
+                "b"
+            ]
+        }
+    ],
+    "vector_fields": []
+}
