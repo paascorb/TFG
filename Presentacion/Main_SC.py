@@ -33,7 +33,6 @@ class MenuSC(QMainWindow):
         self.faces = list()
         self.simplex = list()
         self.setObjectName("TFG")
-        self.resize(750, 450)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -176,6 +175,11 @@ class MenuSC(QMainWindow):
         self.gridLayout_2.addWidget(self.line, 1, 0, 1, 1)
         self.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(self)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../Recursos/flechas.png"))
+        self.menubar.children()[0].setIconSize(QtCore.QSize(100, 100))
+        self.menubar.children()[0].setIcon(icon)
+        self.menubar.adjustSize()
         self.menubar.setGeometry(QtCore.QRect(0, 0, 750, 29))
         font = QtGui.QFont()
         font.setFamily("Calibri")
@@ -202,6 +206,10 @@ class MenuSC(QMainWindow):
         self.menuAyuda.setObjectName("menuAyuda")
         self.setMenuBar(self.menubar)
         self.toolBar = QtWidgets.QToolBar(self)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../Recursos/flechas.png"))
+        self.toolBar.children()[1].setIconSize(QtCore.QSize(100, 100))
+        self.toolBar.children()[1].setIcon(icon)
         self.toolBar.setMinimumSize(QtCore.QSize(0, 0))
         self.toolBar.setOrientation(QtCore.Qt.Horizontal)
         self.toolBar.setIconSize(QtCore.QSize(32, 32))
@@ -2179,7 +2187,7 @@ class MenuSC(QMainWindow):
                     all_simplex.extend(self.simplex)
                 self.list_faces.takeItem((self.list_faces.row(elem)))
                 sim_text = elem.text()
-                sim = Aux.get_sim_by_name(self.all_simplex, sim_text)
+                sim = Aux.get_sim_by_name(all_simplex, sim_text)
                 self.faces.remove(sim)
 
     def rellenar_combo_tau_colapso(self):
@@ -2190,6 +2198,11 @@ class MenuSC(QMainWindow):
         self.combo_tau.currentIndexChanged.connect(self.rellenar_combo_sigma_colapso)
 
     def rellenar_combo_sigma_colapso(self):
+        try:
+            self.combo_sigma.currentIndexChanged.disconnect(self.rellenar_tabla_colapso)
+        except:
+            pass
+        self.combo_sigma.clear()
         facet_name = self.combo_tau.currentText()
         self.combo_sigma.clear()
         facet = next(x for x in self.sc.facets if x.name == facet_name)
@@ -2203,24 +2216,28 @@ class MenuSC(QMainWindow):
         sigma_name = self.combo_sigma.currentText()
         sigma = next(x for x in self.sc.simplex if x.name == sigma_name)
         sc_cloned = copy.deepcopy(self.sc)
-        self.colapso = sc_cloned.collapse(sigma, facet)
-        self.table_colapso.setRowCount(0)
-        for i, sim in enumerate(self.colapso.simplex):
-            numRows = self.table_colapso.rowCount()
-            self.table_colapso.insertRow(numRows)
-            self.table_colapso.setItem(i, 0, QtWidgets.QTableWidgetItem(sim.name))
-            self.table_colapso.setItem(i, 1, QtWidgets.QTableWidgetItem(str(sim.dimension)))
-            if sim.faces:
-                faces_str = "["
-                for j, elem in enumerate(sim.faces):
-                    faces_str = faces_str + elem.name
-                    if j != len(sim.faces) - 1:
-                        faces_str += ","
-                faces_str += "]"
-                text_scrolleable = QTextEdit()
-                text_scrolleable.setText(faces_str)
-                text_scrolleable.setReadOnly(True)
-                self.table_colapso.setCellWidget(i, 2, text_scrolleable)
+        if sc_cloned.can_collapse(sigma, facet):
+            self.colapso = sc_cloned.collapse(sigma, facet)
+            self.table_colapso.setRowCount(0)
+            for i, sim in enumerate(self.colapso.simplex):
+                numRows = self.table_colapso.rowCount()
+                self.table_colapso.insertRow(numRows)
+                self.table_colapso.setItem(i, 0, QtWidgets.QTableWidgetItem(sim.name))
+                self.table_colapso.setItem(i, 1, QtWidgets.QTableWidgetItem(str(sim.dimension)))
+                if sim.faces:
+                    faces_str = "["
+                    for j, elem in enumerate(sim.faces):
+                        faces_str = faces_str + elem.name
+                        if j != len(sim.faces) - 1:
+                            faces_str += ","
+                    faces_str += "]"
+                    text_scrolleable = QTextEdit()
+                    text_scrolleable.setText(faces_str)
+                    text_scrolleable.setReadOnly(True)
+                    self.table_colapso.setCellWidget(i, 2, text_scrolleable)
+        else:
+            QMessageBox.information(self, "Error",
+                                    "La pareja seleccionada no puede colapsar")
 
     def save_expand(self):
         if self.expand is not None:
@@ -2862,6 +2879,7 @@ class MenuSC(QMainWindow):
 
 
     def clear_layout_dinamico(self, layout):
+        self.reset_objects()
         if layout is not None:
             while layout.count():
                 child = layout.takeAt(0)
@@ -2872,40 +2890,46 @@ class MenuSC(QMainWindow):
                     self.clear_layout_dinamico(child.layout())
         self.horizontalLayout.takeAt(1)
 
-
     def set_MenuBF(self, menu_bf):
         self.menu_bf = menu_bf
-
 
     def open_nuevo_sc(self):
         self.window_nuevo_sc = NuevoSC(self)
         self.window_nuevo_sc.show()
         self.hide()
 
-
     def open_listar_sc(self):
         self.window_listar_sc = ListarSC(self, self, self.menu_bf)
         self.window_listar_sc.show()
         self.hide()
-
 
     def open_nuevo_bf(self):
         self.window_nuevo_bf = NuevoBF(self)
         self.window_nuevo_bf.show()
         self.hide()
 
-
     def open_listar_bf(self):
         self.window_listar_bf = ListarBF(self, self.menu_bf, self)
         self.window_listar_bf.show()
         self.hide()
-
 
     def open_nuevo_vf(self):
         self.window_nuevo_vf = NuevoVF(self, self.sc)
         self.window_nuevo_vf.show()
         self.hide()
         self.clear_layout_dinamico(self.gridLayout_dinamico)
+
+    def reset_objects(self):
+        self.expand = None
+        self.colapso = None
+        self.join = None
+        self.link = None
+        self.star = None
+        self.sc_cone = None
+        self.vf_auto = None
+        self.bf_tra = None
+        self.faces.clear()
+        self.simplex.clear()
 
 
 class AligDelegate(QItemDelegate):

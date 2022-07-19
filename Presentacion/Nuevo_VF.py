@@ -19,7 +19,11 @@ class NuevoVF(QWidget):
         self.path_hasse = "../Recursos/Hasse.png"
         self.setObjectName("Creación Campo de Vectores")
         self.setObjectName("Form")
-        self.resize(750, 450)
+        if parent.isMaximized():
+            self.showMaximized()
+        else:
+            self.resize(parent.width(), parent.height())
+            self.move(parent.pos())
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
         self.setWindowIcon(icon)
@@ -249,13 +253,15 @@ class NuevoVF(QWidget):
     def guardar_vf(self):
         nombre = self.line_vf_name.text()
         repetido = any(x for x in self.sc.vector_fields if x.name == nombre)
-        print(repetido)
         if not nombre:
             crear_mensaje_error('Introduzca el nombre del campo de vectores', "Campo de Vectores")
+            return
         elif repetido:
             crear_mensaje_error('Ya existe un campo de vectores con ese nombre', "Campo de Vectores")
-        elif '"' in nombre or ':' in nombre:
+            return
+        elif not nombre.isalnum():
             crear_mensaje_error('El nombre contiene caracteres no válidos', "Campo de Vectores")
+            return
         else:
             self.vf.name = nombre
         self.close_accepted = True
@@ -266,7 +272,12 @@ class NuevoVF(QWidget):
 
     def closeEvent(self, event):
         if self.close_accepted:
-            self.parent.show()
+            if self.isMaximized():
+                self.parent.showMaximized()
+            else:
+                self.parent.show()
+                self.parent.resize(self.width(), self.height())
+                self.parent.move(self.pos())
             event.accept()
         else:
             box = QtWidgets.QMessageBox()
@@ -289,7 +300,12 @@ class NuevoVF(QWidget):
 
             if box.clickedButton() == buttonY:
                 self.sc.vector_fields = self.sc.vector_fields[:-1]
-                self.parent.show()
+                if self.isMaximized():
+                    self.parent.showMaximized()
+                else:
+                    self.parent.show()
+                    self.parent.resize(self.width(), self.height())
+                    self.parent.move(self.pos())
                 event.accept()
             else:
                 event.ignore()

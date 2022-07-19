@@ -13,7 +13,8 @@ class TestJoin(unittest.TestCase):
     def test_generate_sim_name(self):
         sc = Puaux.crear_sc_prueba()
         expected_name = "ab"
-        name = Join.generate_sim_name([Aux.get_sim_by_name(sc.simplex, "b"), Aux.get_sim_by_name(sc.simplex, "a")])
+        name = Join.generate_sim_name([Aux.get_sim_by_name(sc.simplex, "b"),
+                                       Aux.get_sim_by_name(sc.simplex, "a")])
         self.assertTrue(name == expected_name)
 
     def test_join_1(self):

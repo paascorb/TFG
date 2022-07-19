@@ -13,7 +13,11 @@ class NuevoBF(QWidget):
         super().__init__()
         self.close_accepted = False
         self.setObjectName("Crear Función Booleana")
-        self.resize(750, 450)
+        if parent.isMaximized():
+            self.showMaximized()
+        else:
+            self.resize(parent.width(), parent.height())
+            self.move(parent.pos())
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
         self.setWindowIcon(icon)
@@ -421,7 +425,12 @@ class NuevoBF(QWidget):
 
     def closeEvent(self, event):
         if self.close_accepted:
-            self.parent.show()
+            if self.isMaximized():
+                self.parent.showMaximized()
+            else:
+                self.parent.show()
+                self.parent.resize(self.width(), self.height())
+                self.parent.move(self.pos())
             event.accept()
         else:
             box = QtWidgets.QMessageBox()
@@ -443,7 +452,12 @@ class NuevoBF(QWidget):
             box.exec_()
 
             if box.clickedButton() == buttonY:
-                self.parent.show()
+                if self.isMaximized():
+                    self.parent.showMaximized()
+                else:
+                    self.parent.show()
+                    self.parent.resize(self.width(), self.height())
+                    self.parent.move(self.pos())
                 event.accept()
             else:
                 event.ignore()

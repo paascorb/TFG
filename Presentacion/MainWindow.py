@@ -20,7 +20,6 @@ class MainWindow(QMainWindow):
         self.window_listar_sc = None
         self.window_nuevo_sc = None
         self.setWindowTitle("TFG Pablo Ascorbe")
-        self.resize(750, 450)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.setSizePolicy(sizePolicy)
         icon = QtGui.QIcon()
@@ -171,6 +170,6 @@ class MainWindow(QMainWindow):
 app = QApplication(sys.argv)
 
 window = MainWindow()
-window.show()
+window.showMaximized()
 
 app.exec()

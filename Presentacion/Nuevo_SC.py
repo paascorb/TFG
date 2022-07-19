@@ -19,7 +19,11 @@ class NuevoSC(QWidget):
         self.faces = list()
 
         self.setWindowTitle("Crear Complejo Simplicial")
-        self.resize(750, 400)
+        if parent.isMaximized():
+            self.showMaximized()
+        else:
+            self.resize(parent.width(), parent.height())
+            self.move(parent.pos())
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
         self.setWindowIcon(icon)
@@ -302,7 +306,12 @@ class NuevoSC(QWidget):
 
     def closeEvent(self, event):
         if self.close_accepted:
-            self.parent.show()
+            if self.isMaximized():
+                self.parent.showMaximized()
+            else:
+                self.parent.show()
+                self.parent.resize(self.width(), self.height())
+                self.parent.move(self.pos())
             event.accept()
         else:
             box = QtWidgets.QMessageBox()
@@ -324,7 +333,12 @@ class NuevoSC(QWidget):
             box.exec_()
 
             if box.clickedButton() == buttonY:
-                self.parent.show()
+                if self.isMaximized():
+                    self.parent.showMaximized()
+                else:
+                    self.parent.show()
+                    self.parent.resize(self.width(), self.height())
+                    self.parent.move(self.pos())
                 event.accept()
             else:
                 event.ignore()
@@ -378,10 +392,6 @@ class NuevoSC(QWidget):
         repetido = None
         if dim > 0 and dim == len(self.faces) - 1:
             nombre_sim = generate_sim_name(sim_faces)
-            # if any(x for x in self.simplex if x.name == nombre_sim):
-            #     crear_mensaje_error("Es imposible añadir este símplice ya que ya existe otro con ese nombre",
-            #                         "Nombre Símplice")
-            #     return
         else:
             nombre_sim = self.text_nombre_sim.text()
             repetido = Aux.get_sim_by_name(self.simplex, nombre_sim)

@@ -11,7 +11,11 @@ class ListarSC(QWidget):
         self.menu_sc = menu_sc
         self.menu_bf = menu_bf
         self.setObjectName("Lista de Complejos Simpliciales")
-        self.resize(750, 450)
+        if parent.isMaximized():
+            self.showMaximized()
+        else:
+            self.resize(parent.width(), parent.height())
+            self.move(parent.pos())
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
         self.setWindowIcon(icon)
@@ -213,7 +217,12 @@ class ListarSC(QWidget):
                 remove_simplicial_complex(sc_id)
 
     def closeEvent(self, event):
-        self.parent.show()
+        if self.isMaximized():
+            self.parent.showMaximized()
+        else:
+            self.parent.show()
+            self.parent.resize(self.width(), self.height())
+            self.parent.move(self.pos())
         event.accept()
 
     def add_scs_to_table(self, scs):
@@ -239,10 +248,15 @@ class ListarSC(QWidget):
         if row != -1:
             sc_name = self.tableSC.item(row, 0).text()
             sc = next(x for x in self.scs if x.name == sc_name)
-            self.menu_sc.show()
-            self.menu_sc.set_sc(sc)
-            self.menu_sc.set_MenuBF(self.menu_bf)
             self.parent = self.menu_sc
+            if self.isMaximized():
+                self.parent.showMaximized()
+            else:
+                self.parent.showNormal()
+                self.parent.resize(self.width(), self.height())
+                self.parent.move(self.pos())
+            self.parent.set_sc(sc)
+            self.parent.set_MenuBF(self.menu_bf)
             self.close()
 
     def create_table_by_search(self):

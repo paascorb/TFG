@@ -16,7 +16,11 @@ class ListarBF(QWidget):
         icon.addPixmap(QtGui.QPixmap("../Recursos/icono.ico"))
         self.setWindowIcon(icon)
         self.setObjectName("Lista de Funciones Booleanas")
-        self.resize(750, 450)
+        if parent.isMaximized():
+            self.showMaximized()
+        else:
+            self.resize(parent.width(), parent.height())
+            self.move(parent.pos())
         self.setStyleSheet("background-color: rgb(27, 27, 27);\n"
                            "color: rgb(255, 255, 255);")
         self.gridLayout_2 = QtWidgets.QGridLayout(self)
@@ -168,7 +172,12 @@ class ListarBF(QWidget):
         self.toolButton_remove.setText(_translate("Form", "..."))
 
     def closeEvent(self, event):
-        self.parent.show()
+        if self.isMaximized():
+            self.parent.showMaximized()
+        else:
+            self.parent.show()
+            self.parent.resize(self.width(), self.height())
+            self.parent.move(self.pos())
         event.accept()
 
     def remove_row(self):
@@ -227,10 +236,15 @@ class ListarBF(QWidget):
         if row != -1:
             bf_name = self.tableBF.item(row, 0).text()
             bf = next(x for x in self.bfs if x.name == bf_name)
-            self.menu_bf.show()
-            self.menu_bf.set_bf(bf)
-            self.menu_bf.set_MenuSC(self.menu_sc)
             self.parent = self.menu_bf
+            if self.isMaximized():
+                self.parent.showMaximized()
+            else:
+                self.parent.showNormal()
+                self.parent.resize(self.width(), self.height())
+                self.parent.move(self.pos())
+            self.parent.set_bf(bf)
+            self.parent.set_MenuSC(self.menu_sc)
             self.close()
 
     def create_table_by_search(self):
