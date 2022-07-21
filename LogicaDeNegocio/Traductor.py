@@ -33,12 +33,18 @@ def boolean_function_to_simplicial_complex(bf):
     sc = SimplicialComplex(bf.name, bf.num_variables, simplices)
     return sc
 
+
 def rename_simplices_for_boolean_function(simplices, name_variables):
     """
-    TODO
-    :param simplices:
-    :param name_variables:
-    :return:
+    Método que renombra todos los símplices de la lista recibida a partir de los nombres de las variables que
+    corresponden con los nombres de los vértices.
+
+    Parameters
+    ----------
+    simplices : list
+        Lista que contiene los símplices que se desean renombrar.
+    name_variables : list
+        Lista que contiene los nombres de las variables relacionadas una a una con los vértices.
     """
     vertex_count = 0
     for sim in simplices:
@@ -48,12 +54,19 @@ def rename_simplices_for_boolean_function(simplices, name_variables):
         else:
             sim.name = generate_sim_name(sim.faces)
 
+
 def construct_simplex(act_simp, simplices):
     """
-    TODO: documentarlo
-    :param act_simp:
-    :param simplices:
-    :return:
+    Método que construye el simplice recibido en profundidad recursivamente. Es decir, dado ese símplice y la lista de
+    símplices total, donde estarán todos los símplices hasta el momento, construye dicho símplice creando los símplices
+    los cuales contiene.
+
+    Parameters
+    ----------
+    act_simp : Simplex
+        Símplice el cual deseamos construir en profundidad.
+    simplices : list
+        Lista de todos los símplices construidos hasta el momento para evitar crear repetidos.
     """
     bin_num = bin(int(act_simp.name))[2:]
     num_ones = bin_num.count('1')
@@ -85,12 +98,20 @@ def construct_simplex(act_simp, simplices):
 
 def simplicial_complex_to_boolean_function(sc):
     """
-    TODO
+    Método que transforma el complejo simplicial recibido por parámetros en una función booleana. Esto lo hace generando
+    el número de salidas correspondiente a sus símplices. Calcula la posición que ocupa cada símplice en la salida para
+    poner dicha posición a '1'. Si el símplice es un vértice, la posición es una potencia de 2, sino se calcula a
+    partir de sus vértices.
+
     Parameters
     ----------
     sc : SimplicialComplex
+        Complejo simplicial del que se desea calcula su función booleana asociada.
 
-    :return:
+    Returns
+    -------
+    BooleanFunction
+        Función booleana calculada a partir del complejo recibido.
     """
     num_variables = sc.c_vector[0]
     outputs = [0] * (2**num_variables)
@@ -102,21 +123,42 @@ def simplicial_complex_to_boolean_function(sc):
         sim_pos[sim.name] = pos
     return BooleanFunction(sc.name, num_variables, get_vertex_names(sc.simplex), outputs)
 
+
 def get_vertex_names(simplices):
     """
-    TODO
-    :param simplices:
-    :return:
+    Método que calcula el nombre de los vértices de una lista de símplices proporcionada.
+
+    Parameters
+    ----------
+    simplices : list
+        Lista que contiene todos los símplices de los que deseamos encontrar el nombre de los de dimensión 0.
+
+    Returns
+    -------
+    list
+        Lista con los nombres de los vértices de la lista de símplices.
     """
     vertex = [x for x in simplices if x.dimension == 0]
     return [x.name for x in vertex]
 
+
 def position_in_ouput(simplex, sim_pos):
     """
-    TODO
-    :param simplex:
-    :param sim_pos:
-    :return:
+    Método que calcula la posición que debería tener un símplice en la función de salida a partir de sus caras.
+    Por ejemplo, si nuestro símplice tiene como caras aquellas cuyas posiciones son 3, 5 y 6 entonces la posición del
+    símplice será 7. Ya que se calcula el OR de dichas posiciones.
+
+    Parameters
+    ----------
+    simplex : Simplex
+        Simplice del que deseamos calcular su posición.
+    sim_pos : dict
+        Diccionario que contiene los símplices como clave y sus posiciones asociadas en la función de salida.
+
+    Returns
+    -------
+    int
+        Posición del símplice calculada en la función de salida.
     """
     faces_pos = list()
     for face in simplex.faces:

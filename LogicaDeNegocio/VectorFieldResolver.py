@@ -5,10 +5,15 @@ from LogicaDeNegocio.Exceptions import *
 
 def resolve_field(vf, sc):
     """
-    TODO
-    :param vf:
-    :param sc:
-    :return:
+    Método que resuelve o calcula el campo de vectores recibido para el complejo simplicial asociado. Resolviendo uno a
+    uno cada bloque de la matriz de adyacencias.
+
+    Parameters
+    ----------
+    vf : VectorField
+        Campo de vectores el cual se desea calcular o resolver.
+    sc : SimplicialComplex
+        Complejo simplicial que tiene asociado el campo de vectores recibido.
     """
     for i, fblock in enumerate(vf.fblocks):
         resolve_block(fblock, i, vf, sc)
