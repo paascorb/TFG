@@ -1,0 +1,19 @@
+{
+    "id": "Hola Jose",
+    "omega": "2",
+    "simplex": [
+        {
+            "id": "a",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        },
+        {
+            "id": "b",
+            "dimension": 0,
+            "index": 1,
+            "faces": []
+        }
+    ],
+    "vector_fields": []
+}

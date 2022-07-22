@@ -1,0 +1,13 @@
+{
+    "id": "Hola Charo",
+    "omega": "1",
+    "simplex": [
+        {
+            "id": "d",
+            "dimension": 0,
+            "index": 0,
+            "faces": []
+        }
+    ],
+    "vector_fields": []
+}
