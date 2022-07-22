@@ -21,6 +21,19 @@ def crear_mensaje_error(mensaje, titulo):
 
 
 def nombre_invalido(nombre):
+    """
+    Método que comprueba si un nombre no contiene caracteres inválidos.
+
+    Parameters
+    ----------
+    nombre : str
+        Cadena que se desea validar.
+
+    Returns
+    -------
+    bool
+        Booleano que será cierto si el nombre es válido o falso en caso contrario.
+    """
     if '"' in nombre or ":" in nombre or "*" in nombre or "|" in nombre or "?" in nombre or "<" in nombre \
             or ">" in nombre or "'" in nombre or "/" in nombre or "\\" in nombre or "$" in nombre or "&" in nombre \
             or "+" in nombre or "#" in nombre or "{" in nombre or "}" in nombre or "`" in nombre:

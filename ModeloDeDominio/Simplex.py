@@ -9,7 +9,7 @@ class Simplex:
     ----------
     dimension: int
         Dimensión del símplice, es un número natural con el 0 incluido.
-    name : string
+    name : str
         Nombre del símplice, es una cadena de caracteres que funciona como un identificador.
     index : int
         Índice del símplice dentro de un complejo simplicial, por ello este parámetro es opcional y será asignado dentro

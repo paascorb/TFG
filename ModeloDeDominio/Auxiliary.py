@@ -221,39 +221,81 @@ def dimension_from_simplex(simplex):
 
 def get_num_simplex_by_dim(simplex, dim):
     """
-    TODO
-    :param simplex:
-    :param dim:
-    :return:
+    Método que calcula el número de símplices de la lista recibida cuya dimensión sea la misma que la proporcionada por
+    parámetros.
+
+    Parameters
+    ----------
+    simplex : list
+        Lista que contiene símplices.
+    dim : int
+        Dimensión de los símplices que queremos contar.
+
+    Returns
+    -------
+    int
+        Número de símplices cuya dimensión es la recibida por parámetros.
     """
     return sum(sim.dimension == dim for sim in simplex)
 
 
 def list_simplex_by_dim(simplex, dim):
     """
-    TODO
-    :param simplex:
-    :param dim:
-    :return:
+    Método que lista los símplices de la lista recibida cuya dimensión sea la misma que la proporcionada por
+    parámetros.
+
+    Parameters
+    ----------
+    simplex : list
+        Lista que contiene símplices.
+    dim : int
+        Dimensión de los símplices que queremos listar.
+
+    Returns
+    -------
+    list
+        Lista de símplices cuya dimensión es la recibida por parámetros.
     """
     return [sim for sim in simplex if sim.dimension == dim]
 
 
 def get_sim_by_name(simplex, s_name):
     """
-    TODO
-    :param name:
-    :return:
+    Método que recupera de la lista de símplices recibida por parámetros aquel símplice que tenga el mismo nombre
+    que la cadena proporcionada.
+
+    Parameters
+    ----------
+    simplex : list
+        Lista que contiene símplices.
+    s_name : str
+        Nombre del símplice que queremos recuperar.
+
+    Returns
+    -------
+    Simplex
+        Símplice recuperado cuyo nombre coincide con el proporcionado por parámetros, si no existe ninguno se devuelve
+        None.
     """
     return next((sim for sim in simplex if sim.name == s_name), None)
 
 
 def get_sim_pos(c_vector, sim):
     """
-    TODO
-    :param c_vector:
-    :param sim:
-    :return:
+    Método para calcular la posición de un vector en su bloque dado el c-vector y el propio símplice. Esta posición
+    se calcula a partir de su índice en el complejo y la resta de todos los símplices de dimensión inferior al recibido.
+
+    Parameters
+    ----------
+    c_vector : list
+        C-vector que contiene el número de símplices por dimensión del complejo.
+    sim : Simplex
+        Símplice del cual queremos calcular su posición en su dimensión con respecto al complejo simplicial.
+
+    Returns
+    -------
+    int
+        La posición del símplice en su dimensión a partir de su índice.
     """
     return sim.index - sum(c_vector[:sim.dimension])
 
@@ -265,9 +307,18 @@ Métodos auxiliares para la clase BooleanFunctions
 
 def is_monotone(outputs):
     """
-    TODO: Documentarlo
-    :param outputs:
-    :return:
+    Método que va recorriendo las salidas de la función en orden inverso y para cada 1 que encuentra calcula los "hijos"
+    de dicha posición y comprueba que todos ellos también tengan un 1. Si esto se cumple la función será monótona.
+
+    Parameters
+    ----------
+    outputs : list
+        Salidas de la función que se desea comprobar para verificar si dicha función asociada es monótona creciente.
+
+    Returns
+    -------
+    bool
+        Cierto si la función es monótona y falso en caso contrario.
     """
 
     aux_outputs = outputs.copy()
@@ -336,9 +387,17 @@ def check_output(num, result=None):
 
 def num_1(num):
     """
-    TODO: documentarlo
-    :param num:
-    :return:
+    Método que cuenta el número de veces que el caracter '1' aparece en el binario del número recibido.
+
+    Parameters
+    ----------
+    num : int
+        Número que se transformará a binario y contará su número de 1s.
+
+    Returns
+    -------
+    int
+        Número de 1s del número recibido.
     """
     return bin(num)[2:].count('1')
 
@@ -350,10 +409,20 @@ Métodos auxiliares para la clase VectorField
 
 def slice_fmatrix(fmatrix, c_vector):
     """
-    TODO
-    :param fmatrix:
-    :param c_vector:
-    :return:
+    Método que trocea la matriz de adyacencias en bloques donde las columnas representan los símplices de una dimensión
+    superior a los símplices de las filas.
+
+    Parameters
+    ----------
+    fmatrix : list
+        Matriz de adyacencias.
+    c_vector : list
+        C-vector del complejo asociado a la matriz de adyacencias proporcionada.
+
+    Returns
+    -------
+    list
+        Lista de bloques calculados a partir de la matriz de adyacencias.
     """
     fblocks = list()
     aux_matrix = np.array(fmatrix)
@@ -367,10 +436,21 @@ def slice_fmatrix(fmatrix, c_vector):
 
 def get_sim_index(block_pos, block_index, c_vector):
     """
-    TODO
-    :param block_pos:
-    :param block_index:
-    :param c_vector:
-    :return:
+    Método que calcula el índice de un símplice dada su posición en el bloque de adyacencias y la dimensión de dicho
+    bloque.
+
+    Parameters
+    ----------
+    block_pos : int
+        Posición del símplice en el bloque.
+    block_index : int
+        Dimensión del bloque o posición en la lista de bloques.
+    c_vector : list
+        C-vector que contiene el número de símplices por dimensión.
+
+    Returns
+    -------
+    int
+        Índice del símplice en el contexto del complejo simplicial final.
     """
     return block_pos + sum(c_vector[:block_index])
